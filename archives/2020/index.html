@@ -75,14 +75,16 @@
                                 
                                 <li class="timeline-item">
                                     <div class="timeline-info">
-                                        <span class="gradient-text">五月 16, 2020</span>
+                                        <span class="gradient-text">五月 20, 2020</span>
                                     </div>
                                     <div class="timeline-marker"></div>
                                     <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/05/16/CW-Faberge-easter-eggs-crush-test/">[CW]Faberge easter eggs crush test</a>
+                                        <a class="timeline-title" target="_self" href="/2020/05/20/%E6%B4%9B%E8%B0%B7-P1383-%E9%AB%98%E7%BA%A7%E6%89%93%E5%AD%97%E6%9C%BA/">洛谷-P1383-高级打字机</a>
                                         <p>
-                                            数学部分递推式按照题意，若设所求函数为$F(n,m)$，则有：$$\begin{align}F(0,m)&amp;=0\\F(n,0)&amp;=0\\F(n,m)&amp;=F(n,m-1)+F(n-1,m-1)+1\end{align}$$
-生成函数注意到其生成函数满足$$\begin{align}G(x,y)&amp;=yG(x,y)+xyG(x,y)+\frac {xy} {(1-x...
+                                            P1383 高级打字机 题解如果使用Haskell语言的话，本题可以使用containers包中的Data.Sequence秒杀，因为Seq本身便是一颗可持久的FingerTree，用树套树的话，便可以做到一个非常优异的时间/空间复杂度。
+惰性求值但是的确是在线算法，可以撤回撤回（返回撤回前的时间点，不知道算不算）。
+{-# OPTIONS_GHC -O2 #-} -- 强开O2
+impor...
                                         </p>
                                     </div>
                                 </li>
