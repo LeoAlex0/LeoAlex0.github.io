@@ -227,7 +227,7 @@ data FingerTree v a
      = Empty
      | Single a
      | Deep v (Digit a) (FingerTree v (Node v a)) (Digit a)</code></pre>
-<p>这里开始出现了，最开始提到的<code>Measured</code>，此处将其抽象为一个可以将某个元素<em>测量</em>出一个<code>Monoid</code>的函数。但这个<code>Monoid</code>有大用。</p>
+<p>这里开始出现了最开始提到的<code>Measured</code>，此处将其抽象为一个可以将某个元素<em>测量</em>出一个<code>Monoid</code>的函数。但这个<code>Monoid</code>有大用。</p>
 <p>此处出现的语法使用了一个<code>Functional Dependencies</code>的拓展(可参见<a href="https://wiki.haskell.org/Functional_dependencies" target="_blank" rel="noopener">wiki</a>)。大概意思是保证对于一个类型，我只能把它<code>measure</code>成一种其他类型，不能<code>measure</code>成另一种。也就是说，类型<code>a</code>到类型<code>v</code>是一个单射。</p>
 <p>可以看到这里的$v$类型变元，这个就是稍后要维护的<code>Monoid</code>，也是索引数据的依据。</p>
 <p>可以看到一个<code>Node</code>可能有2-3个元素，保证一个<code>Digit</code>有1-4个元素。(图中也可以看出，不过引用链接是国外的可能比较卡)<code>Digit</code>和<code>Node</code>也可以相互转化，拼接，但后文不再说明实现。</p>
@@ -244,7 +244,7 @@ data FingerTree v a
       measure Empty           =  mempty
       measure (Single x)      =  measure x
       measure (Deep v _ _ _)  =  v</code></pre>
-<p>注意到此处使用了<code>Haskell</code>被称作<strong>模式匹配</strong>(<strong>Pattern Match</strong>)的特性。（不是模式串匹配啦）把数据结构重新打回了它最开始定义时的样子，并且怎么被构造的就怎么被匹配。(真*打回娘胎)</p>
+<p>注意到此处使用了<code>Haskell</code>被称作<strong>模式匹配</strong>(<strong>Pattern Match</strong>)的特性。（不是模式串匹配啦）把数据结构重新打回了它最开始定义时的样子，并且怎么被构造的就怎么被匹配。(真-打回娘胎)</p>
 <blockquote>
 <p>模式匹配不止可以匹配一层，也可以匹配多层。至于用途嘛..请自行搜索Haskell的20行红黑树。</p>
 </blockquote>
