@@ -186,7 +186,7 @@ foldM_&#39; z l f = foldM_ f z l -- 调整参数位置，追求好用</code></pr
 <p>先解释一下什么是幺半群。幺半群是一个集合$X$和集合里元素之间一个二元运算$\cdot:X\times X\to X$的统称（有序对），并要求：</p>
 <ul>
 <li>二元运算满足结合率，即$\forall x,y,z\in X: (x\cdot y)\cdot z = x\cdot (y\cdot z)$</li>
-<li>集合$X$中存在一个单位元，即$\exist e:(\forall x: e\cdot x=x\cdot e=x)$</li>
+<li>集合$X$中存在一个单位元，即$\exists e:(\forall x: e\cdot x=x\cdot e=x)$</li>
 </ul>
 <p>比如说自然数集$\mathbb N$与其上的加法$+$便可以构成一个幺半群（后面我们可以用这条性质做出传统意义上的下标索引）</p>
 <p>进一步，我们可以定义两个幺半群的笛卡尔积也是一个幺半群，即对于$(X,\cdot_1)$与$(Y,\cdot_2)$，我们可以定义一个运算$\cdot:(X\times Y) \times (X\times Y)\to X\times Y$，并使其满足结合率。定义方法如下：</p>
