@@ -92,8 +92,8 @@ RPI3B和RPI3B+用的同一款固件，可以通用
         <div class="else">
             <p class="animated fadeInDown">
                 
-                <a href="/categories/Network"><b>「
-                    </b>NETWORK<b> 」</b></a>
+                <a href="/categories/网络"><b>「
+                    </b>网络<b> 」</b></a>
                 
                 五月 11, 2020
             </p>
@@ -123,7 +123,7 @@ RPI3B和RPI3B+用的同一款固件，可以通用
             </p>
             
             
-            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/OpenWRT/" rel="tag">OpenWRT</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Proxy/" rel="tag">Proxy</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Raspberry-PI/" rel="tag">Raspberry PI</a></li></ul>
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/OpenWRT/" rel="tag">OpenWRT</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Raspberry-PI/" rel="tag">Raspberry PI</a></li></ul>
             
         </div>
     </div>
@@ -165,20 +165,19 @@ RPI3B和RPI3B+用的同一款固件，可以通用
 </li>
 </ol>
 <h2 id="配置环节"><a href="#配置环节" class="headerlink" title="配置环节"></a>配置环节</h2><ol>
-<li>信道填自动就搜不到<code>WiFi</code>了不知道咋回事儿</li>
-<li><code>wan</code>的接口名一定要<strong>小写</strong>，一定要<strong>小写</strong>，一定要<strong>小写</strong></li>
+<li>信道填自动就搜不到<code>WiFi</code>了不知道咋回事儿<ul>
+<li>802.11ac的52-64信道在国内要求DFS/TPC(<a href="https://zh.wikipedia.org/wiki/DFS" target="_blank" rel="noopener">动态频率选择</a>和<a href="https://zh.wikipedia.org/w/index.php?title=TPC&action=edit&redlink=1" target="_blank" rel="noopener">传输功率控制</a>)，可能是因为树莓派并没有相应的功能还往这几个信道上挤导致的。</li>
+</ul>
+</li>
+<li><code>wan</code>的接口名一定要<strong>小写</strong>，一定要<strong>小写</strong>，一定要<strong>小写</strong>，或者手动修改为防火墙<code>wan</code>区域</li>
 <li>刚配好时<code>opkg</code>镜像不能用<code>https</code>，只能走<code>http</code>，因为里面套件还不全</li>
 </ol>
 <h2 id="网络配置"><a href="#网络配置" class="headerlink" title="网络配置"></a>网络配置</h2><h3 id="多拨"><a href="#多拨" class="headerlink" title="多拨"></a>多拨</h3><ul>
 <li>使用<code>mwan3</code>插件</li>
 <li>前面接个AP模式的路由器</li>
-<li>使用<code>ip link add link eth0 name vethX type macvlan</code>来添加虚拟网口（记得<code>ifup</code>）</li>
-<li>其中留一个虚拟网口接<code>br-lan</code>接口，其余每个一个<code>PPPoE</code>接口（注意把跃点填成不同的值）</li>
-<li>设置<code>mwan3</code>的时候<strong>一定</strong>要填测试IP</li>
-</ul>
-<h3 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h3><ul>
-<li>因为使用了<code>mwan3</code>插件所以暂时不能用<code>TProxy</code>透明代理，参考<a href="https://github.com/zfl9/ss-tproxy/issues/107" target="_blank" rel="noopener">issue</a></li>
-<li>因为使用了<code>Redirect</code>透明代理所以<code>IPv6</code>流量是直连的</li>
+<li>使用<code>ip link add link eth0 name vethX type macvlan</code>来添加虚拟网口</li>
+<li>其中留一个虚拟网口接<code>br-lan</code>接口，其余每个一个<code>PPPoE</code>接口</li>
+<li>设置<code>mwan3</code>的时候<strong>一定</strong>要填测试IP，让相应的策略能自动开启</li>
 </ul>
 
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
@@ -227,9 +226,9 @@ RPI3B和RPI3B+用的同一款固件，可以通用
                     </dl>
                 </div>
                 <ul>
-                    <li><a href="/">3 <p>Articles</p></a></li>
+                    <li><a href="/">2 <p>Articles</p></a></li>
                     <li><a href="/categories">3 <p>Categories</p></a></li>
-                    <li><a href="/tags">6 <p>Tags</p></a></li>
+                    <li><a href="/tags">4 <p>Tags</p></a></li>
                 </ul>
             </div>
             
@@ -238,7 +237,7 @@ RPI3B和RPI3B+用的同一款固件，可以通用
             <div class="box sticky animated fadeInRight faster">
                 <div id="toc" class="subbox">
                     <h4>Contents</h4>
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#raspberry-PI-3B-刷OpenWRT坑点笔记"><span class="toc-number">1.</span> <span class="toc-text">raspberry PI 3B+刷OpenWRT坑点笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#刷写系统环节"><span class="toc-number">1.1.</span> <span class="toc-text">刷写系统环节</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置环节"><span class="toc-number">1.2.</span> <span class="toc-text">配置环节</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#网络配置"><span class="toc-number">1.3.</span> <span class="toc-text">网络配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#多拨"><span class="toc-number">1.3.1.</span> <span class="toc-text">多拨</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#代理"><span class="toc-number">1.3.2.</span> <span class="toc-text">代理</span></a></li></ol></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#raspberry-PI-3B-刷OpenWRT坑点笔记"><span class="toc-number">1.</span> <span class="toc-text">raspberry PI 3B+刷OpenWRT坑点笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#刷写系统环节"><span class="toc-number">1.1.</span> <span class="toc-text">刷写系统环节</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置环节"><span class="toc-number">1.2.</span> <span class="toc-text">配置环节</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#网络配置"><span class="toc-number">1.3.</span> <span class="toc-text">网络配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#多拨"><span class="toc-number">1.3.1.</span> <span class="toc-text">多拨</span></a></li></ol></li></ol></li></ol>
                 </div>
             </div>
             
