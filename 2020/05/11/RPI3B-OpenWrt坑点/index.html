@@ -10,12 +10,13 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="google" content="notranslate" />
     <meta name="keywords" content="zLeoAlex,Blog,"> 
-    <meta name="description" content="with Memos,raspberry PI 3B+刷OpenWRT坑点笔记刷写系统环节
-RPI3B和RPI3B+用的同一款固件，可以通用
+    <meta name="description" content="with Memos,raspberry PI 3B+刷OpenWRT坑点笔记
+刷写系统环节
 
+RPI3B和RPI3B+用的同一款固件，可以通用
 用个稍微好一点点的读卡器吧，毕竟也有几百M
 
-我Surface上的读卡器插两,"> 
+我Surface上的读卡器插,"> 
     <meta name="author" content="zLeoAlex"> 
     <link rel="alternative" href="atom.xml" title="zLeoAlex&#39;s Blog" type="application/atom+xml"> 
     <link rel="icon" href="/img/favicon.png"> 
@@ -104,13 +105,13 @@ RPI3B和RPI3B+用的同一款固件，可以通用
                 
                 <span>
                     <b class="iconfont icon-text2"></b> <i>Words count</i>
-                    1.9k
+                    1.5k
                 </span>
                 
                 
                 <span>
                     <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                    2 mins.
+                    1 mins.
                 </span>
                 
                 
@@ -144,35 +145,31 @@ RPI3B和RPI3B+用的同一款固件，可以通用
 <div class="article">
     <div class='main'>
         <div class="content markdown animated fadeIn">
-            <h1 id="raspberry-PI-3B-刷OpenWRT坑点笔记"><a href="#raspberry-PI-3B-刷OpenWRT坑点笔记" class="headerlink" title="raspberry PI 3B+刷OpenWRT坑点笔记"></a>raspberry PI 3B+刷OpenWRT坑点笔记</h1><h2 id="刷写系统环节"><a href="#刷写系统环节" class="headerlink" title="刷写系统环节"></a>刷写系统环节</h2><ol>
-<li><p>RPI3B和RPI3B+用的同一款固件，可以通用</p>
-</li>
+            <h1 id="raspberry-pi-3b刷openwrt坑点笔记">raspberry PI 3B+刷OpenWRT坑点笔记</h1>
+<h2 id="刷写系统环节">刷写系统环节</h2>
+<ol type="1">
+<li><p>RPI3B和RPI3B+用的同一款固件，可以通用</p></li>
 <li><p>用个稍微好一点点的读卡器吧，毕竟也有几百M</p>
 <blockquote>
 <p>我Surface上的读卡器插两次就扫不到设备了，十分蛇皮</p>
 <p>USB 读卡器又有点点接触不良，刷个几百k就一个读写错误，心累.jpg</p>
-</blockquote>
-</li>
-<li><p>如果希望能完全使用TF卡的空间，单纯的resize分区是不行的，还要记得<code>fsck</code>然后跑一遍<code>resize2fs</code></p>
-<blockquote>
-<p>不知道为什么我先配完系统之后改大小然后就崩了。</p>
-<p>但是如果在第一次启动前把分区大小调好就没事。</p>
-</blockquote>
-</li>
-<li><p><code>WiFi</code>的启用需要等到第一次启动以后，第一次启动的时候会生成配置文件，之后改改就好</p>
-</li>
-<li><p>如果需要用<code>USB to TTL</code>之类的操作连接PI，那么还要改<code>config.txt</code>，没改成功过，不细说</p>
-</li>
+</blockquote></li>
+<li><p>如果希望能完全使用TF卡的空间，单纯的resize分区是不行的，还要记得<code>fsck</code>然后跑一遍<code>resize2fs</code> &gt; 不知道为什么我先配完系统之后改大小然后就崩了。 &gt; &gt; 但是如果在第一次启动前把分区大小调好就没事。</p></li>
+<li><p><code>WiFi</code>的启用需要等到第一次启动以后，第一次启动的时候会生成配置文件，之后改改就好</p></li>
+<li><p>如果需要用<code>USB to TTL</code>之类的操作连接PI，那么还要改<code>config.txt</code>，没改成功过，不细说</p></li>
 </ol>
-<h2 id="配置环节"><a href="#配置环节" class="headerlink" title="配置环节"></a>配置环节</h2><ol>
-<li>信道填自动就搜不到<code>WiFi</code>了不知道咋回事儿<ul>
-<li>802.11ac的52-64信道在国内要求DFS/TPC(<a href="https://zh.wikipedia.org/wiki/DFS" target="_blank" rel="noopener">动态频率选择</a>和<a href="https://zh.wikipedia.org/w/index.php?title=TPC&action=edit&redlink=1" target="_blank" rel="noopener">传输功率控制</a>)，可能是因为树莓派并没有相应的功能还往这几个信道上挤导致的。</li>
-</ul>
-</li>
+<h2 id="配置环节">配置环节</h2>
+<ol type="1">
+<li>信道填自动就搜不到<code>WiFi</code>了不知道咋回事儿
+<ul>
+<li>802.11ac的52-64信道在国内要求DFS/TPC(<a href="https://zh.wikipedia.org/wiki/DFS" target="_blank" rel="noopener">动态频率选择</a>和<a href="https://zh.wikipedia.org/w/index.php?title=TPC&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">传输功率控制</a>)，可能是因为树莓派并没有相应的功能还往这几个信道上挤导致的。</li>
+</ul></li>
 <li><code>wan</code>的接口名一定要<strong>小写</strong>，一定要<strong>小写</strong>，一定要<strong>小写</strong>，或者手动修改为防火墙<code>wan</code>区域</li>
 <li>刚配好时<code>opkg</code>镜像不能用<code>https</code>，只能走<code>http</code>，因为里面套件还不全</li>
 </ol>
-<h2 id="网络配置"><a href="#网络配置" class="headerlink" title="网络配置"></a>网络配置</h2><h3 id="多拨"><a href="#多拨" class="headerlink" title="多拨"></a>多拨</h3><ul>
+<h2 id="网络配置">网络配置</h2>
+<h3 id="多拨">多拨</h3>
+<ul>
 <li>使用<code>mwan3</code>插件</li>
 <li>前面接个AP模式的路由器</li>
 <li>使用<code>ip link add link eth0 name vethX type macvlan</code>来添加虚拟网口</li>
@@ -237,7 +234,7 @@ RPI3B和RPI3B+用的同一款固件，可以通用
             <div class="box sticky animated fadeInRight faster">
                 <div id="toc" class="subbox">
                     <h4>Contents</h4>
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#raspberry-PI-3B-刷OpenWRT坑点笔记"><span class="toc-number">1.</span> <span class="toc-text">raspberry PI 3B+刷OpenWRT坑点笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#刷写系统环节"><span class="toc-number">1.1.</span> <span class="toc-text">刷写系统环节</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置环节"><span class="toc-number">1.2.</span> <span class="toc-text">配置环节</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#网络配置"><span class="toc-number">1.3.</span> <span class="toc-text">网络配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#多拨"><span class="toc-number">1.3.1.</span> <span class="toc-text">多拨</span></a></li></ol></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#raspberry-pi-3b刷openwrt坑点笔记"><span class="toc-number">1.</span> <span class="toc-text">raspberry PI 3B+刷OpenWRT坑点笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#刷写系统环节"><span class="toc-number">1.1.</span> <span class="toc-text">刷写系统环节</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置环节"><span class="toc-number">1.2.</span> <span class="toc-text">配置环节</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#网络配置"><span class="toc-number">1.3.</span> <span class="toc-text">网络配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#多拨"><span class="toc-number">1.3.1.</span> <span class="toc-text">多拨</span></a></li></ol></li></ol></li></ol>
                 </div>
             </div>
             
@@ -367,6 +364,14 @@ RPI3B和RPI3B+用的同一款固件，可以通用
 
     
 <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/js/js.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
 
 
 

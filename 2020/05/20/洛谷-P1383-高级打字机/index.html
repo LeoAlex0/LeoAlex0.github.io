@@ -10,7 +10,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="google" content="notranslate" />
     <meta name="keywords" content="zLeoAlex,Blog,"> 
-    <meta name="description" content="with Memos,P1383 高级打字机 题解如果使用Haskell语言的话，本题可以使用containers包中的Data.Sequence秒杀，因为Seq本身便是一颗可持久的FingerTree，用树套树的话，便,"> 
+    <meta name="description" content="with Memos,P1383 高级打字机 题解
+如果使用Haskell语言的话，本题可以使用containers包中的Data.Sequence秒杀，因为Seq本身便是一颗可持久的FingerTree，用树套树的话，,"> 
     <meta name="author" content="zLeoAlex"> 
     <link rel="alternative" href="atom.xml" title="zLeoAlex&#39;s Blog" type="application/atom+xml"> 
     <link rel="icon" href="/img/favicon.png"> 
@@ -99,13 +100,13 @@
                 
                 <span>
                     <b class="iconfont icon-text2"></b> <i>Words count</i>
-                    14k
+                    37k
                 </span>
                 
                 
                 <span>
                     <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                    13 mins.
+                    33 mins.
                 </span>
                 
                 
@@ -139,230 +140,236 @@
 <div class="article">
     <div class='main'>
         <div class="content markdown animated fadeIn">
-            <h1 id="P1383-高级打字机-题解"><a href="#P1383-高级打字机-题解" class="headerlink" title="P1383 高级打字机 题解"></a>P1383 高级打字机 题解</h1><p>如果使用Haskell语言的话，本题可以使用<code>containers</code>包中的<code>Data.Sequence</code>秒杀，因为<code>Seq</code>本身便是一颗可持久的<code>FingerTree</code>，用树套树的话，便可以做到一个非常优异的时间/空间复杂度。</p>
+            <h1 id="p1383-高级打字机-题解">P1383 高级打字机 题解</h1>
+<p>如果使用Haskell语言的话，本题可以使用<code>containers</code>包中的<code>Data.Sequence</code>秒杀，因为<code>Seq</code>本身便是一颗可持久的<code>FingerTree</code>，用树套树的话，便可以做到一个非常优异的时间/空间复杂度。</p>
 <p>惰性求值但是的确是在线算法，可以撤回撤回（返回撤回前的时间点，不知道算不算）。</p>
-<pre><code class="haskell">{-# OPTIONS_GHC -O2 #-} -- 强开O2
-import           Control.Monad
-import           Data.Functor  (($&gt;))
-import           Data.Maybe    (fromJust)
-import           Data.Sequence
-import           Text.Printf   (printf)
-
-(!) = index -- 强行把函数变成运算符
-
-main :: IO ()
-main = do
-    n &lt;- readLn :: IO Int -- 读取第一行的整数n，需要手动指定类型，不然会有歧义
-    fromList [fromList []] `foldM_&#39;` [1..n] $ \seq _ -&gt; do -- 函数的中缀用法，注意初始的历史记录应该有一个空串
-        [[op],c] &lt;- words &lt;$&gt; getLine -- 读取每一行的指令，此处使用了模式匹配（见下文）
-        case op of
-            &#39;T&#39; -&gt; pure $ (seq!0 |&gt; head c) &lt;| seq  -- 历史记录第0号（即上一次修改的结果）后插入当前字符，然后前插入历史记录
-            &#39;U&#39; -&gt; pure $ (seq!read c) &lt;| seq -- 将参数读取为整数（此处无需标明，因为函数有明确的类型限制，编译器将自动推导） 取历史记录的相应项，前插入历史记录
-            &#39;Q&#39; -&gt; printf &quot;%c\n&quot; (seq!0!(read c-1)) $&gt; seq -- 将上一次修改的结果的相应位置的字符打印出来，并返回本身的历史记录（($&gt;)运算符特性）
-
-foldM_&#39; z l f = foldM_ f z l -- 调整参数位置，追求好用</code></pre>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="ot">{-# OPTIONS_GHC -O2 #-}</span> <span class="co">-- 强开O2</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">import</span>           <span class="dt">Control.Monad</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="kw">import</span>           <span class="dt">Data.Functor</span>  (($&gt;))</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="kw">import</span>           <span class="dt">Data.Maybe</span>    (fromJust)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a><span class="kw">import</span>           <span class="dt">Data.Sequence</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a><span class="kw">import</span>           <span class="dt">Text.Printf</span>   (printf)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a>(<span class="op">!</span>) <span class="ot">=</span> <span class="fu">index</span> <span class="co">-- 强行把函数变成运算符</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a><span class="ot">main ::</span> <span class="dt">IO</span> ()</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a>main <span class="ot">=</span> <span class="kw">do</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a>    n <span class="ot">&lt;- readLn ::</span> <span class="dt">IO</span> <span class="dt">Int</span> <span class="co">-- 读取第一行的整数n，需要手动指定类型，不然会有歧义</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true"></a>    fromList [fromList []] <span class="ot">`foldM_&#39;`</span> [<span class="dv">1</span><span class="op">..</span>n] <span class="op">$</span> \<span class="fu">seq</span> _ <span class="ot">-&gt;</span> <span class="kw">do</span> <span class="co">-- 函数的中缀用法，注意初始的历史记录应该有一个空串</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true"></a>        [[op],c] <span class="ot">&lt;-</span> <span class="fu">words</span> <span class="op">&lt;$&gt;</span> <span class="fu">getLine</span> <span class="co">-- 读取每一行的指令，此处使用了模式匹配（见下文）</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true"></a>        <span class="kw">case</span> op <span class="kw">of</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true"></a>            <span class="ch">&#39;T&#39;</span> <span class="ot">-&gt;</span> <span class="fu">pure</span> <span class="op">$</span> (<span class="fu">seq</span><span class="op">!</span><span class="dv">0</span> <span class="op">|&gt;</span> <span class="fu">head</span> c) <span class="op">&lt;|</span> <span class="fu">seq</span>  <span class="co">-- 历史记录第0号（即上一次修改的结果）后插入当前字符，然后前插入历史记录</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true"></a>            <span class="ch">&#39;U&#39;</span> <span class="ot">-&gt;</span> <span class="fu">pure</span> <span class="op">$</span> (<span class="fu">seq</span><span class="op">!</span><span class="fu">read</span> c) <span class="op">&lt;|</span> <span class="fu">seq</span> <span class="co">-- 将参数读取为整数（此处无需标明，因为函数有明确的类型限制，编译器将自动推导） 取历史记录的相应项，前插入历史记录</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true"></a>            <span class="ch">&#39;Q&#39;</span> <span class="ot">-&gt;</span> printf <span class="st">&quot;%c\n&quot;</span> (<span class="fu">seq</span><span class="op">!</span><span class="dv">0</span><span class="op">!</span>(<span class="fu">read</span> c<span class="op">-</span><span class="dv">1</span>)) <span class="op">$&gt;</span> <span class="fu">seq</span> <span class="co">-- 将上一次修改的结果的相应位置的字符打印出来，并返回本身的历史记录（($&gt;)运算符特性）</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true"></a>foldM_&#39; z l f <span class="ot">=</span> foldM_ f z l <span class="co">-- 调整参数位置，追求好用</span></span></code></pre></div>
 <p>代码十分朴素。</p>
 <ul>
-<li>空间复杂度:$O(n\log n) $，其中$n$为总字符数（不是很紧确，但是..能过）</li>
-<li>每次从后面添加字符，时间复杂度:$O(1)$</li>
-<li>每次打印第$i$个字符，时间复杂度:$O(\log (\min (i,n-i)))$，其中$n$为当前字符数，$i$为需要打印的字符位置。</li>
-<li>每次撤销，时间复杂度:$O(\log (\min(i,n-i)))$，其中$n$为总修改次数，$i$为撤销步数。</li>
-<li>总时间复杂度可估算为:$O(n\log n)$</li>
+<li>空间复杂度:$O(nn) <span class="math inline">\(，其中\)</span>n$为总字符数（不是很紧确，但是..能过）</li>
+<li>每次从后面添加字符，时间复杂度:<span class="math inline">\(O(1)\)</span></li>
+<li>每次打印第<span class="math inline">\(i\)</span>个字符，时间复杂度:<span class="math inline">\(O(\log (\min (i,n-i)))\)</span>，其中<span class="math inline">\(n\)</span>为当前字符数，<span class="math inline">\(i\)</span>为需要打印的字符位置。</li>
+<li>每次撤销，时间复杂度:<span class="math inline">\(O(\log (\min(i,n-i)))\)</span>，其中<span class="math inline">\(n\)</span>为总修改次数，<span class="math inline">\(i\)</span>为撤销步数。</li>
+<li>总时间复杂度可估算为:<span class="math inline">\(O(n\log n)\)</span></li>
 </ul>
 <p>如果想看<code>FingerTree</code>原理或者希望以此为契机了解一下<code>Haskell</code>的话参见后文。也可以参考论文原文。</p>
 <p>参考文献：</p>
 <ul>
 <li>Hinze R, Paterson R. Finger trees: a simple general-purpose data structure[J]. Journal of functional programming, 2006, 16(2): 197-217.</li>
-<li><a href="https://hackage.haskell.org/package/fingertree" target="_blank" rel="noopener">https://hackage.haskell.org/package/fingertree</a></li>
-<li><a href="https://hackage.haskell.org/package/container" target="_blank" rel="noopener">https://hackage.haskell.org/package/container</a></li>
-<li><a href="https://wiki.haskell.org/Functional_dependencies" target="_blank" rel="noopener">https://wiki.haskell.org/Functional_dependencies</a></li>
+<li>https://hackage.haskell.org/package/fingertree</li>
+<li>https://hackage.haskell.org/package/container</li>
+<li>https://wiki.haskell.org/Functional_dependencies</li>
 </ul>
-<h2 id="FingerTree概述"><a href="#FingerTree概述" class="headerlink" title="FingerTree概述"></a>FingerTree概述</h2><p>说到可持久化，就得想到Immutable，说到Immutable，自然而然就是函数式编程语言，说到函数式编程语言，自然而然就是<code>Haskell</code>，而说到纯函数式的数据结构，自然而然也绕不开<code>FingerTree</code>。</p>
-<p><code>FingerTree</code>是一种理论上非常通用也非常高效的数据结构，插入头/尾都只需要摊还$O(1)$的时间，而对其的“随机”访问只需要$O(\log \min(i,n-i))$（其中$i$ 为你访问的下标，所以可以看出访问头/尾其实也是$O(1)$）。</p>
+<h2 id="fingertree概述">FingerTree概述</h2>
+<p>说到可持久化，就得想到Immutable，说到Immutable，自然而然就是函数式编程语言，说到函数式编程语言，自然而然就是<code>Haskell</code>，而说到纯函数式的数据结构，自然而然也绕不开<code>FingerTree</code>。</p>
+<p><code>FingerTree</code>是一种理论上非常通用也非常高效的数据结构，插入头/尾都只需要摊还<span class="math inline">\(O(1)\)</span>的时间，而对其的“随机”访问只需要<span class="math inline">\(O(\log \min(i,n-i))\)</span>（其中<span class="math inline">\(i\)</span> 为你访问的下标，所以可以看出访问头/尾其实也是<span class="math inline">\(O(1)\)</span>）。</p>
 <p>关于它的论文可以戳<a href="https://www.staff.city.ac.uk/~ross/papers/FingerTree.pdf" target="_blank" rel="noopener">这里</a>。当然这不是最早的一篇，但我看的就是这篇，才疏学浅没办法在这里列更早的。</p>
 <p>但为什么说“理论”上呢，就和斐波那契堆类似，他的常数比较大。（主要因素是Immutable的语言必须维护一个GC来做垃圾回收。）</p>
-<p>那为什么说“随机”呢？因为完全泛化的<code>FingerTree</code>的访问依赖的不是下标，而是一个被称作$Measure$（测度？我也不知道怎么翻译，所以直接拉的原文）的幺半群(<strong>Monoid</strong>)。</p>
+<p>那为什么说“随机”呢？因为完全泛化的<code>FingerTree</code>的访问依赖的不是下标，而是一个被称作<span class="math inline">\(Measure\)</span>（测度？我也不知道怎么翻译，所以直接拉的原文）的幺半群(<strong>Monoid</strong>)。</p>
 <blockquote>
-<p>先解释一下什么是幺半群。幺半群是一个集合$X$和集合里元素之间一个二元运算$\cdot:X\times X\to X$的统称（有序对），并要求：</p>
+<p>先解释一下什么是幺半群。幺半群是一个集合<span class="math inline">\(X\)</span>和集合里元素之间一个二元运算<span class="math inline">\(\cdot:X\times X\to X\)</span>的统称（有序对），并要求：</p>
 <ul>
-<li>二元运算满足结合率，即$\forall x,y,z\in X: (x\cdot y)\cdot z = x\cdot (y\cdot z)$</li>
-<li>集合$X$中存在一个单位元，即$\exists e:(\forall x: e\cdot x=x\cdot e=x)$</li>
+<li>二元运算满足结合率，即<span class="math inline">\(\forall x,y,z\in X: (x\cdot y)\cdot z = x\cdot (y\cdot z)\)</span></li>
+<li>集合<span class="math inline">\(X\)</span>中存在一个单位元，即<span class="math inline">\(\exists e:(\forall x: e\cdot x=x\cdot e=x)\)</span></li>
 </ul>
-<p>比如说自然数集$\mathbb N$与其上的加法$+$便可以构成一个幺半群（后面我们可以用这条性质做出传统意义上的下标索引）</p>
-<p>进一步，我们可以定义两个幺半群的笛卡尔积也是一个幺半群，即对于$(X,\cdot_1)$与$(Y,\cdot_2)$，我们可以定义一个运算$\cdot:(X\times Y) \times (X\times Y)\to X\times Y$，并使其满足结合率。定义方法如下：</p>
+<p>比如说自然数集<span class="math inline">\(\mathbb N\)</span>与其上的加法<span class="math inline">\(+\)</span>便可以构成一个幺半群（后面我们可以用这条性质做出传统意义上的下标索引）</p>
+<p>进一步，我们可以定义两个幺半群的笛卡尔积也是一个幺半群，即对于<span class="math inline">\((X,\cdot_1)\)</span>与<span class="math inline">\((Y,\cdot_2)\)</span>，我们可以定义一个运算<span class="math inline">\(\cdot:(X\times Y) \times (X\times Y)\to X\times Y\)</span>，并使其满足结合率。定义方法如下：</p>
 <ul>
-<li>$(x_1,y_1) \cdot (x_2,y_2)=(x_1\cdot_1 x_2,y_1\cdot_2 y_2)$</li>
+<li><span class="math inline">\((x_1,y_1) \cdot (x_2,y_2)=(x_1\cdot_1 x_2,y_1\cdot_2 y_2)\)</span></li>
 </ul>
-<p>我们可以用这个条件来拓展我们索引方式（比如论文原文里可以看到用$\max$幺半群实现的最大堆/优先队列）</p>
+<p>我们可以用这个条件来拓展我们索引方式（比如论文原文里可以看到用<span class="math inline">\(\max\)</span>幺半群实现的最大堆/优先队列）</p>
 </blockquote>
-<h2 id="Haskell基础"><a href="#Haskell基础" class="headerlink" title="Haskell基础"></a>Haskell基础</h2><p>首先，用<code>Haskell</code>的方式定义一下幺半群（实际上这个标准库有，不需要自己实现）</p>
-<pre><code class="haskell">class Monoid a where
-    mempty :: a
-    mappend :: a -&gt; a -&gt; a</code></pre>
+<h2 id="haskell基础">Haskell基础</h2>
+<p>首先，用<code>Haskell</code>的方式定义一下幺半群（实际上这个标准库有，不需要自己实现）</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="kw">class</span> <span class="dt">Monoid</span> a <span class="kw">where</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="ot">    mempty ::</span> a</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="ot">    mappend ::</span> a <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> a</span></code></pre></div>
 <p>与常用的C-like语言中的<code>class</code>不同，在<code>Haskell</code>中，这代表一个类型类，是对类型<code>a</code>的一种约束，类似于接口/抽象类一类的概念。</p>
 <p>然后是<code>Foldable</code>，它代表我们可以在一个类型(其实是一个<code>Kind</code>，拿类型生成类型的类型构造子)上按照某种顺序去遍历。类似于<code>Java 8</code>中的<code>reduce</code>。注意这个其实标准库也有，只是提一嘴。</p>
-<pre><code class="haskell">class Foldable f where
-    foldl :: (b -&gt; a -&gt; b) -&gt; b -&gt; f a -&gt; b
-    foldr :: (a -&gt; b -&gt; b) -&gt; b -&gt; f a -&gt; b</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">class</span> <span class="dt">Foldable</span> f <span class="kw">where</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="ot">    foldl ::</span> (b <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> f a <span class="ot">-&gt;</span> b</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="ot">    foldr ::</span> (a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> f a <span class="ot">-&gt;</span> b</span></code></pre></div>
 <p>还需要提一嘴的是<code>Haskell</code>最基本的数据结构，链表(实际上还是单端链表，所以只提供最基本的功能)。</p>
-<pre><code class="haskell">data [] a = [] | a:([] a)</code></pre>
-<p>它意味着一个$a$类型的链表有两种构造方式，一种是空链表，令一种是一个$a$类型的元素用<code>:</code>运算符拼接一个$a$类型的链表。（对，中缀构造函数，<code>C++</code>是做不到这点的。）</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="kw">data</span> [] a <span class="ot">=</span> [] <span class="op">|</span> a<span class="op">:</span>([] a)</span></code></pre></div>
+<p>它意味着一个<span class="math inline">\(a\)</span>类型的链表有两种构造方式，一种是空链表，令一种是一个<span class="math inline">\(a\)</span>类型的元素用<code>:</code>运算符拼接一个<span class="math inline">\(a\)</span>类型的链表。（对，中缀构造函数，<code>C++</code>是做不到这点的。）</p>
 <p>另外还有一个比较常用的<code>data</code>被称作<code>Maybe</code>，它的定义等价于：</p>
-<pre><code class="haskell">data Maybe a = Nothing | Just a</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="kw">data</span> <span class="dt">Maybe</span> a <span class="ot">=</span> <span class="dt">Nothing</span> <span class="op">|</span> <span class="dt">Just</span> a</span></code></pre></div>
 <p>想一想，这个定义是什么意思？</p>
 <p>从这里开始就可以看到<code>Haskell</code>的一些特性了。<code>Haskell</code>中的数据结构并非由<em>字段</em>和<em>操作</em>构成，而是由几类数据的组合组合而成。当然它是可以实现上面的俩<code>class</code>的。这里我不做过多介绍。</p>
-<h2 id="FingerTree实现（简要复述论文）"><a href="#FingerTree实现（简要复述论文）" class="headerlink" title="FingerTree实现（简要复述论文）"></a>FingerTree实现（简要复述论文）</h2><p><img src="https://www.staff.city.ac.uk/~ross/papers/FingerTree/example-tree.svg" alt="FingerTree概要图"></p>
+<h2 id="fingertree实现简要复述论文">FingerTree实现（简要复述论文）</h2>
+<figure>
+<img src="https://www.staff.city.ac.uk/~ross/papers/FingerTree/example-tree.svg" alt="" /><figcaption>FingerTree概要图</figcaption>
+</figure>
 <p>首先是一些基础定义。</p>
-<pre><code class="haskell">-- | Things that can be measured.
-class (Monoid v) =&gt; Measured v a | a -&gt; v where
-    measure :: a -&gt; v
-
-data Node v a = Node2 v a a | Node3 v a a a
-data Digit a
-    = One a
-    | Two a a
-    | Three a a a
-    | Four a a a a
-data FingerTree v a
-     = Empty
-     | Single a
-     | Deep v (Digit a) (FingerTree v (Node v a)) (Digit a)</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="co">-- | Things that can be measured.</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="kw">class</span> (<span class="dt">Monoid</span> v) <span class="ot">=&gt;</span> <span class="dt">Measured</span> v a <span class="op">|</span> a <span class="ot">-&gt;</span> v <span class="kw">where</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a><span class="ot">    measure ::</span> a <span class="ot">-&gt;</span> v</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a><span class="kw">data</span> <span class="dt">Node</span> v a <span class="ot">=</span> <span class="dt">Node2</span> v a a <span class="op">|</span> <span class="dt">Node3</span> v a a a</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a><span class="kw">data</span> <span class="dt">Digit</span> a</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a>    <span class="ot">=</span> <span class="dt">One</span> a</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a>    <span class="op">|</span> <span class="dt">Two</span> a a</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a>    <span class="op">|</span> <span class="dt">Three</span> a a a</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a>    <span class="op">|</span> <span class="dt">Four</span> a a a a</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true"></a><span class="kw">data</span> <span class="dt">FingerTree</span> v a</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true"></a>     <span class="ot">=</span> <span class="dt">Empty</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true"></a>     <span class="op">|</span> <span class="dt">Single</span> a</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true"></a>     <span class="op">|</span> <span class="dt">Deep</span> v (<span class="dt">Digit</span> a) (<span class="dt">FingerTree</span> v (<span class="dt">Node</span> v a)) (<span class="dt">Digit</span> a)</span></code></pre></div>
 <p>这里开始出现了最开始提到的<code>Measured</code>，此处将其抽象为一个可以将某个元素<em>测量</em>出一个<code>Monoid</code>的函数。但这个<code>Monoid</code>有大用。</p>
 <p>此处出现的语法使用了一个<code>Functional Dependencies</code>的拓展(可参见<a href="https://wiki.haskell.org/Functional_dependencies" target="_blank" rel="noopener">wiki</a>)。大概意思是保证对于一个类型，我只能把它<code>measure</code>成一种其他类型，不能<code>measure</code>成另一种。也就是说，类型<code>a</code>到类型<code>v</code>是一个单射。</p>
-<p>可以看到这里的$v$类型变元，这个就是稍后要维护的<code>Monoid</code>，也是索引数据的依据。</p>
+<p>可以看到这里的<span class="math inline">\(v\)</span>类型变元，这个就是稍后要维护的<code>Monoid</code>，也是索引数据的依据。</p>
 <p>可以看到一个<code>Node</code>可能有2-3个元素，保证一个<code>Digit</code>有1-4个元素。(图中也可以看出，不过引用链接是国外的可能比较卡)<code>Digit</code>和<code>Node</code>也可以相互转化，拼接，但后文不再说明实现。</p>
 <p>还有一点值得注意的是，如果当前这一层的<code>FingerTree</code>缓存的是<code>a</code>类型的话，那么下一层所缓存的就是<code>Node a</code>类型了。这也就意味着，下层比上层“厚实”。</p>
 <p>自然地，我们可以给<code>Node</code>和<code>Digit</code>来个<code>Foldable</code>，但具体部分就不展示了。</p>
-<p>那么我们应该如何方便的维护这个$v$类型的数据呢，答案是换一种方式重写构造函数。</p>
-<pre><code class="haskell">deep ::  (Measured v a) =&gt;
-      Digit a -&gt; FingerTree v (Node v a) -&gt; Digit a -&gt; FingerTree v a
- deep pr m sf = Deep ((measure pr `mappend` measure m) `mappend` measure sf) pr m sf</code></pre>
+<p>那么我们应该如何方便的维护这个<span class="math inline">\(v\)</span>类型的数据呢，答案是换一种方式重写构造函数。</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="ot">deep ::</span>  (<span class="dt">Measured</span> v a) <span class="ot">=&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>      <span class="dt">Digit</span> a <span class="ot">-&gt;</span> <span class="dt">FingerTree</span> v (<span class="dt">Node</span> v a) <span class="ot">-&gt;</span> <span class="dt">Digit</span> a <span class="ot">-&gt;</span> <span class="dt">FingerTree</span> v a</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a> deep pr m sf <span class="ot">=</span> <span class="dt">Deep</span> ((measure pr <span class="ot">`mappend`</span> measure m) <span class="ot">`mappend`</span> measure sf) pr m sf</span></code></pre></div>
 <p>此处的<code>mappend</code>是<code>Haskell</code>里函数的中缀用法（就是把函数当运算符用）。</p>
-<p>此时，我们不需要每次构造树的时候手动维护$v$类型的数据了，只需要简单把<code>Deep</code>替换为<code>deep</code>即可。</p>
+<p>此时，我们不需要每次构造树的时候手动维护<span class="math inline">\(v\)</span>类型的数据了，只需要简单把<code>Deep</code>替换为<code>deep</code>即可。</p>
 <p>另外，关于<code>Measured</code>本身，我们也可以让<code>FingerTree</code>也是<code>Measured</code>，具体代码如下：</p>
-<pre><code class="haskell">instance (Measured v a) =&gt; Measured v (FingerTree v a) where
-      measure Empty           =  mempty
-      measure (Single x)      =  measure x
-      measure (Deep v _ _ _)  =  v</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="kw">instance</span> (<span class="dt">Measured</span> v a) <span class="ot">=&gt;</span> <span class="dt">Measured</span> v (<span class="dt">FingerTree</span> v a) <span class="kw">where</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>      measure <span class="dt">Empty</span>           <span class="ot">=</span>  <span class="fu">mempty</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a>      measure (<span class="dt">Single</span> x)      <span class="ot">=</span>  measure x</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a>      measure (<span class="dt">Deep</span> v _ _ _)  <span class="ot">=</span>  v</span></code></pre></div>
 <p>注意到此处使用了<code>Haskell</code>被称作<strong>模式匹配</strong>(<strong>Pattern Match</strong>)的特性。（不是模式串匹配啦）把数据结构重新打回了它最开始定义时的样子，并且怎么被构造的就怎么被匹配。(真-打回娘胎)</p>
 <blockquote>
 <p>模式匹配不止可以匹配一层，也可以匹配多层。至于用途嘛..请自行搜索Haskell的20行红黑树。</p>
 </blockquote>
-<p>可以看到对于<code>Deep</code>一类，我们直接使用了其缓存的$v$类型字段，这样就可以在$O(1)$时间内得到一颗子树的测度。(如果对单个元素的<code>measure</code>也是$O(1)$的话)</p>
+<p>可以看到对于<code>Deep</code>一类，我们直接使用了其缓存的<span class="math inline">\(v\)</span>类型字段，这样就可以在<span class="math inline">\(O(1)\)</span>时间内得到一颗子树的测度。(如果对单个元素的<code>measure</code>也是<span class="math inline">\(O(1)\)</span>的话)</p>
 <p>当然<code>Node</code>和<code>Digit</code>也可以是<code>Measured</code>，具体实现请自行脑补。</p>
 <p>接下来是前插入的定义。</p>
-<pre><code class="haskell">infixr 5 &lt;|
--- | /O(1)/. Add an element to the left end of a sequence.    
--- Mnemonic: a triangle with the single element at the pointy end.
-(&lt;|) :: Measured v a =&gt; a -&gt; FingerTree v a -&gt; FingerTree v a
-a &lt;| Empty              =  Single a
-a &lt;| Single b           =  deep (One a) Empty (One b)
-a &lt;| Deep v (Four b c d e) m sf = Deep (measure a `mappend` v) (Two a b) (node3 c d e &lt;| m) sf
-a &lt;| Deep v pr m sf     = Deep (measure a `mappend` v) (consDigit a pr) m sf</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="kw">infixr</span> <span class="dv">5</span> <span class="op">&lt;|</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a><span class="co">-- | /O(1)/. Add an element to the left end of a sequence.    </span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a><span class="co">-- Mnemonic: a triangle with the single element at the pointy end.</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a><span class="ot">(&lt;|) ::</span> <span class="dt">Measured</span> v a <span class="ot">=&gt;</span> a <span class="ot">-&gt;</span> <span class="dt">FingerTree</span> v a <span class="ot">-&gt;</span> <span class="dt">FingerTree</span> v a</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a>a <span class="op">&lt;|</span> <span class="dt">Empty</span>              <span class="ot">=</span>  <span class="dt">Single</span> a</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a>a <span class="op">&lt;|</span> <span class="dt">Single</span> b           <span class="ot">=</span>  deep (<span class="dt">One</span> a) <span class="dt">Empty</span> (<span class="dt">One</span> b)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a>a <span class="op">&lt;|</span> <span class="dt">Deep</span> v (<span class="dt">Four</span> b c d e) m sf <span class="ot">=</span> <span class="dt">Deep</span> (measure a <span class="ot">`mappend`</span> v) (<span class="dt">Two</span> a b) (node3 c d e <span class="op">&lt;|</span> m) sf</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true"></a>a <span class="op">&lt;|</span> <span class="dt">Deep</span> v pr m sf     <span class="ot">=</span> <span class="dt">Deep</span> (measure a <span class="ot">`mappend`</span> v) (consDigit a pr) m sf</span></code></pre></div>
 <p>注意到这里我们自定义了一个运算符，它的优先级是5,并且是右结合的。（不愧是<code>Haskell</code>，轻易做到了<code>C++</code>做不到的事情。）</p>
-<p><code>++</code>是链表上的一个运算符，用于拼接两个链表，但和<code>C++</code>的链表不同，此处的拼接是$O(n)$复杂度的（对，你没看错，自带的链表就是这么废）</p>
+<p><code>++</code>是链表上的一个运算符，用于拼接两个链表，但和<code>C++</code>的链表不同，此处的拼接是<span class="math inline">\(O(n)\)</span>复杂度的（对，你没看错，自带的链表就是这么废）</p>
 <p><code>consDigit</code>就是给<code>pr</code>前插入一个元素。当然，如果是满的肯定会报错，但是在它之前的模式匹配会避免这一点发生。</p>
 <p>类似地还有后插入</p>
-<pre><code class="haskell">infixl 5 .
--- | /O(1)/. Add an element to the right end of a sequence.
--- Mnemonic: a triangle with the single element at the pointy end.
-(|&gt;) :: (Measured v a) =&gt; FingerTree v a -&gt; a -&gt; FingerTree v a
-Empty |&gt; a              =  Single a
-Single a |&gt; b           =  deep (One a) Empty (One b)
-Deep v pr m (Four a b c d) |&gt; e = Deep (v `mappend` measure e) pr (m |&gt; node3 a b c) (Two d e)
-Deep v pr m sf |&gt; x     = Deep (v `mappend` measure x) pr m (snocDigit sf x)</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="kw">infixl</span> <span class="dv">5</span> <span class="op">.</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a><span class="co">-- | /O(1)/. Add an element to the right end of a sequence.</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a><span class="co">-- Mnemonic: a triangle with the single element at the pointy end.</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a><span class="ot">(|&gt;) ::</span> (<span class="dt">Measured</span> v a) <span class="ot">=&gt;</span> <span class="dt">FingerTree</span> v a <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> <span class="dt">FingerTree</span> v a</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a><span class="dt">Empty</span> <span class="op">|&gt;</span> a              <span class="ot">=</span>  <span class="dt">Single</span> a</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true"></a><span class="dt">Single</span> a <span class="op">|&gt;</span> b           <span class="ot">=</span>  deep (<span class="dt">One</span> a) <span class="dt">Empty</span> (<span class="dt">One</span> b)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true"></a><span class="dt">Deep</span> v pr m (<span class="dt">Four</span> a b c d) <span class="op">|&gt;</span> e <span class="ot">=</span> <span class="dt">Deep</span> (v <span class="ot">`mappend`</span> measure e) pr (m <span class="op">|&gt;</span> node3 a b c) (<span class="dt">Two</span> d e)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true"></a><span class="dt">Deep</span> v pr m sf <span class="op">|&gt;</span> x     <span class="ot">=</span> <span class="dt">Deep</span> (v <span class="ot">`mappend`</span> measure x) pr m (snocDigit sf x)</span></code></pre></div>
 <p>可以看到代码基本上和前插入是对称的。（数据结构本身也是对称的，所以这里写作<code>snocDigit</code>，其中<code>snoc</code>正是<code>cons</code>的回文）后面还有很多对称的结构，均以左半部分为例。</p>
 <p>然后是一个分割原语（当然右侧也是对称的，可以看到又出现了运算符构造子。）</p>
-<pre><code class="haskell">-- | View of the left end of a sequence.
-data ViewL s a
-     = EmptyL        -- ^ empty sequence
-     | a :&lt; s a      -- ^ leftmost element and the rest of the sequence
-
--- | /O(1)/. Analyse the left end of a sequence.
-viewl :: (Measured v a) =&gt; FingerTree v a -&gt; ViewL (FingerTree v) a
-viewl Empty                     =  EmptyL
-viewl (Single x)                =  x :&lt; Empty
-viewl (Deep _ (One x) m sf)     =  x :&lt; rotL m sf
-viewl (Deep _ pr m sf)          =  lheadDigit pr :&lt; deep (ltailDigit pr) m sf
-
-rotL :: (Measured v a) =&gt; FingerTree v (Node v a) -&gt; Digit a -&gt; FingerTree v a
-rotL m sf      =   case viewl m of
-    EmptyL  -&gt;  digitToTree sf
-    a :&lt; m&#39; -&gt;  Deep (measure m `mappend` measure sf) (nodeToDigit a) m&#39; sf</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="co">-- | View of the left end of a sequence.</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a><span class="kw">data</span> <span class="dt">ViewL</span> s a</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a>     <span class="ot">=</span> <span class="dt">EmptyL</span>        <span class="co">-- ^ empty sequence</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true"></a>     <span class="op">|</span> a <span class="op">:&lt;</span> s a      <span class="co">-- ^ leftmost element and the rest of the sequence</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true"></a><span class="co">-- | /O(1)/. Analyse the left end of a sequence.</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true"></a><span class="ot">viewl ::</span> (<span class="dt">Measured</span> v a) <span class="ot">=&gt;</span> <span class="dt">FingerTree</span> v a <span class="ot">-&gt;</span> <span class="dt">ViewL</span> (<span class="dt">FingerTree</span> v) a</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true"></a>viewl <span class="dt">Empty</span>                     <span class="ot">=</span>  <span class="dt">EmptyL</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true"></a>viewl (<span class="dt">Single</span> x)                <span class="ot">=</span>  x <span class="op">:&lt;</span> <span class="dt">Empty</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true"></a>viewl (<span class="dt">Deep</span> _ (<span class="dt">One</span> x) m sf)     <span class="ot">=</span>  x <span class="op">:&lt;</span> rotL m sf</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true"></a>viewl (<span class="dt">Deep</span> _ pr m sf)          <span class="ot">=</span>  lheadDigit pr <span class="op">:&lt;</span> deep (ltailDigit pr) m sf</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true"></a></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true"></a><span class="ot">rotL ::</span> (<span class="dt">Measured</span> v a) <span class="ot">=&gt;</span> <span class="dt">FingerTree</span> v (<span class="dt">Node</span> v a) <span class="ot">-&gt;</span> <span class="dt">Digit</span> a <span class="ot">-&gt;</span> <span class="dt">FingerTree</span> v a</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true"></a>rotL m sf      <span class="ot">=</span>   <span class="kw">case</span> viewl m <span class="kw">of</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true"></a>    <span class="dt">EmptyL</span>  <span class="ot">-&gt;</span>  digitToTree sf</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true"></a>    a <span class="op">:&lt;</span> m&#39; <span class="ot">-&gt;</span>  <span class="dt">Deep</span> (measure m <span class="ot">`mappend`</span> measure sf) (nodeToDigit a) m&#39; sf</span></code></pre></div>
 <p><code>lheadDigit</code>和<code>ltailDigit</code>是指一个<code>Digit</code>的最左边元素和剩下的元素，当然如果<code>Digit</code>只有一个元素的画<code>ltail</code>就会报错，但是前面的模式匹配也避免了这一点。</p>
-<p><code>digitToTree</code>是一个将<code>Digit</code>变为一个<code>FingerTree</code>的函数，因为也就常数个元素，所以时间复杂度$O(1)$。</p>
+<p><code>digitToTree</code>是一个将<code>Digit</code>变为一个<code>FingerTree</code>的函数，因为也就常数个元素，所以时间复杂度<span class="math inline">\(O(1)\)</span>。</p>
 <p><code>nodeToDigit</code>也是跟名字异样，将一个<code>Node</code>(2或3个元素)变成一个<code>Digit</code>。</p>
 <p><code>case ... of</code>语法是<code>Haskell</code>类似于<code>C++</code>的<code>switch</code>语句的地方。不同之处在于其是有返回值的，更像一个多出口的<code>?:</code>运算符。</p>
 <p><code>viewl</code>函数构造一颗树的左分割，将其切割出最左元素（若没有则用<code>EmptyL</code>构造子）。</p>
 <p>另外值得注意的是此处的<code>viewl</code>和<code>rotL</code>是互相调用，也是一种递归哦。</p>
 <p>当然其有对称实现<code>viewr</code>。但不在此赘述。</p>
 <p>有了<code>viewl</code>之后，我们就可以处理一些<code>prefix</code>(即<code>Deep</code>中第一个<code>Digit</code>)为空/不存在时对树的构造了</p>
-<pre><code class="haskell">deepL :: (Measured v a) =&gt;
-    Maybe (Digit a) -&gt; FingerTree v (Node v a) -&gt; Digit a -&gt; FingerTree v a
-deepL Nothing m sf      =   rotL m sf
-deepL (Just pr) m sf    =   deep pr m sf</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="ot">deepL ::</span> (<span class="dt">Measured</span> v a) <span class="ot">=&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a>    <span class="dt">Maybe</span> (<span class="dt">Digit</span> a) <span class="ot">-&gt;</span> <span class="dt">FingerTree</span> v (<span class="dt">Node</span> v a) <span class="ot">-&gt;</span> <span class="dt">Digit</span> a <span class="ot">-&gt;</span> <span class="dt">FingerTree</span> v a</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true"></a>deepL <span class="dt">Nothing</span> m sf      <span class="ot">=</span>   rotL m sf</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true"></a>deepL (<span class="dt">Just</span> pr) m sf    <span class="ot">=</span>   deep pr m sf</span></code></pre></div>
 <p>此处的<code>Nothing</code>就是指<code>prefix</code>不存在的情况，此时需要<em>左旋</em>一波。</p>
 <p>当然对于<code>Just</code>的情况就直接调用上面的deep了。</p>
 <p>那么什么情况下左边/右边为空呢？当然是做分割的时候了。</p>
 <p>那么终于，要迎来最后的部分了，搜索，与分割。</p>
-<pre><code class="haskell">data Split t a = Split t a t
-data SearchResult v a
-    = Position (FingerTree v a) a (FingerTree v a)
-        -- ^ A tree opened at a particular element: the prefix to the
-       -- left, the element, and the suffix to the right.
-   | OnLeft
-       -- ^ A position to the left of the sequence, indicating that the
-       -- predicate is &#39;True&#39; at both ends.
-   | OnRight
-       -- ^ A position to the right of the sequence, indicating that the
-       -- predicate is &#39;False&#39; at both ends.
-   | Nowhere
-       -- ^ No position in the tree, returned if the predicate is &#39;True&#39;
-       -- at the left end and &#39;False&#39; at the right end.  This will not
-       -- occur if the predicate in monotonic on the tree.
-
-search :: (Measured v a) =&gt;
-    (v -&gt; v -&gt; Bool) -&gt; FingerTree v a -&gt; SearchResult v a
-search p t
-  | p_left &amp;&amp; p_right = OnLeft
-  | not p_left &amp;&amp; p_right = case searchTree p mempty t mempty of
-         Split l x r -&gt; Position l x r
-  | not p_left &amp;&amp; not p_right = OnRight
-  | otherwise = Nowhere
-   where
-     p_left = p mempty vt
-     p_right = p vt mempty
-     vt = measure t
-
-searchTree :: (Measured v a) =&gt;
-     (v -&gt; v -&gt; Bool) -&gt; v -&gt; FingerTree v a -&gt; v -&gt; Split (FingerTree v a) a
-searchTree _ _ Empty _ = illegal_argument &quot;searchTree&quot;
-searchTree _ _ (Single x) _ = Split Empty x Empty
-searchTree p vl (Deep _ pr m sf) vr
-  | p vlp vmsr  =  let  Split l x r     =  searchDigit p vl pr vmsr
-                   in   Split (maybe Empty digitToTree l) x (deepL r m sf)
-  | p vlpm vsr  =  let  Split ml xs mr  =  searchTree p vlp m vsr
-                        Split l x r     =  searchNode p (vlp `mappend` measure ml)       xs (measure mr `mappend` vsr)
-                   in   Split (deepR pr  ml l) x (deepL r mr sf)
-  | otherwise   =  let  Split l x r     =  searchDigit p vlpm sf vr
-                   in   Split (deepR pr  m  l) x (maybe Empty digitToTree r)
-  where
-    vlp     =  vl `mappend` measure pr
-    vlpm    =  vlp `mappend` vm
-    vmsr    =  vm `mappend` vsr
-    vsr     =  measure sf `mappend` vr
-    vm      =  measure m</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="kw">data</span> <span class="dt">Split</span> t a <span class="ot">=</span> <span class="dt">Split</span> t a t</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a><span class="kw">data</span> <span class="dt">SearchResult</span> v a</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a>    <span class="ot">=</span> <span class="dt">Position</span> (<span class="dt">FingerTree</span> v a) a (<span class="dt">FingerTree</span> v a)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true"></a>        <span class="co">-- ^ A tree opened at a particular element: the prefix to the</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true"></a>       <span class="co">-- left, the element, and the suffix to the right.</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true"></a>   <span class="op">|</span> <span class="dt">OnLeft</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true"></a>       <span class="co">-- ^ A position to the left of the sequence, indicating that the</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true"></a>       <span class="co">-- predicate is &#39;True&#39; at both ends.</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true"></a>   <span class="op">|</span> <span class="dt">OnRight</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true"></a>       <span class="co">-- ^ A position to the right of the sequence, indicating that the</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true"></a>       <span class="co">-- predicate is &#39;False&#39; at both ends.</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true"></a>   <span class="op">|</span> <span class="dt">Nowhere</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true"></a>       <span class="co">-- ^ No position in the tree, returned if the predicate is &#39;True&#39;</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true"></a>       <span class="co">-- at the left end and &#39;False&#39; at the right end.  This will not</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true"></a>       <span class="co">-- occur if the predicate in monotonic on the tree.</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true"></a></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true"></a><span class="ot">search ::</span> (<span class="dt">Measured</span> v a) <span class="ot">=&gt;</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true"></a>    (v <span class="ot">-&gt;</span> v <span class="ot">-&gt;</span> <span class="dt">Bool</span>) <span class="ot">-&gt;</span> <span class="dt">FingerTree</span> v a <span class="ot">-&gt;</span> <span class="dt">SearchResult</span> v a</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true"></a>search p t</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true"></a>  <span class="op">|</span> p_left <span class="op">&amp;&amp;</span> p_right <span class="ot">=</span> <span class="dt">OnLeft</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true"></a>  <span class="op">|</span> <span class="fu">not</span> p_left <span class="op">&amp;&amp;</span> p_right <span class="ot">=</span> <span class="kw">case</span> searchTree p <span class="fu">mempty</span> t <span class="fu">mempty</span> <span class="kw">of</span></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true"></a>         <span class="dt">Split</span> l x r <span class="ot">-&gt;</span> <span class="dt">Position</span> l x r</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true"></a>  <span class="op">|</span> <span class="fu">not</span> p_left <span class="op">&amp;&amp;</span> <span class="fu">not</span> p_right <span class="ot">=</span> <span class="dt">OnRight</span></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true"></a>  <span class="op">|</span> <span class="fu">otherwise</span> <span class="ot">=</span> <span class="dt">Nowhere</span></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true"></a>   <span class="kw">where</span></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true"></a>     p_left <span class="ot">=</span> p <span class="fu">mempty</span> vt</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true"></a>     p_right <span class="ot">=</span> p vt <span class="fu">mempty</span></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true"></a>     vt <span class="ot">=</span> measure t</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true"></a> </span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true"></a><span class="ot">searchTree ::</span> (<span class="dt">Measured</span> v a) <span class="ot">=&gt;</span></span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true"></a>     (v <span class="ot">-&gt;</span> v <span class="ot">-&gt;</span> <span class="dt">Bool</span>) <span class="ot">-&gt;</span> v <span class="ot">-&gt;</span> <span class="dt">FingerTree</span> v a <span class="ot">-&gt;</span> v <span class="ot">-&gt;</span> <span class="dt">Split</span> (<span class="dt">FingerTree</span> v a) a</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true"></a>searchTree _ _ <span class="dt">Empty</span> _ <span class="ot">=</span> illegal_argument <span class="st">&quot;searchTree&quot;</span></span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true"></a>searchTree _ _ (<span class="dt">Single</span> x) _ <span class="ot">=</span> <span class="dt">Split</span> <span class="dt">Empty</span> x <span class="dt">Empty</span></span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true"></a>searchTree p vl (<span class="dt">Deep</span> _ pr m sf) vr</span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true"></a>  <span class="op">|</span> p vlp vmsr  <span class="ot">=</span>  <span class="kw">let</span>  <span class="dt">Split</span> l x r     <span class="ot">=</span>  searchDigit p vl pr vmsr</span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true"></a>                   <span class="kw">in</span>   <span class="dt">Split</span> (<span class="fu">maybe</span> <span class="dt">Empty</span> digitToTree l) x (deepL r m sf)</span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true"></a>  <span class="op">|</span> p vlpm vsr  <span class="ot">=</span>  <span class="kw">let</span>  <span class="dt">Split</span> ml xs mr  <span class="ot">=</span>  searchTree p vlp m vsr</span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true"></a>                        <span class="dt">Split</span> l x r     <span class="ot">=</span>  searchNode p (vlp <span class="ot">`mappend`</span> measure ml)       xs (measure mr <span class="ot">`mappend`</span> vsr)</span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true"></a>                   <span class="kw">in</span>   <span class="dt">Split</span> (deepR pr  ml l) x (deepL r mr sf)</span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true"></a>  <span class="op">|</span> <span class="fu">otherwise</span>   <span class="ot">=</span>  <span class="kw">let</span>  <span class="dt">Split</span> l x r     <span class="ot">=</span>  searchDigit p vlpm sf vr</span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true"></a>                   <span class="kw">in</span>   <span class="dt">Split</span> (deepR pr  m  l) x (<span class="fu">maybe</span> <span class="dt">Empty</span> digitToTree r)</span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true"></a>  <span class="kw">where</span></span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true"></a>    vlp     <span class="ot">=</span>  vl <span class="ot">`mappend`</span> measure pr</span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true"></a>    vlpm    <span class="ot">=</span>  vlp <span class="ot">`mappend`</span> vm</span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true"></a>    vmsr    <span class="ot">=</span>  vm <span class="ot">`mappend`</span> vsr</span>
+<span id="cb13-46"><a href="#cb13-46" aria-hidden="true"></a>    vsr     <span class="ot">=</span>  measure sf <span class="ot">`mappend`</span> vr</span>
+<span id="cb13-47"><a href="#cb13-47" aria-hidden="true"></a>    vm      <span class="ot">=</span>  measure m</span></code></pre></div>
 <p>此处只列出了<code>searchTree</code>这一子函数，且十分冗长，其实<code>searchNode</code>和<code>searchDigit</code>也类似，本质上就是为了找到第一个使得对于输入的函数，在值左边的分割为假，右边的为真。一步步细化下去而已。</p>
 <p><code>maybe</code>函数的类型是<code>b -&gt; (a -&gt; b) -&gt; Maybe a -&gt; b</code>，看类型签名基本可以猜到功能。所以也不细说。</p>
 <p>这里可以看到<code>where</code>从句。<code>where</code>从句和常量定义很像，但却是后置的，而且具有惰性求值的特征（对，自带Lazy，而且实际上如果不做额外标注，整个<code>Haskell</code>程序都是惰性求值的）。</p>
 <p>到这一步为止，我们只差将原本用于索引的下标整成<code>Monoid</code>就好了，并且其和任意类型均可以构成<code>Measured</code>（因为单个元素大小都是1）</p>
-<pre><code class="haskell">newtype Size = Size Int
-newtype Elem a = Elem a
-instance Monoid Size where
-    mempty = Size 0
-    mappend (Size a) (Size b) = Size (a+b)
-instance Measured Size (Elem a) where
-    measure _ = Size 1</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a><span class="kw">newtype</span> <span class="dt">Size</span> <span class="ot">=</span> <span class="dt">Size</span> <span class="dt">Int</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true"></a><span class="kw">newtype</span> <span class="dt">Elem</span> a <span class="ot">=</span> <span class="dt">Elem</span> a</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true"></a><span class="kw">instance</span> <span class="dt">Monoid</span> <span class="dt">Size</span> <span class="kw">where</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true"></a>    <span class="fu">mempty</span> <span class="ot">=</span> <span class="dt">Size</span> <span class="dv">0</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true"></a>    <span class="fu">mappend</span> (<span class="dt">Size</span> a) (<span class="dt">Size</span> b) <span class="ot">=</span> <span class="dt">Size</span> (a<span class="op">+</span>b)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true"></a><span class="kw">instance</span> <span class="dt">Measured</span> <span class="dt">Size</span> (<span class="dt">Elem</span> a) <span class="kw">where</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true"></a>    measure _ <span class="ot">=</span> <span class="dt">Size</span> <span class="dv">1</span></span></code></pre></div>
 <p>这里注意，由于我们之前使用了<code>Functional Dependencies</code>，所以我们需要新建一个类型作为容器来容纳我们的类型。所以此处使用了不会导致额外开销的<code>newtype</code>关键字替代<code>data</code>（在当前环境下，二者语义一致）</p>
 <p>接下来就可以实现<code>Seq</code>了，具体可以参考<code>container</code>包的源代码或者论文原文。</p>
 
@@ -423,7 +430,7 @@ instance Measured Size (Elem a) where
             <div class="box sticky animated fadeInRight faster">
                 <div id="toc" class="subbox">
                     <h4>Contents</h4>
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#P1383-高级打字机-题解"><span class="toc-number">1.</span> <span class="toc-text">P1383 高级打字机 题解</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#FingerTree概述"><span class="toc-number">1.1.</span> <span class="toc-text">FingerTree概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Haskell基础"><span class="toc-number">1.2.</span> <span class="toc-text">Haskell基础</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FingerTree实现（简要复述论文）"><span class="toc-number">1.3.</span> <span class="toc-text">FingerTree实现（简要复述论文）</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#p1383-高级打字机-题解"><span class="toc-number">1.</span> <span class="toc-text">P1383 高级打字机 题解</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#fingertree概述"><span class="toc-number">1.1.</span> <span class="toc-text">FingerTree概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#haskell基础"><span class="toc-number">1.2.</span> <span class="toc-text">Haskell基础</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fingertree实现简要复述论文"><span class="toc-number">1.3.</span> <span class="toc-text">FingerTree实现（简要复述论文）</span></a></li></ol></li></ol>
                 </div>
             </div>
             
@@ -553,6 +560,14 @@ instance Measured Size (Elem a) where
 
     
 <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/js/js.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
 
 
 
