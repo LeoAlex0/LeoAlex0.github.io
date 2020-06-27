@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="zh-cn,en,default" class="loading">
+<html lang="zh-CN,en,default" class="loading">
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -86,9 +86,9 @@
         <div class="iconfont icon-cross search-box-close"></div>
     </form>
     <div class="search-scrollable">
-        <div id="local-search-result" class="local-search-result-cls" data-initialise="Initialising search index..."
-            data-start="Please input search keywords." data-empty="No result found, please try other keywords.">
-            <span>Please input search keywords.</span>
+        <div id="local-search-result" class="local-search-result-cls" data-initialise="首次搜索，正在载入索引文件，请稍后……"
+            data-start="输入关键词搜索。" data-empty="没有找到内容，请尝试更换检索词。">
+            <span>输入关键词搜索。</span>
         </div>
     </div>
 </div>
@@ -146,14 +146,14 @@
         <p class="post-count animated fadeInDown">
             
             <span>
-                <b class="iconfont icon-text2"></b> <i>Words count</i>
-                14k
+                <b class="iconfont icon-text2"></b> <i>文章字数</i>
+                37k
             </span>
             
             
             <span>
-                <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                13 mins.
+                <b class="iconfont icon-timer__s"></b> <i>阅读约需</i>
+                33 mins.
             </span>
             
             
@@ -164,16 +164,17 @@
         
         <div class="md-content animated fadeIn">
             
-            <p>如果使用Haskell语言的话，本题可以使用<code>containers</code>包中的<code>Data.Sequence</code>秒杀，因为<code>Seq</code>本身便是一颗可持久的<code>FingerTree</code>，用树套树的话，便可以做到一个非常优异的时间/空间复杂度。</p>
-<p>惰性求值但是的确是在线算法，可以撤回撤回（返回撤回前的时间点，不知道算不算）。</p>
-<pre><code class="haskell">{-# OPTIONS_GHC -O2 #-} -- 强开O2
-import           Control.Monad
-import           Data.Functor  (($&gt;))
-import           Data.Maybe    (fromJust)
-import           Data.Sequence
-import           Text.Printf   (printf...</code></pre>
             
-            <span class="read-more"><a href="/2020/05/20/%E6%B4%9B%E8%B0%B7-P1383-%E9%AB%98%E7%BA%A7%E6%89%93%E5%AD%97%E6%9C%BA/" title="Read article" class="posttitle">Read article</a>
+<p>如果使用Haskell语言的话，本题可以使用<code>containers</code>包中的<code>Data.Sequence</code>秒杀，因为<code>Seq</code>本身便是一颗可持久的<code>FingerTree</code>，用树套树的话，便可以做到一个非常优异的时间/空间复杂度。</p>
+<p>惰性求值但是的确是在线算法，可以撤回撤回（返回撤回前的时间点，不知道算不算）。</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="ot">{-# OPTIONS_GHC -O2 #-}</span> <span class="co">-- 强开O2</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">import</span>           <span class="dt">Control.Monad</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="kw">import</span>           <span class="dt">Data.Functor</span>  (($&gt;))</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="kw">import</span>           <span class="dt">Data.Maybe</span>    (fromJust)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a><span class="kw">import</span>           <span class="dt">Data.Sequence</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a><span class="kw">import</span>           <span class="dt">Text.Printf</span>   (...</span></code></pre></div>
+            
+            <span class="read-more"><a href="/2020/05/20/%E6%B4%9B%E8%B0%B7-P1383-%E9%AB%98%E7%BA%A7%E6%89%93%E5%AD%97%E6%9C%BA/" title="查看全文" class="posttitle">查看全文</a>
                 <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>

@@ -306,6 +306,8 @@ var Obsidian = {
           lang = "";
         if (item[0].className.indexOf(' ') > -1) {
           lang = item[0].className.split(' ')[0];
+          if (lang == "sourceCode")
+            lang = item[0].className.split(' ')[1];
         } else {
           lang = item[0].className;
         }

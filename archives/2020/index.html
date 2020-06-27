@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="zh-cn,en,default" class="loading">
+<html lang="zh-CN,en,default" class="loading">
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -60,9 +60,43 @@
                 <div class="content animated fadeIn">
                     <div class="set">
                         <h1 style="text-align: center">Archived</h1>
-                        <p style="text-align: center">「 2 」</p>
+                        <p style="text-align: center">「 3 」</p>
                         <ul class="timeline timeline-centered">
                             
+                            
+                                
+                                <li class="timeline-item period">
+                                    <div class="timeline-info"></div>
+                                    <div class="timeline-marker"></div>
+                                    <div class="timeline-content">
+                                        <h2 class="timeline-title">六月 2020</h2>
+                                    </div>
+                                </li>
+                                
+                                <li class="timeline-item">
+                                    <div class="timeline-info">
+                                        <span class="gradient-text">六月 27, 2020</span>
+                                    </div>
+                                    <div class="timeline-marker"></div>
+                                    <div class="timeline-content">
+                                        <a class="timeline-title" target="_self" href="/2020/06/27/CW-Faberge-easter-eggs-crush-test/">[CW]Faberge easter eggs crush test题解(数学部分)</a>
+                                        <p>
+                                            数学部分
+递推式
+按照题意，若设所求函数为\(F(n,m)\)，则有： \[
+\begin{align}
+F(0,m)&amp;=0\\
+F(n,0)&amp;=0\\
+F(n,m)&amp;=F(n,m-1)+F(n-1,m-1)+1
+\end{align}
+\]
+生成函数
+注意到其生成函数满足 \[
+\begin{align}
+G(x,y)&amp;=yG(x,y)+xyG(x,y)+\...
+                                        </p>
+                                    </div>
+                                </li>
                             
                                 
                                 <li class="timeline-item period">
@@ -81,10 +115,11 @@
                                     <div class="timeline-content">
                                         <a class="timeline-title" target="_self" href="/2020/05/20/%E6%B4%9B%E8%B0%B7-P1383-%E9%AB%98%E7%BA%A7%E6%89%93%E5%AD%97%E6%9C%BA/">洛谷-P1383-高级打字机</a>
                                         <p>
-                                            P1383 高级打字机 题解如果使用Haskell语言的话，本题可以使用containers包中的Data.Sequence秒杀，因为Seq本身便是一颗可持久的FingerTree，用树套树的话，便可以做到一个非常优异的时间/空间复杂度。
+                                            P1383 高级打字机 题解
+如果使用Haskell语言的话，本题可以使用containers包中的Data.Sequence秒杀，因为Seq本身便是一颗可持久的FingerTree，用树套树的话，便可以做到一个非常优异的时间/空间复杂度。
 惰性求值但是的确是在线算法，可以撤回撤回（返回撤回前的时间点，不知道算不算）。
 {-# OPTIONS_GHC -O2 #-} -- 强开O2
-impor...
+impo...
                                         </p>
                                     </div>
                                 </li>
@@ -98,14 +133,14 @@ impor...
                                     <div class="timeline-content">
                                         <a class="timeline-title" target="_self" href="/2020/05/11/RPI3B-OpenWrt%E5%9D%91%E7%82%B9/">RPI3B+ OpenWrt坑点</a>
                                         <p>
-                                            raspberry PI 3B+刷OpenWRT坑点笔记刷写系统环节
-RPI3B和RPI3B+用的同一款固件，可以通用
+                                            raspberry PI 3B+刷OpenWRT坑点笔记
+刷写系统环节
 
+RPI3B和RPI3B+用的同一款固件，可以通用
 用个稍微好一点点的读卡器吧，毕竟也有几百M
 
 我Surface上的读卡器插两次就扫不到设备了，十分蛇皮
 USB 读卡器又有点点接触不良，刷个几百k就一个读写错误，心累.jpg
-
 
 如果希望能完全使用TF卡的空间，单纯的resize分区是不行的，还要记得fsck然后跑一遍r...
                                         </p>
