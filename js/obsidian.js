@@ -30,9 +30,9 @@ function scrollSpy(menuSelector, options) {
     var fromTop = $(this).scrollTop() + offset;
 
     // Get id of current scroll item
-    var id = scollTarget.filter(function () {
-      return $(this).offset().top < fromTop;
-    }).last().parent().attr("id") || "";
+    var id = scollTarget.prevObject.filter(function () {
+      return this.localName < "h4" && this.offsetTop < fromTop;
+    }).last().attr("id") || "";
 
     if (lastId !== id) {
       active.removeClass(activeClassName);
