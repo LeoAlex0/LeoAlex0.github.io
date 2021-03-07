@@ -156,9 +156,11 @@
 \]</span></p>
 <h2 id="生成函数">生成函数</h2>
 <p>注意到其生成函数满足 <span class="math display">\[
+  G(x,y)=yG(x,y)+xyG(x,y)+\frac{xy}{(1-x)(1-y)}
+\]</span></p>
+<p>移项可得： <span class="math display">\[
 \begin{aligned}
-  G(x,y)&amp;=yG(x,y)+xyG(x,y)+\frac{xy}{(1-x)(1-y)}\\
-  (1-y-xy)G(x,y)&amp;=\frac{xy}{(1-x)(1-y)} &amp; 移项\\
+  (1-y-xy)G(x,y)&amp;=\frac{xy}{(1-x)(1-y)} \\
   G(x,y)&amp;=y(1-y)^{-1}x(1-x)^{-1}(1-y-xy)^{-1}\\
 \end{aligned}
 \]</span></p>
