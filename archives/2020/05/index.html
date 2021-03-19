@@ -82,13 +82,14 @@
                                         <a class="timeline-title" target="_self" href="/2021/03/19/Docker%E5%AE%B9%E5%99%A8%E8%AE%BF%E9%97%AEIPv6%E9%97%AE%E9%A2%98/">Debian10配置Docker容器访问IPv6问题</a>
                                         <p>
                                             打开Docker的IPv6支持
+若想要容器能够监听IPv6的接口，那么首先容器内部需要自己有个IPv6的接口。
+参见docker文档
 修改/etc/docker/daemon.json，合并以下JSON配置
 {
   &quot;ipv6&quot;: true,
   &quot;fixed-cidr-v6&quot;: &quot;2001:db8:1::/64&quot;
 }
-其中第一项会开启默认的bridge network的IPv6支持，下一个会在IPv6的地址池里添加对应的网段。
-不...
+然后自行sy...
                                         </p>
                                     </div>
                                 </li>

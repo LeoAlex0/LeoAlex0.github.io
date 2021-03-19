@@ -11,10 +11,9 @@
     <meta name="google" content="notranslate" />
     <meta name="keywords" content="zLeoAlex,Blog,"> 
     <meta name="description" content="with Memos,打开Docker的IPv6支持
-修改/etc/docker/daemon.json，合并以下JSON配置
-{
-  &amp;quot;ipv6&amp;quot;: true,
-  &amp;quot;fixed-cidr,"> 
+若想要容器能够监听IPv6的接口，那么首先容器内部需要自己有个IPv6的接口。
+参见docker文档
+修改/etc/docker/daemon.json，合并以下JS,"> 
     <meta name="author" content="zLeoAlex"> 
     <link rel="alternative" href="atom.xml" title="zLeoAlex&#39;s Blog" type="application/atom+xml"> 
     <link rel="icon" href="/img/favicon.png"> 
@@ -103,7 +102,7 @@
                 
                 <span>
                     <b class="iconfont icon-text2"></b> <i>文章字数</i>
-                    1.7k
+                    2k
                 </span>
                 
                 
@@ -144,11 +143,14 @@
     <div class='main'>
         <div class="content markdown animated fadeIn">
             <h2 id="打开docker的ipv6支持">打开Docker的IPv6支持</h2>
+<p>若想要容器能够监听IPv6的接口，那么首先容器内部需要自己有个IPv6的接口。</p>
+<p>参见<a href="https://docs.docker.com/config/daemon/ipv6/" target="_blank" rel="noopener">docker文档</a></p>
 <p>修改<code>/etc/docker/daemon.json</code>，合并以下JSON配置</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;ipv6&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;fixed-cidr-v6&quot;</span><span class="fu">:</span> <span class="st">&quot;2001:db8:1::/64&quot;</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p>然后自行<code>systemctl restart docker</code>之类重启<code>docker daemon</code>。</p>
 <p>其中第一项会开启默认的bridge network的IPv6支持，下一个会在IPv6的地址池里添加对应的网段。</p>
 <p>不过很奇怪的是，这一个网段的<strong>全部</strong>地址都会分给全局默认的bridge network，所以如果自己的docker-compose文件里有网络需要IPv6支持的，得手动分配一个网段，或者直接改用默认的全局bridge。</p>
 <h2 id="设置ip6tables转发流量">设置ip6tables转发流量</h2>
