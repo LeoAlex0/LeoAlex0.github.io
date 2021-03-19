@@ -146,42 +146,44 @@
             <a href="/categories/网络"><b>「
                 </b>网络<b> 」</b></a>
             
-            五月 11, 2020
+            三月 19, 2021
         </p>
         <h3 class="post-title animated fadeInDown">
-            <a href="/2020/05/11/RPI3B-OpenWrt%E5%9D%91%E7%82%B9/" title="RPI3B+ OpenWrt坑点" class="posttitle">RPI3B+ OpenWrt坑点</a></h3>
+            <a href="/2021/03/19/Docker%E5%AE%B9%E5%99%A8%E8%AE%BF%E9%97%AEIPv6%E9%97%AE%E9%A2%98/" title="Debian10配置Docker容器访问IPv6问题" class="posttitle">Debian10配置Docker容器访问IPv6问题</a></h3>
         
         <p class="post-count animated fadeInDown">
             
             <span>
                 <b class="iconfont icon-text2"></b> <i>文章字数</i>
-                1.5k
+                1.7k
             </span>
             
             
             <span>
                 <b class="iconfont icon-timer__s"></b> <i>阅读约需</i>
-                1 mins.
+                2 mins.
             </span>
             
             
         </p>
         
         
-        <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/OpenWRT/" rel="tag">OpenWRT</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Raspberry-PI/" rel="tag">Raspberry PI</a></li></ul>
+        <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Debian/" rel="tag">Debian</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/IPv6/" rel="tag">IPv6</a></li></ul>
         
         <div class="md-content animated fadeIn">
             
             
+<p>修改<code>/etc/docker/daemon.json</code>，合并以下JSON配置</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;ipv6&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;fixed-cidr-v6&quot;</span><span class="fu">:</span> <span class="st">&quot;2001:db8:1::/64&quot;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p>其中第一项会开启默认的bridge network的IPv6支持，下一个会在IPv6的地址池里添加对应的网段。</p>
+<p>不过很奇怪的是，这一个网段的<strong>全部</strong>地址都会分给全局默认的bridge network，所以如果自己的docker-compose文件里有网络需要IPv6支持的，得手动分配一个网段，或者直接改用默认的全局bridge。</p>
 
-<ol type="1">
-<li><p>RPI3B和RPI3B+用的同一款固件，可以通用</p></li>
-<li><p>用个稍微好一点点的读卡器吧，毕竟也有几百M</p>
-<blockquote>
-<p>我Surface上的读卡器插两次就扫不到设备了，十分蛇皮</p>
-<p>USB 读卡器又有点点接触不良，刷个几百...</p></blockquote></li></ol>
+<p>搞定上面一步之后，理论上...</p>
             
-            <span class="read-more"><a href="/2020/05/11/RPI3B-OpenWrt%E5%9D%91%E7%82%B9/" title="查看全文" class="posttitle">查看全文</a>
+            <span class="read-more"><a href="/2021/03/19/Docker%E5%AE%B9%E5%99%A8%E8%AE%BF%E9%97%AEIPv6%E9%97%AE%E9%A2%98/" title="查看全文" class="posttitle">查看全文</a>
                 <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
@@ -202,6 +204,62 @@
 
     <div id="primary">
         
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/网络">
+                  <b>「 </b>网络<b> 」</b>
+                </a>
+            
+            五月 11, 2020
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/05/11/RPI3B-OpenWrt%E5%9D%91%E7%82%B9/" title="RPI3B+ OpenWrt坑点" class="posttitle">RPI3B+ OpenWrt坑点</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>文章字数</i>
+                        1.5k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>阅读约需</i>
+                        1 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/OpenWRT/" rel="tag">OpenWRT</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Raspberry-PI/" rel="tag">Raspberry PI</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                
+
+<ol type="1">
+<li><p>RPI3B和RPI3B+用的同一款固件，可以通用</p></li>
+<li><p>用个稍微好一点点的读卡器吧，毕竟也有几百M</p>
+<blockquote>
+<p>我Surface上的读卡器插两次就扫不到设备了，十分蛇皮</p>
+<p>USB 读卡器又有点点接触不良，刷个几百k就一个读写错误，心累.jpg</p>
+</blockquote></li>
+<li><p>如果希望能完全使用TF卡的空间，单纯的resize分区是不行的，还要记得<code>fsck</code>然后跑一遍<code>resize2fs</code> &gt; 不知道为什么我先配完系统之后改大小然后就崩了。 &gt; &gt; 但是如果在第一次启动前把分区大小调好就没事。</p></li>
+<li><p><code>WiFi</code>的启用需要等到第一次启动...</p></li></ol>
+            
+            <span class="read-more"><a href="/2020/05/11/RPI3B-OpenWrt%E5%9D%91%E7%82%B9/" title="查看全文" class="posttitle">查看全文</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
     </div>
     
 </div>
