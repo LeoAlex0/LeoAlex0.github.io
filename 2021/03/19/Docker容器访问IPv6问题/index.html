@@ -156,7 +156,7 @@
 <p>参见<a href="https://github.com/docker/for-linux/issues/648" target="_blank" rel="noopener">这个issue</a></p>
 <p>使用如下命令转发收到的对应地址的流量。</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ip6tables</span> <span class="at">-t</span> nat <span class="at">-A</span> POSTROUTING <span class="at">-s</span> 2001:db8:1::/64 ! <span class="at">-o</span> docker0 <span class="at">-j</span> MASQUERADE</span></code></pre></div>
-<p>但总感觉这个方案还不够完美，不过这样也暂时够用了。</p>
+<p>但总感觉这个方案还不够完美，只能说暂时够用了。</p>
 
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
             <audio id="audio" loop="1" preload="auto" controls="controls"
@@ -331,6 +331,10 @@
 <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
   
 <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/yaml/yaml.min.js"></script>
    
 <script src="/js/busuanzi.min.js"></script>
 
