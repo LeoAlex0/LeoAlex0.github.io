@@ -5,18 +5,18 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RPI3B+ OpenWrt坑点 - zLeoAlex&#39;s Blog</title>
+    <title>Raspberry PI 3B+刷OpenWRT坑点笔记 - zLeoAlex&#39;s Blog</title>
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="google" content="notranslate" />
     <meta name="keywords" content="zLeoAlex,Blog,"> 
-    <meta name="description" content="with Memos,raspberry PI 3B+刷OpenWRT坑点笔记
-刷写系统环节
+    <meta name="description" content="with Memos,刷写系统环节
 
 RPI3B和RPI3B+用的同一款固件，可以通用
 用个稍微好一点点的读卡器吧，毕竟也有几百M
 
-我Surface上的读卡器插,"> 
+我Surface上的读卡器插两次就扫不到设备了，十分蛇皮
+USB 读卡器又有点点接触不,"> 
     <meta name="author" content="zLeoAlex"> 
     <link rel="alternative" href="atom.xml" title="zLeoAlex&#39;s Blog" type="application/atom+xml"> 
     <link rel="icon" href="/img/favicon.png"> 
@@ -63,7 +63,7 @@ RPI3B和RPI3B+用的同一款固件，可以通用
     <div class="navigation animated fadeIn fast delay-1s">
         <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://leoalex0.github.io">
         <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
-        <h3 class="subtitle">RPI3B+ OpenWrt坑点</h3>
+        <h3 class="subtitle">Raspberry PI 3B+刷OpenWRT坑点笔记</h3>
         <div class="social">
             <!--        <div class="like-icon">-->
             <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
@@ -98,7 +98,7 @@ RPI3B和RPI3B+用的同一款固件，可以通用
                 
                 五月 11, 2020
             </p>
-            <h3 class="post-title animated fadeInDown"><a href="/2020/05/11/RPI3B-OpenWrt%E5%9D%91%E7%82%B9/" title="RPI3B+ OpenWrt坑点" class="">RPI3B+ OpenWrt坑点</a>
+            <h3 class="post-title animated fadeInDown"><a href="/2020/05/11/RPI3B-OpenWrt%E5%9D%91%E7%82%B9/" title="Raspberry PI 3B+刷OpenWRT坑点笔记" class="">Raspberry PI 3B+刷OpenWRT坑点笔记</a>
             </h3>
             
             <p class="post-count animated fadeInDown">
@@ -145,8 +145,7 @@ RPI3B和RPI3B+用的同一款固件，可以通用
 <div class="article">
     <div class='main'>
         <div class="content markdown animated fadeIn">
-            <h1 id="raspberry-pi-3b刷openwrt坑点笔记">raspberry PI 3B+刷OpenWRT坑点笔记</h1>
-<h2 id="刷写系统环节">刷写系统环节</h2>
+            <h2 id="刷写系统环节">刷写系统环节</h2>
 <ol type="1">
 <li><p>RPI3B和RPI3B+用的同一款固件，可以通用</p></li>
 <li><p>用个稍微好一点点的读卡器吧，毕竟也有几百M</p>
@@ -234,9 +233,9 @@ RPI3B和RPI3B+用的同一款固件，可以通用
                     </dl>
                 </div>
                 <ul>
-                    <li><a href="/">5 <p>文章</p></a></li>
-                    <li><a href="/categories">7 <p>分类</p></a></li>
-                    <li><a href="/tags">11 <p>标签</p></a></li>
+                    <li><a href="/">6 <p>文章</p></a></li>
+                    <li><a href="/categories">8 <p>分类</p></a></li>
+                    <li><a href="/tags">12 <p>标签</p></a></li>
                 </ul>
             </div>
             
@@ -245,7 +244,7 @@ RPI3B和RPI3B+用的同一款固件，可以通用
             <div class="box sticky animated fadeInRight faster">
                 <div id="toc" class="subbox">
                     <h4>目录</h4>
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#raspberry-pi-3b刷openwrt坑点笔记"><span class="toc-number">1.</span> <span class="toc-text">raspberry PI 3B+刷OpenWRT坑点笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#刷写系统环节"><span class="toc-number">1.1.</span> <span class="toc-text">刷写系统环节</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置环节"><span class="toc-number">1.2.</span> <span class="toc-text">配置环节</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#网络配置"><span class="toc-number">1.3.</span> <span class="toc-text">网络配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#多拨"><span class="toc-number">1.3.1.</span> <span class="toc-text">多拨</span></a></li></ol></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#刷写系统环节"><span class="toc-number">1.</span> <span class="toc-text">刷写系统环节</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置环节"><span class="toc-number">2.</span> <span class="toc-text">配置环节</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#网络配置"><span class="toc-number">3.</span> <span class="toc-text">网络配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#多拨"><span class="toc-number">3.1.</span> <span class="toc-text">多拨</span></a></li></ol></li></ol>
                 </div>
             </div>
             

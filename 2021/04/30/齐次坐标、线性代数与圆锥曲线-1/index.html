@@ -5,17 +5,17 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>[CW]Faberge easter eggs crush test题解(数学部分) - zLeoAlex&#39;s Blog</title>
+    <title>齐次坐标、线性代数与圆锥曲线-1 - zLeoAlex&#39;s Blog</title>
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="google" content="notranslate" />
     <meta name="keywords" content="zLeoAlex,Blog,"> 
-    <meta name="description" content="with Memos,递推式
-按照题意，若设所求函数为\(F(n,m)\)，则有： \[
-\begin{aligned}
-  F(0,m)&amp;amp;=0\\
-  F(n,0)&amp;amp;=0\\
-  F(n,m)&amp;amp;,"> 
+    <meta name="description" content="with Memos,简介
+本文与其说是一篇文章，不如说是对于这篇文章的简化与总结。
+最终目的是通过引入尽可能少的外部假定，使得我们可以从一个更高的视角看高中的圆锥曲线题。
+基础要素
+观察一个任意二次曲线 \[
+Ax^2,"> 
     <meta name="author" content="zLeoAlex"> 
     <link rel="alternative" href="atom.xml" title="zLeoAlex&#39;s Blog" type="application/atom+xml"> 
     <link rel="icon" href="/img/favicon.png"> 
@@ -62,7 +62,7 @@
     <div class="navigation animated fadeIn fast delay-1s">
         <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://leoalex0.github.io">
         <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
-        <h3 class="subtitle">[CW]Faberge easter eggs crush test题解(数学部分)</h3>
+        <h3 class="subtitle">齐次坐标、线性代数与圆锥曲线-1</h3>
         <div class="social">
             <!--        <div class="like-icon">-->
             <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
@@ -92,25 +92,25 @@
         <div class="else">
             <p class="animated fadeInDown">
                 
-                <a href="/categories/Online Judge"><b>「
-                    </b>ONLINE JUDGE<b> 」</b></a>
+                <a href="/categories/数学"><b>「
+                    </b>数学<b> 」</b></a>
                 
-                六月 27, 2020
+                四月 30, 2021
             </p>
-            <h3 class="post-title animated fadeInDown"><a href="/2020/06/27/CW-Faberge-easter-eggs-crush-test/" title="[CW]Faberge easter eggs crush test题解(数学部分)" class="">[CW]Faberge easter eggs crush test题解(数学部分)</a>
+            <h3 class="post-title animated fadeInDown"><a href="/2021/04/30/%E9%BD%90%E6%AC%A1%E5%9D%90%E6%A0%87%E3%80%81%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E4%B8%8E%E5%9C%86%E9%94%A5%E6%9B%B2%E7%BA%BF-1/" title="齐次坐标、线性代数与圆锥曲线-1" class="">齐次坐标、线性代数与圆锥曲线-1</a>
             </h3>
             
             <p class="post-count animated fadeInDown">
                 
                 <span>
                     <b class="iconfont icon-text2"></b> <i>文章字数</i>
-                    4k
+                    6.6k
                 </span>
                 
                 
                 <span>
                     <b class="iconfont icon-timer__s"></b> <i>阅读约需</i>
-                    4 mins.
+                    6 mins.
                 </span>
                 
                 
@@ -123,7 +123,7 @@
             </p>
             
             
-            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E7%94%9F%E6%88%90%E5%87%BD%E6%95%B0/" rel="tag">生成函数</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E7%BB%84%E5%90%88%E6%95%B0%E5%AD%A6/" rel="tag">组合数学</a></li></ul>
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E9%BD%90%E6%AC%A1%E5%9D%90%E6%A0%87/" rel="tag">齐次坐标</a></li></ul>
             
         </div>
     </div>
@@ -144,98 +144,177 @@
 <div class="article">
     <div class='main'>
         <div class="content markdown animated fadeIn">
-            <h2 id="递推式">递推式</h2>
-<p>按照题意，若设所求函数为<span class="math inline">\(F(n,m)\)</span>，则有： <span class="math display">\[
+            <h2 id="简介">简介</h2>
+<p>本文与其说是一篇文章，不如说是对于<a href="https://zhuanlan.zhihu.com/p/103884912" target="_blank" rel="noopener">这篇文章</a>的简化与总结。</p>
+<p>最终目的是通过引入尽可能少的外部假定，使得我们可以从一个更高的视角看高中的圆锥曲线题。</p>
+<h2 id="基础要素">基础要素</h2>
+<p>观察一个任意二次曲线 <span class="math display">\[
+Ax^2+Bxy+Cy^2+Dx+Ey+F=0
+\]</span> 首先，我们可以做如下换元： <span class="math display">\[
+\begin{cases}
+  x&#39;=\frac x z\\
+  y&#39;=\frac y z\\
+\end{cases}
+\]</span> 其中<span class="math inline">\(z\)</span>为任意实数，则我们可以有： <span class="math display">\[
+Ax^2+Bxy+Cy^2+Fz^2+Dxz+Eyz=0
+\]</span> 我们均可以将其写成矩阵相乘的形式: <span class="math display">\[
+\begin{bmatrix}
+  x \\ y \\ z
+\end{bmatrix}^T
+\begin{bmatrix}
+  A   &amp; B/2 &amp; D/2 \\
+  B/2 &amp; C   &amp; E/2 \\
+  D/2 &amp; E/2 &amp; F   \\
+\end{bmatrix}
+\begin{bmatrix}
+ x \\ y \\  z
+\end{bmatrix}
+= 0
+\]</span> 故我们可以用一个实对称矩阵来表示一个二次曲线。</p>
+<p>另外对于一条直线，如果我们做同样的换元，我们也可以以一个向量来表述它。 但为了不与点/坐标产生歧义，我们约定后文以行向量表示直线，列向量表示点/坐标。 <span class="math display">\[
+Ax+By+C=0 \Longleftrightarrow
+\begin{bmatrix}
+  A &amp; B &amp; C
+\end{bmatrix}
+\begin{bmatrix}
+  x \\ y \\ z
+\end{bmatrix}
+= 0
+\]</span></p>
+<h3 id="小结">小结</h3>
+<table>
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 23%" />
+<col style="width: 58%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>概念</th>
+<th>直角坐标系中</th>
+<th>矩阵表示的齐次坐标中</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>点</td>
+<td><span class="math inline">\((x_p,y_p)\)</span></td>
+<td><span class="math inline">\(\forall z:\begin{bmatrix} x_p/z\\y_p/z\\z \end{bmatrix}\)</span></td>
+</tr>
+<tr class="even">
+<td>直线</td>
+<td><span class="math inline">\(Ax+By+C=0\)</span></td>
+<td><span class="math inline">\(\begin{bmatrix}A&amp;B&amp;C\end{bmatrix}\)</span></td>
+</tr>
+<tr class="odd">
+<td>二次曲线</td>
+<td><span class="math inline">\(Ax^2+Bxy+Cy^2+Dx+Ey+F=0\)</span></td>
+<td><span class="math inline">\(\begin{bmatrix}A&amp;B/2&amp;D/2\\B/2&amp;C&amp;E/2\\D/2&amp;E/2&amp;F\\\end{bmatrix}\)</span></td>
+</tr>
+<tr class="even">
+<td>点<span class="math inline">\(p\)</span>在直线<span class="math inline">\(l\)</span>上</td>
+<td><span class="math inline">\(l(p)=0\)</span></td>
+<td><span class="math inline">\(lp=0\)</span></td>
+</tr>
+<tr class="odd">
+<td>点<span class="math inline">\(p\)</span>在二次曲线<span class="math inline">\(c\)</span>上</td>
+<td><span class="math inline">\(c(p)=0\)</span></td>
+<td><span class="math inline">\(p^Tcp=0\)</span></td>
+</tr>
+</tbody>
+</table>
+<h2 id="基础原语">基础原语</h2>
+<h3 id="点线关系">点线关系</h3>
+<p>我们都知道两相异的点可以定义出一条直线，两非平行直线也相交于一点。那么在其次坐标中会如何呢？</p>
+<blockquote>
+<p>也可以选择把无穷远点看作两平行线交点，无穷远线看作相同两点连成的直线。 这样一样对偶。</p>
+</blockquote>
+<p>首先看两直线的交点，若存在两直线<span class="math inline">\(l_1,l_2\)</span>，则其交点<span class="math inline">\(p\)</span>需要同时满足： <span class="math display">\[
+\begin{cases}
+  l_1p=0\\
+  l_2p=0\\
+\end{cases}
+\]</span></p>
+<p>可以看到这与立体几何中“求与两向量同时垂直的第三个向量”这一类问题拥有完全相同的形式。</p>
+<p>而这一问题最简单直接的解法就是作两向量的叉乘。但出于对偶性的要求，此处定义两行矩阵叉乘得到列矩阵，列矩阵叉乘得到行矩阵。</p>
+<blockquote>
+<p>在向量意义上，简单地，叉乘可以定义为： <span class="math display">\[
+a\times b = \det\left(\begin{matrix}
+\vec i &amp; \vec j &amp; \vec k \\
+a_1 &amp; a_2 &amp; a_3 \\
+b_1 &amp; b_2 &amp; b_3 \\
+\end{matrix}\right)
+\]</span> 其中,<span class="math inline">\(\vec i,\vec j,\vec k\)</span>为各方向上的单位向量。 注意到： <span class="math display">\[
 \begin{aligned}
-  F(0,m)&amp;=0\\
-  F(n,0)&amp;=0\\
-  F(n,m)&amp;=F(n,m-1)+F(n-1,m-1)+1
+(a\times b)\cdot a &amp;= \det\left(\begin{matrix}
+\vec i &amp; \vec j &amp; \vec k \\
+a_1 &amp; a_2 &amp; a_3 \\
+b_1 &amp; b_2 &amp; b_3 \\
+\end{matrix}\right) \cdot a\\
+&amp;= \det\left(\begin{matrix}
+a_1 &amp; a_2 &amp; a_3 \\
+a_1 &amp; a_2 &amp; a_3 \\
+b_1 &amp; b_2 &amp; b_3 \\
+\end{matrix}\right) \\
+&amp;= 0
+\end{aligned}
+\]</span> 对于<span class="math inline">\(b\)</span>同理，所以对于<span class="math inline">\(c=a\times b\)</span>，任取<span class="math inline">\(\lambda_1,\lambda_2\)</span>， 我们有：<span class="math inline">\(c\cdot (\lambda_1 a+\lambda_2 b) = 0\)</span></p>
+</blockquote>
+<p>那么我们可以直接写出上述方程组的解：<span class="math inline">\(p=l_1\times l_2\)</span>。 &gt; 严格意义上是解系<span class="math inline">\(cl_1\times l_2\)</span>，其中<span class="math inline">\(c\)</span>是常数。 &gt; &gt; 但常数<span class="math inline">\(c\)</span>大小与解在平面直角坐标系上的对应位置无关，故此处取<span class="math inline">\(c=1\)</span></p>
+<p>接下来看过两点的直线，若存在点<span class="math inline">\(p_1,p_2\)</span>，则其连成的直线<span class="math inline">\(l\)</span>满足： <span class="math display">\[
+\begin{cases}
+  lp_1 = 0 \\
+  lp_2 = 0 \\
+\end{cases}
+\]</span> 对等式两边翻转可以得到和上面一样的形式，故其解为：<span class="math inline">\(l=p_1 \times p_2\)</span></p>
+<table>
+<thead>
+<tr class="header">
+<th>概念</th>
+<th>直角坐标中</th>
+<th>矩阵表示的齐次坐标中</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>直线<span class="math inline">\(l_1,l_2\)</span>的交点</td>
+<td><span class="math inline">\(l_1(p)=l_2(p)=0\)</span> 的解</td>
+<td><span class="math inline">\(p=l_1\times l_2\)</span></td>
+</tr>
+<tr class="even">
+<td>过<span class="math inline">\(p_1,p_2\)</span>的直线</td>
+<td><span class="math inline">\((x-x_1)(y_1-y_2)=(y-y_1)(x_1-x_2)\)</span></td>
+<td><span class="math inline">\(l=p_1\times p_2\)</span></td>
+</tr>
+</tbody>
+</table>
+<h3 id="直线与点的线性组合">直线与点的线性组合</h3>
+<p>注意到，对于两直线的交点<span class="math inline">\(p=l_1\times l_2\)</span>，对于任意<span class="math inline">\(\lambda_1,\lambda_2\)</span>， 对两直线的线性组合<span class="math inline">\(l=\lambda_1 l_1 + \lambda_2 l_2\)</span>有： <span class="math display">\[
+\begin{aligned}
+l p &amp;= \lambda_1 l_1 p + \lambda_2 l_2 p \\
+    &amp;= 0 + 0 = 0
 \end{aligned}
 \]</span></p>
-<h2 id="生成函数">生成函数</h2>
-<p>注意到其生成函数满足 <span class="math display">\[
-  G(x,y)=yG(x,y)+xyG(x,y)+\frac{xy}{(1-x)(1-y)}
-\]</span></p>
-<p>移项可得： <span class="math display">\[
+<p>故可知其线性组合亦通过两直线的交点。这对应直角坐标系的一个直线系。</p>
+<p>对偶地，对于两点联结的直线:<span class="math inline">\(l=p_1 \times p_2\)</span>。对<span class="math inline">\(p_1,p_2\)</span>的任意一个线性组合： <span class="math inline">\(p=\lambda_1 p_1 + \lambda_2 p_2\)</span>。我们有： <span class="math display">\[
 \begin{aligned}
-  (1-y-xy)G(x,y)&amp;=\frac{xy}{(1-x)(1-y)} \\
-  G(x,y)&amp;=y(1-y)^{-1}x(1-x)^{-1}(1-y-xy)^{-1}\\
+  lp &amp;= \lambda_1 lp_1 + \lambda_2 lp_2 \\
+     &amp;= 0 + 0 = 0
 \end{aligned}
 \]</span></p>
-<h2 id="解生成函数">解生成函数</h2>
-<p>令: <span class="math inline">\(p_1=(1-x)^{-1},p_2=(1-y-xy)^{-1}\)</span></p>
-<p>则: <span class="math inline">\(G(x,y)=y(1-y)^{-1}xp_1p_2\)</span></p>
+<p>其也在二者构成的直线上。</p>
+<p>这与直角坐标系上类似。</p>
+<h3 id="平行">平行</h3>
+<p>注意一条特殊的“直线”<span class="math inline">\(l_\infty = \begin{bmatrix} 0&amp;0&amp;1 \end{bmatrix}\)</span>。</p>
+<p>其与任意直线<span class="math inline">\(l\)</span>的线性组合<span class="math inline">\(l&#39; = \lambda_1 l_\infty + \lambda_2 l\)</span>与<span class="math inline">\(l\)</span>的交点均无法在直角坐标系内表示。</p>
 <p><span class="math display">\[
-\frac {\partial^n G(x,y)} {\partial x^n}
-= y(1-y)^{-1}\frac { \partial^nxp_1p_2 } {\partial x^n}\\
-\left. \frac{\partial^n G(x,y)}{\partial x^n} \right| _{x=0}
-= y(1-y)^{-1}\left.\frac{ \partial^nxp_1p_2 }{\partial x^n}\right| _{x=0}
-\]</span></p>
-<h3 id="莱布尼兹法则">莱布尼兹法则</h3>
-<p>注意如下同构 <span class="math display">\[
 \begin{aligned}
-令a^nb^m &amp;\sim u^{(n)}v^{(m)} \\
-a^nb^m(a+b)=a^{n+1}b^m+a^nb^{m+1} &amp;
-\sim u^{(n+1)}v^{(m)}+u^{(n)}v^{(m+1)}=(u^{(n)}v^{(m)})&#39; \\
-a^0b^0(a+b)^n=\sum_{i=0}^n \frac {n!} {i!(n-i)!} a^ib^{n-i}&amp;
-\sim (uv)^{(n)}=\sum_{i=0}^n \frac {n!} {i!(n-i)!} u^{(i)}v^{(n-i)} \\
+l&#39; \times l &amp;= \lambda_1 l_\infty \times l \\
+ &amp;= \lambda_1 \begin{bmatrix}-l_y &amp; l_x &amp; 0\end{bmatrix}
 \end{aligned}
 \]</span></p>
-<h3 id="处理p_1p_2">处理<span class="math inline">\(p_1p_2\)</span></h3>
-<p>解出 <span class="math display">\[
-\begin {aligned}
-\frac {\partial^np_1} {\partial x^n} &amp;=n!(1-x)^{-n-1} \\
-\frac {\partial^np_2} {\partial x^n}&amp; =n!y^n(1-y-xy)^{-n-1}\\
-\left. \frac {\partial^np_1}{\partial x^n} \right|_{x=0} &amp;=  n! \\
-\left. \frac {\partial^np_2}{\partial x^n} \right|_{x=0} &amp;= n!y^n(1-y)^{-n-1}\\
-\left .\frac {\partial^n p_1p_2} {\partial x^n} \right|_{x=0}&amp;
-=\sum_{i=0}^n \frac {n!}{i!(n-i)!}
-\left.\frac{\partial^{n-i}p_1}{\partial x^{n-i}}
-\frac {\partial^i p_2} {\partial x^i} \right|_{x=0}  \\
-&amp;= \sum_{i=0}^n \frac {n!} {i!(n-i)!} i!y^i(1-y)^{-i-1}  (n-i)! \\
-&amp;=n! \sum_{i=0}^{n} y^i(1-y)^{-i-1} \\
-\end {aligned}
-\]</span></p>
-<h3 id="处理xp_1p_2">处理<span class="math inline">\(xp_1p_2\)</span></h3>
-<p><span class="math display">\[
-\begin{aligned}
-\frac {\partial^n xp_1p_2} {\partial x^{n}}&amp;
-= \sum _{i=0}^n \frac {n!} {i!(n-i)!}\frac {d^ix}{\partial x^i}
-\frac {d^{n-i}p_1p_2} {\partial x^{n-i}} \\
-&amp;=x \frac {\partial^n p_1p_2} {\partial x^{n}}
-+n\frac {d^{n-1}p_1p_2} {\partial x^{n-1}} \\
-\left. \frac {\partial^n xp_1p_2} {\partial x^{n}} \right| _{x=0}&amp;
-= n\left .\frac {d^{n-1}p_1p_2} {\partial x^{n-1}} \right| _{x=0}\\
-&amp;=n(n-1)! \sum _{i=0}^{n-1} y^i(1-y)^{-i-1} \\
-&amp;=n!\sum _{i=0}^{n-1} y^i(1-y)^{-i-1}
-\end{aligned}
-\]</span></p>
-<h3 id="解出gxy">解出<span class="math inline">\(G(x,y)\)</span></h3>
-<p><span class="math display">\[
-\begin{aligned}
-G(x,y)&amp;=\sum_{n=0}^\infty
-\frac{\left. \frac {\partial^n G(x,y)} {\partial x^n} \right|_{x=0}}
-{n!}x^n &amp; 麦克劳林展开 \\
-&amp;=\sum _{n=0}^\infty \frac {n!\sum _{j=0}^{n-1}y^{j+1}(1-y)^{-j-2}} {n!} x^n &amp; 代入\\
-&amp;=\sum_{n=0}^\infty x^n\sum _{j=0}^{n-1}  y^{j+1}(1-y)^{-j-2} &amp; 前置x^n\\
-&amp;=\sum_{n=0}^\infty x^n\sum _{j=0}^{n-1}  y^{j+1}
-\sum_{i=0}^\infty \frac {(i+j+1)!}{i!(j+1)!} y^i &amp; 展开(1-y)^{-j-2}\\
-&amp;=\sum_{n=0}^\infty x^n\sum _{j=0}^{n-1}
-\sum _{i=0}^\infty \frac {(i+j+1)!}{i!(j+1)!} y^{i+j+1} &amp; 乘进y^{j+1}\\
-&amp;=\sum_{n=0}^\infty x^n\sum _{j=0}^{n-1}
-\sum _{m=j+1}^\infty \frac {m!}{(j+1)!(m-j-1)!} y^m &amp; 换元:m=i+j+1\\
-&amp;=\sum_{n=0}^\infty x^n\sum _{j=0}^{n-1}
-\sum _{m=j+1}^\infty \frac {m!}{(j+1)!(m-j-1)!} y^m &amp; 乘进来\\
-&amp;= \sum_{n=0}^\infty x^n \sum _{m=1}^\infty
-\sum _{j=0}^{\min(m,n)-1}\frac {m!}{(j+1)!(m-j-1)!} y^m&amp; 交换求和顺序 \\
-&amp;= \sum_{n=0}^\infty x^n \sum _{m=1}^\infty y^m
-\sum _{j=1}^{\min(n,m)}\frac {m!}{j!(m-j)!}  &amp; 换元：j=j+1
-\end{aligned} \\
-\]</span></p>
-<h2 id="解">解</h2>
-<p><span class="math display">\[
-F(n,m)=\sum _{j=1}^{\min(n,m)} \frac {m!} {j!(m-j)!}
-\]</span></p>
+<p>且其在平面直角坐标系上的表示正好与<span class="math inline">\(l\)</span>平行。故我们可以将所有与<span class="math inline">\(l\)</span>相差任意倍<span class="math inline">\(l_\infty\)</span>的直线认为其与<span class="math inline">\(l\)</span>平行。</p>
+<p>但对偶地，<span class="math inline">\(\begin{bmatrix} 0\\0\\1 \end{bmatrix}\)</span>却代表原点。</p>
 
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
             <audio id="audio" loop="1" preload="auto" controls="controls"
@@ -255,13 +334,9 @@ F(n,m)=\sum _{j=1}^{\min(n,m)} \frac {m!} {j!(m-j)!}
             <div class="post-nav">
                 <hr>
                 
-                    <div class="post-nav-item">上一篇:<a href="/2021/03/19/Docker%E5%AE%B9%E5%99%A8%E8%AE%BF%E9%97%AEIPv6%E9%97%AE%E9%A2%98/" rel="prev" 
-                        title="Debian10配置Docker容器访问IPv6问题">Debian10配置Docker容器访问IPv6问题
-                      </a></div>
                 
-                
-                    <div class="post-nav-item">下一篇:<a href="/2020/06/11/%E5%8F%8D%E6%BC%94/" rel="next" 
-                        title="Incident Algebra与反演">Incident Algebra与反演</a></div>
+                    <div class="post-nav-item">下一篇:<a href="/2021/03/19/Docker%E5%AE%B9%E5%99%A8%E8%AE%BF%E9%97%AEIPv6%E9%97%AE%E9%A2%98/" rel="next" 
+                        title="Debian10配置Docker容器访问IPv6问题">Debian10配置Docker容器访问IPv6问题</a></div>
                                 
             </div>   
                         
@@ -308,7 +383,7 @@ F(n,m)=\sum _{j=1}^{\min(n,m)} \frac {m!} {j!(m-j)!}
             <div class="box sticky animated fadeInRight faster">
                 <div id="toc" class="subbox">
                     <h4>目录</h4>
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#递推式"><span class="toc-number">1.</span> <span class="toc-text">递推式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#生成函数"><span class="toc-number">2.</span> <span class="toc-text">生成函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解生成函数"><span class="toc-number">3.</span> <span class="toc-text">解生成函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#莱布尼兹法则"><span class="toc-number">3.1.</span> <span class="toc-text">莱布尼兹法则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#处理p_1p_2"><span class="toc-number">3.2.</span> <span class="toc-text">处理\(p_1p_2\)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#处理xp_1p_2"><span class="toc-number">3.3.</span> <span class="toc-text">处理\(xp_1p_2\)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解出gxy"><span class="toc-number">3.4.</span> <span class="toc-text">解出\(G(x,y)\)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解"><span class="toc-number">4.</span> <span class="toc-text">解</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基础要素"><span class="toc-number">2.</span> <span class="toc-text">基础要素</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#小结"><span class="toc-number">2.1.</span> <span class="toc-text">小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基础原语"><span class="toc-number">3.</span> <span class="toc-text">基础原语</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#点线关系"><span class="toc-number">3.1.</span> <span class="toc-text">点线关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#直线与点的线性组合"><span class="toc-number">3.2.</span> <span class="toc-text">直线与点的线性组合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#平行"><span class="toc-number">3.3.</span> <span class="toc-text">平行</span></a></li></ol></li></ol>
                 </div>
             </div>
             

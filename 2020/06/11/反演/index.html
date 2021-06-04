@@ -5,15 +5,18 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>反演 - zLeoAlex&#39;s Blog</title>
+    <title>Incident Algebra与反演 - zLeoAlex&#39;s Blog</title>
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="google" content="notranslate" />
     <meta name="keywords" content="zLeoAlex,Blog,"> 
-    <meta name="description" content="with Memos,Incidence algebra与反演
-Incidence algebra
+    <meta name="description" content="with Memos,Incidence algebra
 定义
-局部有限偏序集(locally finite poset)是一种特殊的偏序集，其满足对于所有的闭区间\([a,b],"> 
+局部有限偏序集(locally finite poset)是一种特殊的偏序集，其满足对于所有的闭区间\([a,b]\)是有限的。
+
+偏序关系的性质:
+
+自反,"> 
     <meta name="author" content="zLeoAlex"> 
     <link rel="alternative" href="atom.xml" title="zLeoAlex&#39;s Blog" type="application/atom+xml"> 
     <link rel="icon" href="/img/favicon.png"> 
@@ -60,7 +63,7 @@ Incidence algebra
     <div class="navigation animated fadeIn fast delay-1s">
         <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://leoalex0.github.io">
         <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
-        <h3 class="subtitle">反演</h3>
+        <h3 class="subtitle">Incident Algebra与反演</h3>
         <div class="social">
             <!--        <div class="like-icon">-->
             <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
@@ -95,7 +98,7 @@ Incidence algebra
                 
                 六月 11, 2020
             </p>
-            <h3 class="post-title animated fadeInDown"><a href="/2020/06/11/%E5%8F%8D%E6%BC%94/" title="反演" class="">反演</a>
+            <h3 class="post-title animated fadeInDown"><a href="/2020/06/11/%E5%8F%8D%E6%BC%94/" title="Incident Algebra与反演" class="">Incident Algebra与反演</a>
             </h3>
             
             <p class="post-count animated fadeInDown">
@@ -142,8 +145,7 @@ Incidence algebra
 <div class="article">
     <div class='main'>
         <div class="content markdown animated fadeIn">
-            <h1 id="incidence-algebra与反演">Incidence algebra与反演</h1>
-<h2 id="incidence-algebra">Incidence algebra</h2>
+            <h2 id="incidence-algebra">Incidence algebra</h2>
 <h3 id="定义">定义</h3>
 <p>局部有限偏序集(locally finite poset)是一种特殊的偏序集，其满足对于所有的闭区间<span class="math inline">\([a,b]\)</span>是有限的。</p>
 <blockquote>
@@ -169,7 +171,7 @@ Incidence algebra
 <h3 id="性质">性质</h3>
 <h4 id="结合率">结合率</h4>
 <p><span class="math display">\[
-\begin{align}
+\begin{aligned}
 ((f*g)*h)(a,b)&amp;=\sum_{x\in[a,b]} (f*g)(a,x)h(x,b) &amp; 定义\\
 &amp;=\sum_{x\in [a,b]}\left(\sum_{y\in [a,x]} f(a,y)g(y,x)\right)h(x,b) &amp; 定义 \\
 &amp;=\sum_{x\in [a,b]}\sum_{y\in[a,x]} f(a,y)g(y,x)h(x,b) &amp; 分配率\\
@@ -177,38 +179,38 @@ Incidence algebra
 &amp;=\sum_{y\in[a,b]}f(a,y)\sum_{x\in[y,b]}g(y,x)h(x,b) &amp; 分配率\\
 &amp;=\sum_{y\in[a,b]}f(a,y)(g*h)(y,b) &amp; 定义\\
 &amp;=(f*(g*h))(a,b) &amp; 定义
-\end{align}
+\end{aligned}
 \]</span></p>
 <h4 id="单位元">单位元</h4>
 <p>定义函数<span class="math inline">\(\delta\)</span></p>
 <p><span class="math display">\[
-\delta (a,b) =[a=b]= \begin{cases} 
+\delta (a,b) =[a=b]= \begin{cases}
 1 &amp; a=b\\
 0 &amp; otherwise
 \end{cases}
 \]</span></p>
 <p>任意<span class="math inline">\(f\in X\)</span>，有：</p>
 <p><span class="math display">\[
-\begin{align}
+\begin{aligned}
 (f*\delta)(a,b)&amp;=\sum_{x\in [a,b]} f(a,x)\delta(x,b)\\
 &amp;=\sum_{x\in [a,b]} f(a,x)[x=b]\\
 &amp;=f(a,b) \\
 (\delta*f)(a,b)&amp;=\sum_{x\in[a,b]}\delta(a,x)f(x,b)\\
 &amp;=\sum_{x\in[a,b]}[a=x]f(x,b) \\
 &amp;=f(a,b)
-\end{align}
+\end{aligned}
 \]</span></p>
-<p>故$ &lt;X,*&gt; $构成幺半群(Monoid)， $ $是其单位元，根据幺半群的性质可知它是唯一的单位元。</p>
+<p>故<span class="math inline">\(&lt;X,*&gt;\)</span>构成幺半群(Monoid)， <span class="math inline">\(\delta\)</span> 是其单位元，根据幺半群的性质可知它是唯一的单位元。</p>
 <h4 id="分配率">分配率</h4>
 <p><span class="math display">\[
-\begin{align}
+\begin{aligned}
 (f*(g+h))(a,b)&amp;=\sum_{x\in [a,b]} f(a,x)(g+h)(x,b) &amp; 定义\\
 &amp;=\sum_{x\in[a,b]}f(a,x)[g(x,b)+h(x,b)]\\
 &amp;=\sum_{x\in[a,b]}f(a,x)g(x,b)+f(a,x)h(x,b) \\
 &amp;=\sum_{x\in[a,b]}f(a,x)g(x,b)+\sum_{x\in [a,b]}f(a,x)h(x,b) \\
 &amp;=(f*g)(a,b)+(f*h)(a,b)\\
 &amp;=(f*g+f*h)(a,b)
-\end{align}
+\end{aligned}
 \]</span></p>
 <p><span class="math inline">\((f+g)*h=f*h+g*h\)</span>类似</p>
 <h4 id="逆">逆</h4>
@@ -222,13 +224,13 @@ g(a,b)= \begin{cases}
 <p>因为<span class="math inline">\((a,b]=[a,b]-\{a\}\)</span>，且<span class="math inline">\([a,b]\)</span>是有限的，故上述定义是良构的。</p>
 <p>那么我们有：</p>
 <p><span class="math display">\[
-\begin{align}
+\begin{aligned}
 (f*g)(a,b)=\sum_{x\in[a,b]}f(a,x)g(x,b)&amp;=\begin{cases}
 f(a,b)g(a,b)=f(a,b)\frac 1 {f(a,b)}=1 &amp; a=b\\
 f(a,a)g(a,b)+\sum_{x\in(a,b]} f(a,x)g(x,b)=0 &amp; a\neq b
 \end{cases} \\
 &amp;=\delta(a,b)
-\end{align}
+\end{aligned}
 \]</span></p>
 <p>另外，<span class="math inline">\(g(a,a)=\frac 1 {f(a,a)}\neq 0\)</span>，也满足上述条件</p>
 <p>对称地，我们可以构造其另一个方向的逆：</p>
@@ -243,7 +245,7 @@ g&#39;(a,b)= \begin{cases}
 <p>因为<span class="math inline">\(1=\delta(a,a)=f(a,a)f^{-1}(a,a)\)</span>，故其亦是可逆的必要条件（<span class="math inline">\(\forall x\in\mathbb R:0\times x=0\)</span>，以此反证)</p>
 <p>因此，<span class="math inline">\(f\)</span>可逆的充要条件是<span class="math inline">\(\forall a\in S:f(a,a)\neq 0\)</span></p>
 <blockquote>
-<p>我们可以构造Incident algebra元素的一个子集<span class="math inline">\(\hat X=\left\{f|f\in X\wedge \forall a\in S:f(a,a)\neq 0\right\}\)</span>，那么对于代数结构<span class="math inline">\(&lt;\hat X,*&gt;\)</span>，有：</p>
+<p>我们可以构造Incident algebra元素的一个子集 <span class="math inline">\(\hat X=\left\{f|f\in X\wedge \forall a\in S:f(a,a)\neq 0\right\}\)</span>， 那么对于代数结构<span class="math inline">\(&lt;\hat X,*&gt;\)</span>，有：</p>
 <ul>
 <li>封闭性(两非<span class="math inline">\(0\)</span>数积非<span class="math inline">\(0\)</span>)</li>
 </ul>
@@ -264,14 +266,15 @@ g=\delta*g=(g&#39;*f)*g=g&#39;*f*g=g&#39;*(f*g)=g&#39;*\delta=g&#39;
 <p>若定义<span class="math inline">\(F,G:S\to \mathbb R,f\in \hat X,a,b\in S\)</span>，且二者满足下列关系: <span class="math display">\[
 F(x)=\sum_{k\in [a,x]} G(k)f(k,x)
 \]</span> 则有： <span class="math display">\[
-\begin{align}
-\sum_{k\in [a,x]} F(k)f^{-1}(k,x) &amp;= \sum_{k\in[a,x]} \left[\sum_{t\in [a,k]} G(t)f(t,k)\right] f^{-1}(k,x) &amp; 定义\\
+\begin{aligned}
+\sum_{k\in [a,x]} F(k)f^{-1}(k,x) &amp;=
+\sum_{k\in[a,x]} \left[\sum_{t\in [a,k]} G(t)f(t,k)\right] f^{-1}(k,x) &amp; 定义\\
 &amp;=\sum_{k\in [a,x]}\sum_{t\in [a,k]} G(t)f(t,k)f^{-1}(k,x) &amp; 分配率\\
 &amp;=\sum_{t\in [a,x]} \sum_{k\in [t,x]} G(t)f(t,k)f^{-1}(k,x) &amp; 交换求和序\\
 &amp;=\sum_{t\in [a,x]} G(t) \sum_{k\in [t,x]} f(t,k)f^{-1}(k,x) &amp; 分配率\\
 &amp;=\sum_{t\in [a,x]} G(t) \delta(t,x) &amp; 定义\\
-&amp;=\sum_{t\in [a,x]} G(t)[t=x] = G(x)
-\end{align}
+&amp;=\sum_{t\in [a,x]} G(t) [t=x] = G(x)
+\end{aligned}
 \]</span></p>
 <blockquote>
 <p>本质上，它是<span class="math inline">\(F(x)=F&#39;(a,x)\)</span>的一种等价。</p>
@@ -289,7 +292,7 @@ G(x)=\sum_{k\in[x,b]}f^{-1}(x,k)F(k)
 0 &amp; otherwise
 \end{cases}
 \]</span></p>
-<p>因为在<span class="math inline">\(X\)</span>定义时便要求<span class="math inline">\([a,b]\)</span>构成非空区间，而<span class="math inline">\(\exists x\in S:a\le x \wedge x\le b \Leftrightarrow a\le b\)</span>。因此其也可以看作<span class="math inline">\(\zeta(a,b)=1\)</span></p>
+<p>因为在<span class="math inline">\(X\)</span>定义时便要求<span class="math inline">\([a,b]\)</span>构成非空区间， 而<span class="math inline">\(\exists x\in S:a\le x \wedge x\le b \Leftrightarrow a\le b\)</span>。 因此其也可以看作<span class="math inline">\(\zeta(a,b)=1\)</span></p>
 <p>因为<span class="math inline">\(\forall a\in S:\zeta(a,a)=1\)</span>，所以<span class="math inline">\(\zeta\in \hat X\)</span></p>
 <p>故可令<span class="math inline">\(\mu=\zeta^{-1}\)</span>，则有：</p>
 <p><span class="math display">\[
@@ -312,7 +315,7 @@ G(x)=\sum_{k\in[x,b]}f^{-1}(x,k)F(k)
 <p>设局部有限偏序集<span class="math inline">\(S_1,S_2\)</span>，有<span class="math inline">\(S=S_1\times S_2\)</span>。若<span class="math inline">\(\zeta_1,\zeta_2,\zeta\)</span>分别为<span class="math inline">\(S_1,S_2,S\)</span>上的<span class="math inline">\(\zeta\)</span>函数，<span class="math inline">\(\mu_1,\mu_2,\mu\)</span>分别为<span class="math inline">\(S_1,S_2,S\)</span>上的<span class="math inline">\(\mu\)</span>函数，<span class="math inline">\(\delta_1,\delta_2,\delta\)</span>分别为<span class="math inline">\(S_1,S_2,S\)</span>上的<span class="math inline">\(\delta\)</span>函数。</p>
 <p><span class="math inline">\(\forall a,b\in S\wedge a\le b\)</span>，令<span class="math inline">\(a=&lt;a_1,a_2&gt;,b=&lt;b_1,b_2&gt;\)</span>，易得：</p>
 <p><span class="math display">\[
-\begin{align}
+\begin{aligned}
 \delta(a,b)&amp;=[a=b] \\
 &amp;=[a_1=b_1\wedge a_2=b_2]\\
 &amp;=[a_1=b_1][a_2=b_2]\\
@@ -322,63 +325,68 @@ G(x)=\sum_{k\in[x,b]}f^{-1}(x,k)F(k)
 &amp;=[a_1\le b_1 \wedge a_2\le b_2] \\
 &amp;=[a_1\le b_1][a_2\le b_2]\\
 &amp;=\zeta_1(a_1,b_1)\zeta_2(a_2,b_2)\\
-\end{align}
+\end{aligned}
 \]</span> 进一步地，构造<span class="math inline">\(\mu&#39;(a,b)=\mu_1(a_1,b_1)\mu_2(a_2,b_2)\)</span>，则有: <span class="math display">\[
-\begin{align}
+\begin{aligned}
 (\mu&#39;*\zeta)(a,b) &amp;= \sum_{x\in [a,b]} \mu&#39;(a,x)\zeta(x,b) &amp; 定义\\
-&amp;=\sum_{x_1\in [a_1,b_1] \wedge x_2\in [a_2,b_2]} \mu_1(a_1,x_1)\mu_2(a_2,x_2)\zeta_1(x_1,b_1)\zeta_2(x_2,b_2)&amp; 展开 \\
-&amp;=\sum_{x_1\in [a_1,b_1]}\sum_{x_2\in [a_2,b_2]} \mu_1(a_1,x_1)\zeta_1(x_1,b_1) \mu_2(a_2,x_2)\zeta_2(x_2,b_2) &amp; 拆开x_1,x_2的求和\\
-&amp;=\sum_{x_1\in [a_1,b_1]}\mu_1(a_1,x_1)\zeta_1(x_1,b_1)  \sum_{x_2\in [a_2,b_2]} \mu_2(a_2,x_2)\zeta_2(x_2,b_2) &amp; 分配率\\
+&amp;=\sum_{x_1\in [a_1,b_1] \wedge x_2\in [a_2,b_2]}
+\mu_1(a_1,x_1)\mu_2(a_2,x_2)\zeta_1(x_1,b_1)\zeta_2(x_2,b_2)&amp; 展开 \\
+&amp;=\sum_{x_1\in [a_1,b_1]}\sum_{x_2\in [a_2,b_2]}
+\mu_1(a_1,x_1)\zeta_1(x_1,b_1) \mu_2(a_2,x_2)\zeta_2(x_2,b_2) &amp; 拆开x_1,x_2的求和\\
+&amp;=\sum_{x_1\in [a_1,b_1]}\mu_1(a_1,x_1)\zeta_1(x_1,b_1)
+\sum_{x_2\in [a_2,b_2]} \mu_2(a_2,x_2)\zeta_2(x_2,b_2) &amp; 分配率\\
 &amp;= (u_1*\zeta_1)(a_1,b_1) (u_1*\zeta_2)(a_2,b_2) \\
 &amp;= \delta_1(a_1,b_1)\delta_2(a_2,b_2)\\
 &amp;=\delta(a,b)
-\end{align}
+\end{aligned}
 \]</span> 故<span class="math inline">\(\mu&#39;=\zeta^{-1}=\mu\)</span>，即:<span class="math inline">\(\mu(a,b)=\mu_1(a_1,b_1)\mu_2(a_2,b_2)\)</span></p>
 <h2 id="反演">反演</h2>
 <h3 id="二项式反演">二项式反演</h3>
 <p>设<span class="math inline">\(n\)</span>次多项式<span class="math inline">\(p_n(x)=x^n,q_n(x)=(x-1)^n\)</span>，则有： <span class="math display">\[
-\begin{align}
+\begin{aligned}
 q_n(x)&amp;=\sum_{k=0}^n \binom n k (-1)^{n-k} x^k \\
 &amp;= \sum_{k=0}^n \binom n k (-1)^{n-k} q_k(x) \\
 \\
 p_n(x) &amp;= ((x-1)+1)^n\\
 &amp;= \sum_{k=0}^n \binom n k (x-1)^k \\
 &amp;= \sum_{k=0}^n \binom n k q_k(x)
-\end{align}
+\end{aligned}
 \]</span> 可以定义<span class="math inline">\((n+1)\times (n+1)\)</span>方阵<span class="math inline">\(A,B\)</span>（下标从0开始）： <span class="math display">\[
-\begin{align}
+\begin{aligned}
 A_{i,j}&amp;= \binom j i (-1)^{b-a} \\
 B_{i,j}&amp;= \binom j i \\
-\end{align}
+\end{aligned}
 \]</span> 可知：</p>
 <ul>
 <li><span class="math inline">\(A,B\)</span>均为单位上三角矩阵</li>
 <li>构造<span class="math inline">\(p,q\)</span>的系数向量可知：<span class="math inline">\(AB=BA=I\)</span>，即<span class="math inline">\(A,B\)</span>互为逆矩阵。</li>
 </ul>
-<p>令<span class="math inline">\(f(a,b)=A_{a,b},g(a,b)=B_{a,b}\)</span>。由于<span class="math inline">\(A,B\)</span>均为单位上三角矩阵，故<span class="math inline">\(f,g\)</span>可以被看作以<span class="math inline">\([0,n]\)</span>整数区间，小于等于作为偏序关系的Incident algebra中的元素。其可以和<span class="math inline">\((n+1)\times (n+1)\)</span>矩阵上乘法同构。 <span class="math display">\[
-\begin{align}
+<p>令<span class="math inline">\(f(a,b)=A_{a,b},g(a,b)=B_{a,b}\)</span>。由于<span class="math inline">\(A,B\)</span>均为单位上三角矩阵， 故<span class="math inline">\(f,g\)</span>可以被看作以<span class="math inline">\([0,n]\)</span>整数区间，小于等于作为偏序关系的Incident algebra中的元素。 其可以和<span class="math inline">\((n+1)\times (n+1)\)</span>矩阵上乘法同构。 <span class="math display">\[
+\begin{aligned}
 (f*g)(a,b)&amp;=\sum_{x\in [a,b]} f(a,x)g(x,b) \\
-&amp;=\underbrace{\sum_{x\in [0,a)} f(a,x)g(x,b)}_{f(a,x)=0} +\sum_{x\in [a,b]} f(a,x)g(x,b) + \underbrace{\sum_{x\in (b,n]} f(a,x)g(x,b)}_{g(x,b)=0}\\
+&amp;=\underbrace{\sum_{x\in [0,a)} f(a,x)g(x,b)}_{f(a,x)=0}
++\sum_{x\in [a,b]} f(a,x)g(x,b)
++\underbrace{\sum_{x\in (b,n]} f(a,x)g(x,b)}_{g(x,b)=0}\\
 &amp;=\sum_{x\in [0,n]} f(a,x)g(x,b) \\
-&amp;= (AB)_{a,b}=I_{a,b}\\
+&amp;=(AB)_{a,b}=I_{a,b}\\
 &amp;=[a=b]=\delta(a,b)
-\end{align}
+\end{aligned}
 \]</span> 所以<span class="math inline">\(f,g\)</span>互逆。</p>
 <p>按照Incident algebra与一般函数之间的关系，对<span class="math inline">\([0,n]\)</span>上一整数<span class="math inline">\(a\)</span>，下两式定义等价： <span class="math display">\[
-\begin{align}
+\begin{aligned}
 F(x)&amp;=\sum_{k\in [a,x]}G(k)g(k,x)=\sum_{k\in[a,x]} \binom x k G(k) \\
 G(x)&amp;=\sum_{k\in[a,x]} F(k)f(k,x)=\sum_{k\in[a,x]}(-1)^{x-k} \binom x k F(k) \\
-\end{align}
+\end{aligned}
 \]</span> 特别地，对于<span class="math inline">\(a=0\)</span>，我们有： <span class="math display">\[
-\begin{align}
+\begin{aligned}
 F(x)&amp;=\sum_{k\in [0,x]}G(k)g(k,x)=\sum_{k\in[0,x]} \binom x k G(k) \\
 G(x)&amp;=\sum_{k\in[0,x]} F(k)f(k,x)=\sum_{k\in[0,x]}(-1)^{x-k} \binom x k F(k) \\
-\end{align}
+\end{aligned}
 \]</span> 一般，我们将此称作二项式反演公式。</p>
 <h3 id="莫比乌斯反演">莫比乌斯反演</h3>
 <p>将正整数集<span class="math inline">\(\mathbb N^+\)</span>上的整除作为偏序关系。我们可以得到另一个Incident algebra实例。</p>
 <p>其中： <span class="math display">\[
-\begin{align}
+\begin{aligned}
 \zeta(a,b)&amp;=\begin{cases}
 1 &amp; a | b \\
 0 &amp; otherwise\\
@@ -389,27 +397,28 @@ G(x)&amp;=\sum_{k\in[0,x]} F(k)f(k,x)=\sum_{k\in[0,x]}(-1)^{x-k} \binom x k F(k)
 -\sum_{a\mid x \wedge a\neq x \wedge x\mid b} \mu(x,b) &amp; a\mid b \wedge a\neq b \\
 0 &amp; otherwise
 \end{cases}
-\end{align}
+\end{aligned}
 \]</span> 另外，通过数学归纳，注意到： <span class="math display">\[
-\begin{align}
+\begin{aligned}
 \mu(ka,kb) &amp;= \begin{cases}
 1 &amp; ka = kb &amp;\Leftrightarrow a=b \\
--\sum_{ka\mid kx \wedge ka\neq kx \wedge kx\mid kb} \mu(kx,kb) &amp; ka \mid kb \wedge ka\neq kb &amp; \Leftrightarrow a \mid b\wedge a\neq b \\
+-\sum_{ka\mid kx \wedge ka\neq kx \wedge kx\mid kb} \mu(kx,kb)
+&amp; ka \mid kb \wedge ka\neq kb &amp; \Leftrightarrow a \mid b\wedge a\neq b \\
 0 &amp; otherwise
 \end{cases} \\
 &amp;= \mu(a,b)
-\end{align}
-\]</span> 而且，当<span class="math inline">\(a \mid b\)</span>时，<span class="math inline">\(\mu(a,b)\)</span>有意义（或者说可能不为<span class="math inline">\(0\)</span>）。故我们可以构造函数<span class="math inline">\(\mu&#39;(\frac b a) = \mu(1,\frac b a)=\mu(a,b)\)</span>，即可简化计算。那么，我们有： <span class="math display">\[
+\end{aligned}
+\]</span> 而且，当<span class="math inline">\(a \mid b\)</span>时，<span class="math inline">\(\mu(a,b)\)</span>有意义（或者说可能不为<span class="math inline">\(0\)</span>）。 故我们可以构造函数<span class="math inline">\(\mu&#39;(\frac b a) = \mu(1,\frac b a)=\mu(a,b)\)</span>，即可简化计算。 那么，我们有： <span class="math display">\[
 \mu&#39;(p)=\begin{cases}
 1 &amp; p=1 \\
 -\sum_{x\neq 1 \wedge x\mid p} \mu&#39;(\frac p x) &amp; otherwise
 \end{cases}
 \]</span> 这个函数又被称作经典莫比乌斯函数。</p>
 <p>按照Incident algebra与一般函数之间的关系，取下限<span class="math inline">\(a=1\)</span>(故任取<span class="math inline">\(k\)</span>均与<span class="math inline">\(a\)</span>整除)，我们有下述两等价定义： <span class="math display">\[
-\begin{align}
+\begin{aligned}
 F(x) &amp;= \sum_{k\mid x} G(k) \\
 G(x) &amp;= \sum_{k\mid x} F(k) \mu(k,x) = \sum_{k\mid x} F(k) \mu&#39;(\frac x k)
-\end{align}
+\end{aligned}
 \]</span> 其中称下式为上式的莫比乌斯反演公式。</p>
 
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
@@ -472,9 +481,9 @@ G(x) &amp;= \sum_{k\mid x} F(k) \mu(k,x) = \sum_{k\mid x} F(k) \mu&#39;(\frac x 
                     </dl>
                 </div>
                 <ul>
-                    <li><a href="/">5 <p>文章</p></a></li>
-                    <li><a href="/categories">7 <p>分类</p></a></li>
-                    <li><a href="/tags">11 <p>标签</p></a></li>
+                    <li><a href="/">6 <p>文章</p></a></li>
+                    <li><a href="/categories">8 <p>分类</p></a></li>
+                    <li><a href="/tags">12 <p>标签</p></a></li>
                 </ul>
             </div>
             
@@ -483,7 +492,7 @@ G(x) &amp;= \sum_{k\mid x} F(k) \mu(k,x) = \sum_{k\mid x} F(k) \mu&#39;(\frac x 
             <div class="box sticky animated fadeInRight faster">
                 <div id="toc" class="subbox">
                     <h4>目录</h4>
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#incidence-algebra与反演"><span class="toc-number">1.</span> <span class="toc-text">Incidence algebra与反演</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#incidence-algebra"><span class="toc-number">1.1.</span> <span class="toc-text">Incidence algebra</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#定义"><span class="toc-number">1.1.1.</span> <span class="toc-text">定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#性质"><span class="toc-number">1.1.2.</span> <span class="toc-text">性质</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#与一般函数之间的关系"><span class="toc-number">1.1.3.</span> <span class="toc-text">与一般函数之间的关系</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#偏序集与zeta函数"><span class="toc-number">1.2.</span> <span class="toc-text">偏序集与\(\zeta\)函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#定义-1"><span class="toc-number">1.2.1.</span> <span class="toc-text">定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#性质-1"><span class="toc-number">1.2.2.</span> <span class="toc-text">性质</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#反演"><span class="toc-number">1.3.</span> <span class="toc-text">反演</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#二项式反演"><span class="toc-number">1.3.1.</span> <span class="toc-text">二项式反演</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#莫比乌斯反演"><span class="toc-number">1.3.2.</span> <span class="toc-text">莫比乌斯反演</span></a></li></ol></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#incidence-algebra"><span class="toc-number">1.</span> <span class="toc-text">Incidence algebra</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#定义"><span class="toc-number">1.1.</span> <span class="toc-text">定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#性质"><span class="toc-number">1.2.</span> <span class="toc-text">性质</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#与一般函数之间的关系"><span class="toc-number">1.3.</span> <span class="toc-text">与一般函数之间的关系</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#偏序集与zeta函数"><span class="toc-number">2.</span> <span class="toc-text">偏序集与\(\zeta\)函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#定义-1"><span class="toc-number">2.1.</span> <span class="toc-text">定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#性质-1"><span class="toc-number">2.2.</span> <span class="toc-text">性质</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#反演"><span class="toc-number">3.</span> <span class="toc-text">反演</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#二项式反演"><span class="toc-number">3.1.</span> <span class="toc-text">二项式反演</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#莫比乌斯反演"><span class="toc-number">3.2.</span> <span class="toc-text">莫比乌斯反演</span></a></li></ol></li></ol>
                 </div>
             </div>
             
