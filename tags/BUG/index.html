@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>zLeoAlex&#39;s Blog - Memories</title>
+    <title>Tag: BUG - zLeoAlex&#39;s Blog</title>
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="google" content="notranslate" />
@@ -50,29 +50,164 @@
     </div>
     <span id="config-title" style="display:none">zLeoAlex&#39;s Blog</span>
     <div id="loader"></div>
-    <div id="single" class="page">
-    <div id="top">
-        <a class="iconfont icon-left image-icon" href="javascript:history.back()"></a>
-    </div>
-    <div class="clone-element"></div>
-    <div class="section dark-obsidian">
-        <div class="article animated fadeIn">
-            <div class="main animated fadeIn">
-                <div class="content animated fadeIn">
-                
-                    <div class="set">
-    <h1>Tags</h1>
-    <div class="tagcloud">
-        <a href="/tags/BUG/" style="font-size: 16px; color: #0ed2f7">BUG</a> <a href="/tags/Debian/" style="font-size: 16px; color: #0ed2f7">Debian</a> <a href="/tags/Docker/" style="font-size: 16px; color: #0ed2f7">Docker</a> <a href="/tags/Gentoo/" style="font-size: 16px; color: #0ed2f7">Gentoo</a> <a href="/tags/IPv6/" style="font-size: 16px; color: #0ed2f7">IPv6</a> <a href="/tags/Minecraft/" style="font-size: 16px; color: #0ed2f7">Minecraft</a> <a href="/tags/OpenWRT/" style="font-size: 16px; color: #0ed2f7">OpenWRT</a> <a href="/tags/Raspberry-PI/" style="font-size: 16px; color: #0ed2f7">Raspberry PI</a> <a href="/tags/%E5%8F%8D%E6%BC%94/" style="font-size: 16px; color: #0ed2f7">反演</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 16px; color: #0052d4">数学</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 16px; color: #0ed2f7">数据结构</a> <a href="/tags/%E7%94%9F%E6%88%90%E5%87%BD%E6%95%B0/" style="font-size: 16px; color: #0ed2f7">生成函数</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 16px; color: #0ed2f7">算法</a> <a href="/tags/%E7%BB%84%E5%90%88%E6%95%B0%E5%AD%A6/" style="font-size: 16px; color: #0ed2f7">组合数学</a> <a href="/tags/%E9%BD%90%E6%AC%A1%E5%9D%90%E6%A0%87/" style="font-size: 16px; color: #0ed2f7">齐次坐标</a>
-    </div>
+    <div class="nav">
+    <ul id="menu-menu" class="menu">
+        
+        <li class="animated fadeInDown menu-item menu-item-type-post_type menu-item-object-page">
+            <a href="/whoami/" title="ABOUT" external="false">ABOUT</a>
+        </li>
+        
+        <li class="animated fadeInDown menu-item menu-item-type-post_type menu-item-object-page">
+            <a href="/categories/" title="CATEGORIES" external="false">CATEGORIES</a>
+        </li>
+        
+        <li class="animated fadeInDown menu-item menu-item-type-post_type menu-item-object-page">
+            <a href="/tags/" title="TAGS" external="false">TAGS</a>
+        </li>
+        
+        <li class="animated fadeInDown menu-item menu-item-type-post_type menu-item-object-page">
+            <a href="/archives/" title="ARCHIVES" external="false">ARCHIVES</a>
+        </li>
+        
+        <li class="animated fadeInDown menu-item menu-item-type-post_type menu-item-object-page">
+            <a href="/portainer/" title="PORTAINER" external="false">PORTAINER</a>
+        </li>
+        
+    </ul>
+    <p class="copyright" id="copyright">
+        &copy; 2021 zLeoAlex.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+    </p>
 </div>
 
-                
-                </div>
+<div id="container">
+    
+<div class="search-box">
+    <form class="site-search-form">
+        <span class="iconfont icon-search"></span>
+        <input type="text" id="local-search-input" class="st-search-input" />
+        <div class="iconfont icon-cross search-box-close"></div>
+    </form>
+    <div class="search-scrollable">
+        <div id="local-search-result" class="local-search-result-cls" data-initialise="首次搜索，正在载入索引文件，请稍后……"
+            data-start="输入关键词搜索。" data-empty="没有找到内容，请尝试更换检索词。">
+            <span>输入关键词搜索。</span>
+        </div>
+    </div>
+</div>
+<div id="header">
+    <div>
+        <div class="logo animated fadeInDown">
+            <img src="/img/favicon.png" alt="">
+            <a class="image-logo" href="/"></a>
+        </div>
+        <ul id="menu-menu" class="menu text-menu">
+            
+            <li class="animated fadeInDown menu-item menu-item-type-post_type menu-item-object-page">
+                <a href="/whoami/" title="ABOUT" external="false" class="menu-link">ABOUT</a>
+            </li>
+            
+            <li class="animated fadeInDown menu-item menu-item-type-post_type menu-item-object-page">
+                <a href="/categories/" title="CATEGORIES" external="false" class="menu-link">CATEGORIES</a>
+            </li>
+            
+            <li class="animated fadeInDown menu-item menu-item-type-post_type menu-item-object-page">
+                <a href="/tags/" title="TAGS" external="false" class="menu-link">TAGS</a>
+            </li>
+            
+            <li class="animated fadeInDown menu-item menu-item-type-post_type menu-item-object-page">
+                <a href="/archives/" title="ARCHIVES" external="false" class="menu-link">ARCHIVES</a>
+            </li>
+            
+            <li class="animated fadeInDown menu-item menu-item-type-post_type menu-item-object-page">
+                <a href="/portainer/" title="PORTAINER" external="false" class="menu-link">PORTAINER</a>
+            </li>
+            
+            
+        </ul>
+        <div class="iconfont icon-menu switchmenu gradient-text animated fadeInDown"></div>
+    </div>
+</div>
+<div id="screen">
+    <div id="mark">
+        <div class="cover animated fadeIn" style="
+            animation-delay: 900ms;
+            animation-duration: 2.8s;
+            background-image:
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.56), #100e17),
+                url(/img/cover.jpg);">
+        </div>
+    </div>
+    
+    <div id="post0" class="else">
+        <p class="animated fadeInDown">
+            
+            <a href="/categories/Gentoo"><b>「
+                </b>GENTOO<b> 」</b></a>
+            
+            六月 07, 2021
+        </p>
+        <h3 class="post-title animated fadeInDown">
+            <a href="/2021/06/07/Gentoo-Minecraft-1-12-OpenGL-error/" title="Gentoo Minecraft 1.12 RuntimeException: No OpenGL context found in the current thread." class="posttitle">Gentoo Minecraft 1.12 RuntimeException: No OpenGL context found in the current thread.</a></h3>
+        
+        <p class="post-count animated fadeInDown">
+            
+            <span>
+                <b class="iconfont icon-text2"></b> <i>文章字数</i>
+                3.7k
+            </span>
+            
+            
+            <span>
+                <b class="iconfont icon-timer__s"></b> <i>阅读约需</i>
+                3 mins.
+            </span>
+            
+            
+        </p>
+        
+        
+        <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/BUG/" rel="tag">BUG</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Gentoo/" rel="tag">Gentoo</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Minecraft/" rel="tag">Minecraft</a></li></ul>
+        
+        <div class="md-content animated fadeIn">
+            
+            
+<p>When launching Minecraft 1.12 through MultiMC Launcher, error happens：</p>
+<pre class="log"><code>[14:37:51] [Client thread/INFO]: Setting user: zLeoAlex
+[14:37:52] [Client thread/INFO]: LWJGL Version: 2.9.4
+---- Minecraft Crash Report ----
+// Quite honestly, I wouldn&#39;t worry myself about that.
+
+Time: 6/7/21 2:37 PM
+Description...</code></pre>
+            
+            <span class="read-more"><a href="/2021/06/07/Gentoo-Minecraft-1-12-OpenGL-error/" title="查看全文" class="posttitle">查看全文</a>
+                <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+    
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="typed-text"></span>
+                </p>
             </div>
         </div>
     </div>
 </div>
+
+    <div id="primary">
+        
+    </div>
+    
+</div>
+<div id="preview"></div>
+
 
     <div id="back-to-top" class="animated fadeIn faster">
         <div class="flow"></div>
