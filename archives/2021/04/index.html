@@ -36,7 +36,11 @@
 <link rel="stylesheet" href="/css/ball-atom.min.css">
 
     
-<meta name="generator" content="Hexo 4.2.1"></head>
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css">
+
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
 
 
 <body class="loading">
@@ -143,11 +147,10 @@ Ax^2+Bxy+Cy^2+Dx+Ey+F=0
 若想要容器能够监听IPv6的接口，那么首先容器内部需要自己有个IPv6的接口。
 参见docker文档
 修改/etc/docker/daemon.json，合并以下JSON配置
-{
+&#123;
   &quot;ipv6&quot;: true,
   &quot;fixed-cidr-v6&quot;: &quot;2001:db8:1::/64&quot;
-}
-然后自行sy...
+&#1...
                                         </p>
                                     </div>
                                 </li>
@@ -221,13 +224,13 @@ Ax^2+Bxy+Cy^2+Dx+Ey+F=0
                                     </div>
                                     <div class="timeline-marker"></div>
                                     <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/05/20/%E6%B4%9B%E8%B0%B7-P1383-%E9%AB%98%E7%BA%A7%E6%89%93%E5%AD%97%E6%9C%BA/">洛谷-P1383-高级打字机</a>
+                                        <a class="timeline-title" target="_self" href="/2020/05/20/%E6%B4%9B%E8%B0%B7-P1383-%E9%AB%98%E7%BA%A7%E6%89%93%E5%AD%97%E6%9C%BA/">洛谷-P1383 高级打字机 题解</a>
                                         <p>
-                                            P1383 高级打字机 题解
+                                            
 如果使用Haskell语言的话，本题可以使用containers包中的Data.Sequence秒杀，因为Seq本身便是一颗可持久的FingerTree，用树套树的话，便可以做到一个非常优异的时间/空间复杂度。
 惰性求值但是的确是在线算法，可以撤回撤回（返回撤回前的时间点，不知道算不算）。
-{-# OPTIONS_GHC -O2 #-} -- 强开O2
-impo...
+&#123;-# OPTIONS_GHC -O2 #-&#125; -- 强开O2
+import  ...
                                         </p>
                                     </div>
                                 </li>
@@ -279,7 +282,9 @@ USB 读卡器又有点点接触不良，刷个几百k就一个读写错误，心
         <span class="gradient-text">
             <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
         </span>
-        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.5" target="_blank" rel="noopener">v1.4.5</a></small>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.9.3" target="_blank" rel="noopener">v1.4.9.3</a></small>
+        
+        
     </p>
 </footer>
 
@@ -459,6 +464,7 @@ USB 读卡器又有点点接触不良，刷个几百k就一个读写错误，心
     });
   }
 </script>
+
 
 
 

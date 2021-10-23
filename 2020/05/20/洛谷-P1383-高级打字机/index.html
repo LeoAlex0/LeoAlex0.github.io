@@ -5,13 +5,13 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>洛谷-P1383-高级打字机 - zLeoAlex&#39;s Blog</title>
+    <title>洛谷-P1383 高级打字机 题解 - zLeoAlex&#39;s Blog</title>
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="google" content="notranslate" />
     <meta name="keywords" content="zLeoAlex,Blog,"> 
-    <meta name="description" content="with Memos,P1383 高级打字机 题解
-如果使用Haskell语言的话，本题可以使用containers包中的Data.Sequence秒杀，因为Seq本身便是一颗可持久的FingerTree，用树套树的话，,"> 
+    <meta name="description" content="with Memos,
+如果使用Haskell语言的话，本题可以使用containers包中的Data.Sequence秒杀，因为Seq本身便是一颗可持久的FingerTree，用树套树的话，便可以做到一个非常优异的时间,"> 
     <meta name="author" content="zLeoAlex"> 
     <link rel="alternative" href="atom.xml" title="zLeoAlex&#39;s Blog" type="application/atom+xml"> 
     <link rel="icon" href="/img/favicon.png"> 
@@ -37,7 +37,11 @@
 <link rel="stylesheet" href="/css/ball-atom.min.css">
 
     
-<meta name="generator" content="Hexo 4.2.1"></head>
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css">
+
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
 
 
 <body class="loading">
@@ -58,7 +62,7 @@
     <div class="navigation animated fadeIn fast delay-1s">
         <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://leoalex0.github.io">
         <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
-        <h3 class="subtitle">洛谷-P1383-高级打字机</h3>
+        <h3 class="subtitle">洛谷-P1383 高级打字机 题解</h3>
         <div class="social">
             <!--        <div class="like-icon">-->
             <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
@@ -83,7 +87,7 @@
             animation-duration: 1.2s;
             background-image: 
                 radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-                url(/img/cover.jpg) ">
+                url('/img/cover.jpg') ">
         </div>
         <div class="else">
             <p class="animated fadeInDown">
@@ -93,7 +97,7 @@
                 
                 五月 20, 2020
             </p>
-            <h3 class="post-title animated fadeInDown"><a href="/2020/05/20/%E6%B4%9B%E8%B0%B7-P1383-%E9%AB%98%E7%BA%A7%E6%89%93%E5%AD%97%E6%9C%BA/" title="洛谷-P1383-高级打字机" class="">洛谷-P1383-高级打字机</a>
+            <h3 class="post-title animated fadeInDown"><a href="/2020/05/20/%E6%B4%9B%E8%B0%B7-P1383-%E9%AB%98%E7%BA%A7%E6%89%93%E5%AD%97%E6%9C%BA/" title="洛谷-P1383 高级打字机 题解" class="">洛谷-P1383 高级打字机 题解</a>
             </h3>
             
             <p class="post-count animated fadeInDown">
@@ -140,10 +144,10 @@
 <div class="article">
     <div class='main'>
         <div class="content markdown animated fadeIn">
-            <h1 id="p1383-高级打字机-题解">P1383 高级打字机 题解</h1>
+            <!-- # 洛谷-P1383 高级打字机 题解 -->
 <p>如果使用Haskell语言的话，本题可以使用<code>containers</code>包中的<code>Data.Sequence</code>秒杀，因为<code>Seq</code>本身便是一颗可持久的<code>FingerTree</code>，用树套树的话，便可以做到一个非常优异的时间/空间复杂度。</p>
 <p>惰性求值但是的确是在线算法，可以撤回撤回（返回撤回前的时间点，不知道算不算）。</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ot">{-# OPTIONS_GHC -O2 #-}</span> <span class="co">-- 强开O2</span></span>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ot">&#123;-# OPTIONS_GHC -O2 #-&#125;</span> <span class="co">-- 强开O2</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span>           <span class="dt">Control.Monad</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span>           <span class="dt">Data.Functor</span>  (($&gt;))</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span>           <span class="dt">Data.Maybe</span>    (fromJust)</span>
@@ -182,8 +186,13 @@
 <h2 id="fingertree概述">FingerTree概述</h2>
 <p>说到可持久化，就得想到Immutable，说到Immutable，自然而然就是函数式编程语言，说到函数式编程语言，自然而然就是<code>Haskell</code>，而说到纯函数式的数据结构，自然而然也绕不开<code>FingerTree</code>。</p>
 <p><code>FingerTree</code>是一种理论上非常通用也非常高效的数据结构，插入头/尾都只需要摊还<span class="math inline">\(O(1)\)</span>的时间， 而对其的“随机”访问只需要<span class="math inline">\(O(\log \min(i,n-i))\)</span>（其中<span class="math inline">\(i\)</span> 为你访问的下标，所以可以看出访问头/尾其实也是<span class="math inline">\(O(1)\)</span>）。</p>
-<p>关于它的论文可以戳<a href="https://www.staff.city.ac.uk/~ross/papers/FingerTree.pdf" target="_blank" rel="noopener">这里</a>。当然这不是最早的一篇，但我看的就是这篇，才疏学浅没办法在这里列更早的。</p>
-<p>但为什么说“理论”上呢，就和斐波那契堆类似，他的常数比较大。（主要因素是Immutable的语言必须维护一个GC来做垃圾回收。）</p>
+<p>关于它的论文可以戳<a target="_blank" rel="noopener" href="https://www.staff.city.ac.uk/~ross/papers/FingerTree.pdf">这里</a>。当然这不是最早的一篇，但我看的就是这篇，才疏学浅没办法在这里列更早的。</p>
+<p>但为什么说“理论”上呢，就和斐波那契堆类似，他的常数比较大。（<del>主要因素是Immutable的语言必须维护一个GC来做垃圾回收。</del>）</p>
+<blockquote>
+<p>[更新] 事后我拿<code>Rust</code>实现了一遍<code>FingerTree</code>，发现其时空消耗均比<code>Haskell</code>大，故可认为并非GC原因。</p>
+<p>不过也有可能是我写的常数就是大呢（</p>
+<p>详见：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/record/60755672">提交记录</a></p>
+</blockquote>
 <p>那为什么说“随机”呢？因为完全泛化的<code>FingerTree</code>的访问依赖的不是下标，而是一个被称作<span class="math inline">\(Measure\)</span>（测度？我也不知道怎么翻译，所以直接拉的原文）的幺半群(<strong>Monoid</strong>)。</p>
 <blockquote>
 <p>先解释一下什么是幺半群。幺半群是一个集合<span class="math inline">\(X\)</span>和集合里元素之间一个二元运算<span class="math inline">\(\cdot:X\times X\to X\)</span>的统称（有序对），并要求：</p>
@@ -235,7 +244,7 @@
 <span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>     <span class="op">|</span> <span class="dt">Single</span> a</span>
 <span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>     <span class="op">|</span> <span class="dt">Deep</span> v (<span class="dt">Digit</span> a) (<span class="dt">FingerTree</span> v (<span class="dt">Node</span> v a)) (<span class="dt">Digit</span> a)</span></code></pre></div>
 <p>这里开始出现了最开始提到的<code>Measured</code>，此处将其抽象为一个可以将某个元素<em>测量</em>出一个<code>Monoid</code>的函数。但这个<code>Monoid</code>有大用。</p>
-<p>此处出现的语法使用了一个<code>Functional Dependencies</code>的拓展(可参见<a href="https://wiki.haskell.org/Functional_dependencies" target="_blank" rel="noopener">wiki</a>)。大概意思是保证对于一个类型，我只能把它<code>measure</code>成一种其他类型，不能<code>measure</code>成另一种。也就是说，类型<code>a</code>到类型<code>v</code>是一个单射。</p>
+<p>此处出现的语法使用了一个<code>Functional Dependencies</code>的拓展(可参见<a target="_blank" rel="noopener" href="https://wiki.haskell.org/Functional_dependencies">wiki</a>)。大概意思是保证对于一个类型，我只能把它<code>measure</code>成一种其他类型，不能<code>measure</code>成另一种。也就是说，类型<code>a</code>到类型<code>v</code>是一个单射。</p>
 <p>可以看到这里的<span class="math inline">\(v\)</span>类型变元，这个就是稍后要维护的<code>Monoid</code>，也是索引数据的依据。</p>
 <p>可以看到一个<code>Node</code>可能有2-3个元素，保证一个<code>Digit</code>有1-4个元素。(图中也可以看出，不过引用链接是国外的可能比较卡)<code>Digit</code>和<code>Node</code>也可以相互转化，拼接，但后文不再说明实现。</p>
 <p>还有一点值得注意的是，如果当前这一层的<code>FingerTree</code>缓存的是<code>a</code>类型的话，那么下一层所缓存的就是<code>Node a</code>类型了。这也就意味着，下层比上层“厚实”。</p>
@@ -388,19 +397,6 @@
                     
             </ul>
             
-            
-            <div class="post-nav">
-                <hr>
-                
-                    <div class="post-nav-item">上一篇:<a href="/2020/06/11/%E5%8F%8D%E6%BC%94/" rel="prev" 
-                        title="Incident Algebra与反演">Incident Algebra与反演
-                      </a></div>
-                
-                
-                    <div class="post-nav-item">下一篇:<a href="/2020/05/11/RPI3B-OpenWrt%E5%9D%91%E7%82%B9/" rel="next" 
-                        title="Raspberry PI 3B+刷OpenWRT坑点笔记">Raspberry PI 3B+刷OpenWRT坑点笔记</a></div>
-                                
-            </div>   
                         
             
             
@@ -412,6 +408,7 @@
         data-o='LeoAlex0'
         data-a='LeoAlex0'
         data-d=''
+        data-p=''
     >留言</div>
 
 
@@ -425,12 +422,21 @@
                     <p>zLeoAlex</p>
                     <span>Diamonds can only be polished with diamonds</span>
                     <dl>
-                        <dd><a href="https://github.com/LeoAlex0" target="_blank"><span
+                        
+                            
+                                <dd><a href="https://github.com/LeoAlex0" target="_blank"><span
                                     class=" iconfont icon-github"></span></a></dd>
-                        <dd><a href="https://twitter.com/zLeoAlex1" target="_blank"><span
+                            
+                            
+                                <dd><a href="https://twitter.com/zLeoAlex1" target="_blank"><span
                                     class=" iconfont icon-twitter"></span></a></dd>
-                        <dd><a href="https://stackoverflow.com/users/13449767/zleoalex" target="_blank"><span
+                            
+                            
+                                <dd><a href="https://stackoverflow.com/users/13449767/zleoalex" target="_blank"><span
                                     class=" iconfont icon-stack-overflow"></span></a></dd>
+                            
+                        
+                        
                     </dl>
                 </div>
                 <ul>
@@ -445,7 +451,7 @@
             <div class="box sticky animated fadeInRight faster">
                 <div id="toc" class="subbox">
                     <h4>目录</h4>
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#p1383-高级打字机-题解"><span class="toc-number">1.</span> <span class="toc-text">P1383 高级打字机 题解</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#fingertree概述"><span class="toc-number">1.1.</span> <span class="toc-text">FingerTree概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#haskell基础"><span class="toc-number">1.2.</span> <span class="toc-text">Haskell基础</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fingertree实现简要复述论文"><span class="toc-number">1.3.</span> <span class="toc-text">FingerTree实现（简要复述论文）</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#fingertree%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">FingerTree概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#haskell%E5%9F%BA%E7%A1%80"><span class="toc-number">2.</span> <span class="toc-text">Haskell基础</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fingertree%E5%AE%9E%E7%8E%B0%E7%AE%80%E8%A6%81%E5%A4%8D%E8%BF%B0%E8%AE%BA%E6%96%87"><span class="toc-number">3.</span> <span class="toc-text">FingerTree实现（简要复述论文）</span></a></li></ol>
                 </div>
             </div>
             
@@ -473,7 +479,9 @@
         <span class="gradient-text">
             <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
         </span>
-        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.5" target="_blank" rel="noopener">v1.4.5</a></small>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.9.3" target="_blank" rel="noopener">v1.4.9.3</a></small>
+        
+        
     </p>
 </footer>
 
@@ -653,6 +661,7 @@
     });
   }
 </script>
+
 
 
 

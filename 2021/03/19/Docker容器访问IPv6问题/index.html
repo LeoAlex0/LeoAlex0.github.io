@@ -39,7 +39,11 @@
 <link rel="stylesheet" href="/css/ball-atom.min.css">
 
     
-<meta name="generator" content="Hexo 4.2.1"></head>
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css">
+
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
 
 
 <body class="loading">
@@ -85,7 +89,7 @@
             animation-duration: 1.2s;
             background-image: 
                 radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-                url(/img/cover.jpg) ">
+                url('/img/cover.jpg') ">
         </div>
         <div class="else">
             <p class="animated fadeInDown">
@@ -102,7 +106,7 @@
                 
                 <span>
                     <b class="iconfont icon-text2"></b> <i>文章字数</i>
-                    2k
+                    1.9k
                 </span>
                 
                 
@@ -144,18 +148,18 @@
         <div class="content markdown animated fadeIn">
             <h2 id="打开docker的ipv6支持">打开Docker的IPv6支持</h2>
 <p>若想要容器能够监听IPv6的接口，那么首先容器内部需要自己有个IPv6的接口。</p>
-<p>参见<a href="https://docs.docker.com/config/daemon/ipv6/" target="_blank" rel="noopener">docker文档</a></p>
+<p>参见<a target="_blank" rel="noopener" href="https://docs.docker.com/config/daemon/ipv6/">docker文档</a></p>
 <p>修改<code>/etc/docker/daemon.json</code>，合并以下JSON配置</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<div class="sourceCode" id="cb1"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">&#123;</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;ipv6&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;fixed-cidr-v6&quot;</span><span class="fu">:</span> <span class="st">&quot;2001:db8:1::/64&quot;</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">&#125;</span></span></code></pre></div>
 <p>然后自行<code>systemctl restart docker</code>之类重启<code>docker daemon</code>。</p>
 <p>其中第一项会开启默认的bridge network的IPv6支持，下一个会在IPv6的地址池里添加对应的网段。</p>
 <p>不过很奇怪的是，这一个网段的<strong>全部</strong>地址都会分给全局默认的bridge network，所以如果自己的docker-compose文件里有网络需要IPv6支持的，得手动分配一个网段，或者直接改用默认的全局bridge。</p>
 <h2 id="设置ip6tables转发流量">设置ip6tables转发流量</h2>
 <p>搞定上面一步之后，理论上你容器内expose出的端口都可以监听IPv6的接口了。但若是想让容器内部访问IPv6的外网，还需要配置ip6tables转发流量。</p>
-<p>参见<a href="https://github.com/docker/for-linux/issues/648" target="_blank" rel="noopener">这个issue</a></p>
+<p>参见<a target="_blank" rel="noopener" href="https://github.com/docker/for-linux/issues/648">这个issue</a></p>
 <p>使用如下命令转发收到的对应地址的流量。</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ip6tables</span> <span class="at">-t</span> nat <span class="at">-A</span> POSTROUTING <span class="at">-s</span> 2001:db8:1::/64 ! <span class="at">-o</span> docker0 <span class="at">-j</span> MASQUERADE</span></code></pre></div>
 <p>但总感觉这个方案还不够完美，只能说暂时够用了。</p>
@@ -174,19 +178,6 @@
                     
             </ul>
             
-            
-            <div class="post-nav">
-                <hr>
-                
-                    <div class="post-nav-item">上一篇:<a href="/2021/04/30/%E9%BD%90%E6%AC%A1%E5%9D%90%E6%A0%87%E3%80%81%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E4%B8%8E%E5%9C%86%E9%94%A5%E6%9B%B2%E7%BA%BF-1/" rel="prev" 
-                        title="齐次坐标、线性代数与圆锥曲线-1">齐次坐标、线性代数与圆锥曲线-1
-                      </a></div>
-                
-                
-                    <div class="post-nav-item">下一篇:<a href="/2020/06/27/CW-Faberge-easter-eggs-crush-test/" rel="next" 
-                        title="[CW]Faberge easter eggs crush test题解(数学部分)">[CW]Faberge easter eggs crush test题解(数学部分)</a></div>
-                                
-            </div>   
                         
             
             
@@ -198,6 +189,7 @@
         data-o='LeoAlex0'
         data-a='LeoAlex0'
         data-d=''
+        data-p=''
     >留言</div>
 
 
@@ -211,12 +203,21 @@
                     <p>zLeoAlex</p>
                     <span>Diamonds can only be polished with diamonds</span>
                     <dl>
-                        <dd><a href="https://github.com/LeoAlex0" target="_blank"><span
+                        
+                            
+                                <dd><a href="https://github.com/LeoAlex0" target="_blank"><span
                                     class=" iconfont icon-github"></span></a></dd>
-                        <dd><a href="https://twitter.com/zLeoAlex1" target="_blank"><span
+                            
+                            
+                                <dd><a href="https://twitter.com/zLeoAlex1" target="_blank"><span
                                     class=" iconfont icon-twitter"></span></a></dd>
-                        <dd><a href="https://stackoverflow.com/users/13449767/zleoalex" target="_blank"><span
+                            
+                            
+                                <dd><a href="https://stackoverflow.com/users/13449767/zleoalex" target="_blank"><span
                                     class=" iconfont icon-stack-overflow"></span></a></dd>
+                            
+                        
+                        
                     </dl>
                 </div>
                 <ul>
@@ -231,7 +232,7 @@
             <div class="box sticky animated fadeInRight faster">
                 <div id="toc" class="subbox">
                     <h4>目录</h4>
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#打开docker的ipv6支持"><span class="toc-number">1.</span> <span class="toc-text">打开Docker的IPv6支持</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#设置ip6tables转发流量"><span class="toc-number">2.</span> <span class="toc-text">设置ip6tables转发流量</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%93%E5%BC%80docker%E7%9A%84ipv6%E6%94%AF%E6%8C%81"><span class="toc-number">1.</span> <span class="toc-text">打开Docker的IPv6支持</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AEip6tables%E8%BD%AC%E5%8F%91%E6%B5%81%E9%87%8F"><span class="toc-number">2.</span> <span class="toc-text">设置ip6tables转发流量</span></a></li></ol>
                 </div>
             </div>
             
@@ -259,7 +260,9 @@
         <span class="gradient-text">
             <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
         </span>
-        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.5" target="_blank" rel="noopener">v1.4.5</a></small>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.9.3" target="_blank" rel="noopener">v1.4.9.3</a></small>
+        
+        
     </p>
 </footer>
 
@@ -439,6 +442,7 @@
     });
   }
 </script>
+
 
 
 

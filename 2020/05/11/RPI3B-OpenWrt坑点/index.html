@@ -42,7 +42,11 @@ USB 读卡器又有点点接触不,">
 <link rel="stylesheet" href="/css/ball-atom.min.css">
 
     
-<meta name="generator" content="Hexo 4.2.1"></head>
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css">
+
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
 
 
 <body class="loading">
@@ -88,7 +92,7 @@ USB 读卡器又有点点接触不,">
             animation-duration: 1.2s;
             background-image: 
                 radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-                url(/img/cover.jpg) ">
+                url('/img/cover.jpg') ">
         </div>
         <div class="else">
             <p class="animated fadeInDown">
@@ -105,7 +109,7 @@ USB 读卡器又有点点接触不,">
                 
                 <span>
                     <b class="iconfont icon-text2"></b> <i>文章字数</i>
-                    1.5k
+                    1.4k
                 </span>
                 
                 
@@ -161,7 +165,7 @@ USB 读卡器又有点点接触不,">
 <ol type="1">
 <li>信道填自动就搜不到<code>WiFi</code>了不知道咋回事儿
 <ul>
-<li>802.11ac的52-64信道在国内要求DFS/TPC(<a href="https://zh.wikipedia.org/wiki/DFS" target="_blank" rel="noopener">动态频率选择</a>和<a href="https://zh.wikipedia.org/w/index.php?title=TPC&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">传输功率控制</a>)，可能是因为树莓派并没有相应的功能还往这几个信道上挤导致的。</li>
+<li>802.11ac的52-64信道在国内要求DFS/TPC(<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/DFS">动态频率选择</a>和<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/w/index.php?title=TPC&amp;action=edit&amp;redlink=1">传输功率控制</a>)，可能是因为树莓派并没有相应的功能还往这几个信道上挤导致的。</li>
 </ul></li>
 <li><code>wan</code>的接口名一定要<strong>小写</strong>，一定要<strong>小写</strong>，一定要<strong>小写</strong>，或者手动修改为防火墙<code>wan</code>区域</li>
 <li>刚配好时<code>opkg</code>镜像不能用<code>https</code>，只能走<code>http</code>，因为里面套件还不全</li>
@@ -190,16 +194,6 @@ USB 读卡器又有点点接触不,">
                     
             </ul>
             
-            
-            <div class="post-nav">
-                <hr>
-                
-                    <div class="post-nav-item">上一篇:<a href="/2020/05/20/%E6%B4%9B%E8%B0%B7-P1383-%E9%AB%98%E7%BA%A7%E6%89%93%E5%AD%97%E6%9C%BA/" rel="prev" 
-                        title="洛谷-P1383-高级打字机">洛谷-P1383-高级打字机
-                      </a></div>
-                
-                                
-            </div>   
                         
             
             
@@ -211,6 +205,7 @@ USB 读卡器又有点点接触不,">
         data-o='LeoAlex0'
         data-a='LeoAlex0'
         data-d=''
+        data-p=''
     >留言</div>
 
 
@@ -224,12 +219,21 @@ USB 读卡器又有点点接触不,">
                     <p>zLeoAlex</p>
                     <span>Diamonds can only be polished with diamonds</span>
                     <dl>
-                        <dd><a href="https://github.com/LeoAlex0" target="_blank"><span
+                        
+                            
+                                <dd><a href="https://github.com/LeoAlex0" target="_blank"><span
                                     class=" iconfont icon-github"></span></a></dd>
-                        <dd><a href="https://twitter.com/zLeoAlex1" target="_blank"><span
+                            
+                            
+                                <dd><a href="https://twitter.com/zLeoAlex1" target="_blank"><span
                                     class=" iconfont icon-twitter"></span></a></dd>
-                        <dd><a href="https://stackoverflow.com/users/13449767/zleoalex" target="_blank"><span
+                            
+                            
+                                <dd><a href="https://stackoverflow.com/users/13449767/zleoalex" target="_blank"><span
                                     class=" iconfont icon-stack-overflow"></span></a></dd>
+                            
+                        
+                        
                     </dl>
                 </div>
                 <ul>
@@ -244,7 +248,7 @@ USB 读卡器又有点点接触不,">
             <div class="box sticky animated fadeInRight faster">
                 <div id="toc" class="subbox">
                     <h4>目录</h4>
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#刷写系统环节"><span class="toc-number">1.</span> <span class="toc-text">刷写系统环节</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置环节"><span class="toc-number">2.</span> <span class="toc-text">配置环节</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#网络配置"><span class="toc-number">3.</span> <span class="toc-text">网络配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#多拨"><span class="toc-number">3.1.</span> <span class="toc-text">多拨</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%B7%E5%86%99%E7%B3%BB%E7%BB%9F%E7%8E%AF%E8%8A%82"><span class="toc-number">1.</span> <span class="toc-text">刷写系统环节</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E7%8E%AF%E8%8A%82"><span class="toc-number">2.</span> <span class="toc-text">配置环节</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE"><span class="toc-number">3.</span> <span class="toc-text">网络配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E6%8B%A8"><span class="toc-number">3.1.</span> <span class="toc-text">多拨</span></a></li></ol></li></ol>
                 </div>
             </div>
             
@@ -272,7 +276,9 @@ USB 读卡器又有点点接触不,">
         <span class="gradient-text">
             <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
         </span>
-        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.5" target="_blank" rel="noopener">v1.4.5</a></small>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.9.3" target="_blank" rel="noopener">v1.4.9.3</a></small>
+        
+        
     </p>
 </footer>
 
@@ -452,6 +458,7 @@ USB 读卡器又有点点接触不,">
     });
   }
 </script>
+
 
 
 

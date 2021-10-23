@@ -36,7 +36,11 @@
 <link rel="stylesheet" href="/css/ball-atom.min.css">
 
     
-<meta name="generator" content="Hexo 4.2.1"></head>
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css">
+
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
 
 
 <body class="loading">
@@ -164,7 +168,7 @@
         
         <div class="md-content animated fadeIn">
             
-            
+            <h2 id="递推式">递推式</h2>
 <p>按照题意，若设所求函数为<span class="math inline">\(F(n,m)\)</span>，则有： <span class="math display">\[
 \begin{aligned}
   F(0,m)&amp;=0\\
@@ -172,14 +176,14 @@
   F(n,m)&amp;=F(n,m-1)+F(n-1,m-1)+1
 \end{aligned}
 \]</span></p>
-
+<h2 id="生成函数">生成函数</h2>
 <p>注意到其生成函数满足 <span class="math display">\[
   G(x,y)=yG(x,y)+xyG(x,y)+\frac{xy}{(1-x)(1-y)}
 \]</span></p>
 <p>移项可得： <span class="math display">\[
 \begin{aligned}
   (1-y-xy)G(x,y)&amp;=\frac{xy}{(1-x)(1-y)} \\
-  G(x,y)&amp...</span></p>
+  G(x...</span></p>
             
             <span class="read-more"><a href="/2020/06/27/CW-Faberge-easter-eggs-crush-test/" title="查看全文" class="posttitle">查看全文</a>
                 <b class="iconfont icon-arrow-right- gradient-text"></b></span>
@@ -225,7 +229,9 @@
         <span class="gradient-text">
             <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
         </span>
-        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.5" target="_blank" rel="noopener">v1.4.5</a></small>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.9.3" target="_blank" rel="noopener">v1.4.9.3</a></small>
+        
+        
     </p>
 </footer>
 
@@ -405,6 +411,7 @@
     });
   }
 </script>
+
 
 
 

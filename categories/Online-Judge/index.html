@@ -36,7 +36,11 @@
 <link rel="stylesheet" href="/css/ball-atom.min.css">
 
     
-<meta name="generator" content="Hexo 4.2.1"></head>
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css">
+
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
 
 
 <body class="loading">
@@ -164,7 +168,7 @@
         
         <div class="md-content animated fadeIn">
             
-            
+            <h2 id="递推式">递推式</h2>
 <p>按照题意，若设所求函数为<span class="math inline">\(F(n,m)\)</span>，则有： <span class="math display">\[
 \begin{aligned}
   F(0,m)&amp;=0\\
@@ -172,14 +176,14 @@
   F(n,m)&amp;=F(n,m-1)+F(n-1,m-1)+1
 \end{aligned}
 \]</span></p>
-
+<h2 id="生成函数">生成函数</h2>
 <p>注意到其生成函数满足 <span class="math display">\[
   G(x,y)=yG(x,y)+xyG(x,y)+\frac{xy}{(1-x)(1-y)}
 \]</span></p>
 <p>移项可得： <span class="math display">\[
 \begin{aligned}
   (1-y-xy)G(x,y)&amp;=\frac{xy}{(1-x)(1-y)} \\
-  G(x,y)&amp...</span></p>
+  G(x...</span></p>
             
             <span class="read-more"><a href="/2020/06/27/CW-Faberge-easter-eggs-crush-test/" title="查看全文" class="posttitle">查看全文</a>
                 <b class="iconfont icon-arrow-right- gradient-text"></b></span>
@@ -217,7 +221,7 @@
             
             五月 20, 2020
         </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/05/20/%E6%B4%9B%E8%B0%B7-P1383-%E9%AB%98%E7%BA%A7%E6%89%93%E5%AD%97%E6%9C%BA/" title="洛谷-P1383-高级打字机" class="posttitle">洛谷-P1383-高级打字机</a></h3>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/05/20/%E6%B4%9B%E8%B0%B7-P1383-%E9%AB%98%E7%BA%A7%E6%89%93%E5%AD%97%E6%9C%BA/" title="洛谷-P1383 高级打字机 题解" class="posttitle">洛谷-P1383 高级打字机 题解</a></h3>
         
             <p class="post-count animated fadeInDown">
                 
@@ -243,10 +247,12 @@
                 
 <p>如果使用Haskell语言的话，本题可以使用<code>containers</code>包中的<code>Data.Sequence</code>秒杀，因为<code>Seq</code>本身便是一颗可持久的<code>FingerTree</code>，用树套树的话，便可以做到一个非常优异的时间/空间复杂度。</p>
 <p>惰性求值但是的确是在线算法，可以撤回撤回（返回撤回前的时间点，不知道算不算）。</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ot">{-# OPTIONS_GHC -O2 #-}</span> <span class="co">-- 强开O2</span></span>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ot">&#123;-# OPTIONS_GHC -O2 #-&#125;</span> <span class="co">-- 强开O2</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span>           <span class="dt">Control.Monad</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span>           <span class="dt">Data.Functor</span>  (($&gt;))</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span>           <span class="dt">Data.Maybe</span>    (fromJust...</span></code></pre></div>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span>           <span class="dt">Data.Maybe</span>    (fromJust)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span>           <span class="dt">Data.Sequence</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span>           <span class="dt">Text...</span></span></code></pre></div>
             
             <span class="read-more"><a href="/2020/05/20/%E6%B4%9B%E8%B0%B7-P1383-%E9%AB%98%E7%BA%A7%E6%89%93%E5%AD%97%E6%9C%BA/" title="查看全文" class="posttitle">查看全文</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
@@ -276,7 +282,9 @@
         <span class="gradient-text">
             <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
         </span>
-        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.5" target="_blank" rel="noopener">v1.4.5</a></small>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.9.3" target="_blank" rel="noopener">v1.4.9.3</a></small>
+        
+        
     </p>
 </footer>
 
@@ -456,6 +464,7 @@
     });
   }
 </script>
+
 
 
 
