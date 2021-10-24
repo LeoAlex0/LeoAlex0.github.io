@@ -245,7 +245,7 @@
         <div class="md-content animated fadeIn">
             
                 
-<p>如果使用Haskell语言的话，本题可以使用 <code>containers</code> 包中的 <code>Data.Sequence</code> 秒杀，因为 <code>Seq</code> 本身便是一颗可持久的 <code>FingerTree</code>，用树套树的话，便可以做到一个非常优异的时间/空间复杂度。</p>
+<p>如果使用 Haskell 语言的话，本题可以使用 <code>containers</code> 包中的 <code>Data.Sequence</code> 秒杀，因为 <code>Seq</code> 本身便是一颗可持久的 <code>FingerTree</code>，用树套树的话，便可以做到一个非常优异的时间/空间复杂度。</p>
 <p>惰性求值但是的确是在线算法，可以撤回撤回（返回撤回前的时间点，不知道算不算）。</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ot">&#123;-# OPTIONS_GHC -O2 #-&#125;</span> <span class="co">-- 强开O2</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span>           <span class="dt">Control.Monad</span></span>
