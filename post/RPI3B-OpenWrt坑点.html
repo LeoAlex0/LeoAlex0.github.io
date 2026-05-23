@@ -1,1 +1,174 @@
-<!doctype html><html lang="en"><head><!-- hexo injector head_begin start --><meta name="description" content="Diamonds can only be polished with diamonds"></meta><meta name="keywords" content="zLeoAlex,Blog"></meta><meta name="author" content="zLeoAlex"></meta><!-- hexo injector head_begin end --><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="/favicon.ico"><script type="module" crossorigin src="/static/js/120aa8f8.js"></script><link rel="stylesheet" href="/static/css/a14e1a22.css"><!-- hexo injector head_end start --><script rel="prefetch" async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script rel="preload" src="https://unpkg.com/blueimp-md5@^2.19.0/js/md5.min.js"></script><script rel="preload" src="https://unpkg.com/lodash@^4.17.21/lodash.min.js"></script><link rel="stylesheet" href="https://fonts.loli.net/css?family=Rubik" /><script rel="preload" src="https://unpkg.com/gitalk@^1.8.0/dist/gitalk.min.js"></script><link rel="stylesheet" href="https://unpkg.com/gitalk@^1.8.0/dist/gitalk.css"/><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body id="body-container"><noscript><strong>We're sorry but this app doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id="app"></div></body></html>
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <title>Raspberry PI 3B+刷OpenWRT坑点笔记 | zLeoAlex's Blog</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="with Memos">
+    <meta name="color-scheme" content="light dark">
+    
+    <meta name="author" content="zLeoAlex">
+    
+    
+
+    <meta property="og:site_name" content="zLeoAlex's Blog">
+    <meta property="og:title" content="Raspberry PI 3B+刷OpenWRT坑点笔记">
+    <meta property="og:url" content="https://leoalex0.github.io/post/RPI3B-OpenWrt%E5%9D%91%E7%82%B9.html">
+    <meta property="og:description" content="with Memos">
+    
+    
+    <meta property="og:type" content="article">
+    
+
+    
+    <meta property="twitter:site" content="zLeoAlex's Blog">
+    <meta property="twitter:title" content="Raspberry PI 3B+刷OpenWRT坑点笔记">
+    <meta property="twitter:description" content="with Memos">
+    
+
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="canonical" href="https://leoalex0.github.io/post/RPI3B-OpenWrt%E5%9D%91%E7%82%B9.html">
+
+    <link rel="alternate" href="/atom.xml" title="zLeoAlex's Blog" type="application/atom+xml">
+    <link rel="alternate" href="/rss.xml" title="zLeoAlex's Blog" type="application/rss+xml">
+
+    <script>
+      ;(function () {
+        var storedTheme = null;
+
+        try {
+          storedTheme = window.localStorage.getItem("theme");
+        } catch (error) {
+          storedTheme = null;
+        }
+
+        if (storedTheme !== "dark" && storedTheme !== "light") {
+          storedTheme = null;
+        }
+
+        var prefersDark = window.matchMedia &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches;
+        var theme = storedTheme || (prefersDark ? "dark" : "light");
+
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
+
+    <link rel="stylesheet" href="/css/default.css">
+    <link rel="stylesheet" href="/css/code.css">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    
+
+    
+    
+    
+    <script>
+      window.__GITALK_CONFIG__ = {
+        clientID: "951199b7082582d13f7a",
+        clientSecret: "3015d93121701fe641bfd72f7268fce65aeb7ca2",
+        repo: "blog-comments",
+        owner: "LeoAlex0",
+        admin: ["LeoAlex0"],
+        language: "en",
+        distractionFreeMode: true
+      };
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+    
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="site-brand" href="/">
+        <span class="site-brand__title">zLeoAlex's Blog</span>
+        <span class="site-brand__subtitle">Memories</span>
+      </a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="/">Home</a>
+        <a href="/archives/">Archives</a>
+        <a href="/tags/">Tags</a>
+        <a href="/categories/">Categories</a>
+        <a href="/about/">About</a>
+      </nav>
+      <button
+        type="button"
+        class="theme-toggle"
+        data-theme-toggle
+        aria-label="Switch color theme"
+        aria-pressed="false"
+      >
+        <span class="theme-toggle__mark" aria-hidden="true"></span>
+        <span data-theme-toggle-label>Dark</span>
+      </button>
+    </header>
+    <main class="layout-main">
+  <article class="post">
+    <header class="post-header">
+      <p class="post-date">
+        2020-05-11 
+      </p>
+      <h1>Raspberry PI 3B+刷OpenWRT坑点笔记</h1>
+      <div class="post-meta">
+        <span><a title="All pages tagged &#39;网络&#39;." href="/categories/%E7%BD%91%E7%BB%9C.html" rel="tag">网络</a></span>
+        <span><a title="All pages tagged &#39;Raspberry PI&#39;." href="/tags/Raspberry%20PI.html" rel="tag">Raspberry PI</a>, <a title="All pages tagged &#39;OpenWRT&#39;." href="/tags/OpenWRT.html" rel="tag">OpenWRT</a></span>
+      </div>
+    </header>
+    <section class="post-content">
+      <h2 id="刷写系统环节">刷写系统环节</h2>
+<ol>
+<li><p>RPI3B和RPI3B+用的同一款固件，可以通用</p></li>
+<li><p>用个稍微好一点点的读卡器吧，毕竟也有几百M</p>
+<blockquote>
+<p>我Surface上的读卡器插两次就扫不到设备了，十分蛇皮</p>
+<p>USB 读卡器又有点点接触不良，刷个几百k就一个读写错误，心累.jpg</p>
+</blockquote></li>
+<li><p>如果希望能完全使用TF卡的空间，单纯的resize分区是不行的，还要记得<code>fsck</code>然后跑一遍<code>resize2fs</code></p>
+<blockquote>
+<p>不知道为什么我先配完系统之后改大小然后就崩了。</p>
+<p>但是如果在第一次启动前把分区大小调好就没事。</p>
+</blockquote></li>
+<li><p><code>WiFi</code>的启用需要等到第一次启动以后，第一次启动的时候会生成配置文件，之后改改就好</p></li>
+<li><p>如果需要用<code>USB to TTL</code>之类的操作连接PI，那么还要改<code>config.txt</code>，没改成功过，不细说</p></li>
+</ol>
+<h2 id="配置环节">配置环节</h2>
+<ol>
+<li>信道填自动就搜不到<code>WiFi</code>了不知道咋回事儿
+<ul>
+<li>802.11ac的52-64信道在国内要求DFS/TPC(<a href="https://zh.wikipedia.org/wiki/DFS">动态频率选择</a>和<a href="https://zh.wikipedia.org/w/index.php?title=TPC&amp;action=edit&amp;redlink=1">传输功率控制</a>)，可能是因为树莓派并没有相应的功能还往这几个信道上挤导致的。</li>
+</ul></li>
+<li><code>wan</code>的接口名一定要<strong>小写</strong>，一定要<strong>小写</strong>，一定要<strong>小写</strong>，或者手动修改为防火墙<code>wan</code>区域</li>
+<li>刚配好时<code>opkg</code>镜像不能用<code>https</code>，只能走<code>http</code>，因为里面套件还不全</li>
+</ol>
+<h2 id="网络配置">网络配置</h2>
+<h3 id="多拨">多拨</h3>
+<ul>
+<li>使用<code>mwan3</code>插件</li>
+<li>前面接个AP模式的路由器</li>
+<li>使用<code>ip link add link eth0 name vethX type macvlan</code>来添加虚拟网口</li>
+<li>其中留一个虚拟网口接<code>br-lan</code>接口，其余每个一个<code>PPPoE</code>接口</li>
+<li>设置<code>mwan3</code>的时候<strong>一定</strong>要填测试IP，让相应的策略能自动开启</li>
+</ul>
+    </section>
+  </article>
+</main>
+
+    
+    <section class="comments" aria-label="Comments">
+      <div id="gitalk-container"></div>
+    </section>
+    
+    <footer class="site-footer">
+      <div>
+        <strong>zLeoAlex's Blog</strong>
+        <span>with Memos</span>
+      </div>
+      <div class="site-footer__links">
+        <a href="/atom.xml">Atom</a>
+        <a href="/rss.xml">RSS</a>
+        <a href="https://github.com/LeoAlex0">GitHub</a>
+      </div>
+    </footer>
+    <script defer src="/js/script.js"></script>
+  </body>
+</html>

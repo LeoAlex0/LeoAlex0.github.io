@@ -1,1 +1,157 @@
-<!doctype html><html lang="en"><head><!-- hexo injector head_begin start --><meta name="description" content="Diamonds can only be polished with diamonds"></meta><meta name="keywords" content="zLeoAlex,Blog"></meta><meta name="author" content="zLeoAlex"></meta><!-- hexo injector head_begin end --><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="/favicon.ico"><script type="module" crossorigin src="/static/js/120aa8f8.js"></script><link rel="stylesheet" href="/static/css/a14e1a22.css"><!-- hexo injector head_end start --><script rel="prefetch" async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script rel="preload" src="https://unpkg.com/blueimp-md5@^2.19.0/js/md5.min.js"></script><script rel="preload" src="https://unpkg.com/lodash@^4.17.21/lodash.min.js"></script><link rel="stylesheet" href="https://fonts.loli.net/css?family=Rubik" /><script rel="preload" src="https://unpkg.com/gitalk@^1.8.0/dist/gitalk.min.js"></script><link rel="stylesheet" href="https://unpkg.com/gitalk@^1.8.0/dist/gitalk.css"/><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body id="body-container"><noscript><strong>We're sorry but this app doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id="app"></div></body></html>
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <title>Debian10配置Docker容器访问IPv6问题 | zLeoAlex's Blog</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="with Memos">
+    <meta name="color-scheme" content="light dark">
+    
+    <meta name="author" content="zLeoAlex">
+    
+    
+
+    <meta property="og:site_name" content="zLeoAlex's Blog">
+    <meta property="og:title" content="Debian10配置Docker容器访问IPv6问题">
+    <meta property="og:url" content="https://leoalex0.github.io/post/Docker%E5%AE%B9%E5%99%A8%E8%AE%BF%E9%97%AEIPv6%E9%97%AE%E9%A2%98.html">
+    <meta property="og:description" content="with Memos">
+    
+    
+    <meta property="og:type" content="article">
+    
+
+    
+    <meta property="twitter:site" content="zLeoAlex's Blog">
+    <meta property="twitter:title" content="Debian10配置Docker容器访问IPv6问题">
+    <meta property="twitter:description" content="with Memos">
+    
+
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="canonical" href="https://leoalex0.github.io/post/Docker%E5%AE%B9%E5%99%A8%E8%AE%BF%E9%97%AEIPv6%E9%97%AE%E9%A2%98.html">
+
+    <link rel="alternate" href="/atom.xml" title="zLeoAlex's Blog" type="application/atom+xml">
+    <link rel="alternate" href="/rss.xml" title="zLeoAlex's Blog" type="application/rss+xml">
+
+    <script>
+      ;(function () {
+        var storedTheme = null;
+
+        try {
+          storedTheme = window.localStorage.getItem("theme");
+        } catch (error) {
+          storedTheme = null;
+        }
+
+        if (storedTheme !== "dark" && storedTheme !== "light") {
+          storedTheme = null;
+        }
+
+        var prefersDark = window.matchMedia &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches;
+        var theme = storedTheme || (prefersDark ? "dark" : "light");
+
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
+
+    <link rel="stylesheet" href="/css/default.css">
+    <link rel="stylesheet" href="/css/code.css">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    
+
+    
+    
+    
+    <script>
+      window.__GITALK_CONFIG__ = {
+        clientID: "951199b7082582d13f7a",
+        clientSecret: "3015d93121701fe641bfd72f7268fce65aeb7ca2",
+        repo: "blog-comments",
+        owner: "LeoAlex0",
+        admin: ["LeoAlex0"],
+        language: "en",
+        distractionFreeMode: true
+      };
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+    
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="site-brand" href="/">
+        <span class="site-brand__title">zLeoAlex's Blog</span>
+        <span class="site-brand__subtitle">Memories</span>
+      </a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="/">Home</a>
+        <a href="/archives/">Archives</a>
+        <a href="/tags/">Tags</a>
+        <a href="/categories/">Categories</a>
+        <a href="/about/">About</a>
+      </nav>
+      <button
+        type="button"
+        class="theme-toggle"
+        data-theme-toggle
+        aria-label="Switch color theme"
+        aria-pressed="false"
+      >
+        <span class="theme-toggle__mark" aria-hidden="true"></span>
+        <span data-theme-toggle-label>Dark</span>
+      </button>
+    </header>
+    <main class="layout-main">
+  <article class="post">
+    <header class="post-header">
+      <p class="post-date">
+        2021-03-19 
+      </p>
+      <h1>Debian10配置Docker容器访问IPv6问题</h1>
+      <div class="post-meta">
+        <span><a title="All pages tagged &#39;网络&#39;." href="/categories/%E7%BD%91%E7%BB%9C.html" rel="tag">网络</a></span>
+        <span><a title="All pages tagged &#39;Debian&#39;." href="/tags/Debian.html" rel="tag">Debian</a>, <a title="All pages tagged &#39;Docker&#39;." href="/tags/Docker.html" rel="tag">Docker</a>, <a title="All pages tagged &#39;IPv6&#39;." href="/tags/IPv6.html" rel="tag">IPv6</a></span>
+      </div>
+    </header>
+    <section class="post-content">
+      <h2 id="打开docker的ipv6支持">打开Docker的IPv6支持</h2>
+<p>若想要容器能够监听IPv6的接口，那么首先容器内部需要自己有个IPv6的接口。</p>
+<p>参见<a href="https://docs.docker.com/config/daemon/ipv6/">docker文档</a></p>
+<p>修改<code>/etc/docker/daemon.json</code>，合并以下JSON配置</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;ipv6&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;fixed-cidr-v6&quot;</span><span class="fu">:</span> <span class="st">&quot;2001:db8:1::/64&quot;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p>然后自行<code>systemctl restart docker</code>之类重启<code>docker daemon</code>。</p>
+<p>其中第一项会开启默认的bridge network的IPv6支持，下一个会在IPv6的地址池里添加对应的网段。</p>
+<p>不过很奇怪的是，这一个网段的<strong>全部</strong>地址都会分给全局默认的bridge network，所以如果自己的docker-compose文件里有网络需要IPv6支持的，得手动分配一个网段，或者直接改用默认的全局bridge。</p>
+<h2 id="设置ip6tables转发流量">设置ip6tables转发流量</h2>
+<p>搞定上面一步之后，理论上你容器内expose出的端口都可以监听IPv6的接口了。但若是想让容器内部访问IPv6的外网，还需要配置ip6tables转发流量。</p>
+<p>参见<a href="https://github.com/docker/for-linux/issues/648">这个issue</a></p>
+<p>使用如下命令转发收到的对应地址的流量。</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ip6tables</span> <span class="at">-t</span> nat <span class="at">-A</span> POSTROUTING <span class="at">-s</span> 2001:db8:1::/64 ! <span class="at">-o</span> docker0 <span class="at">-j</span> MASQUERADE</span></code></pre></div>
+<p>但总感觉这个方案还不够完美，只能说暂时够用了。</p>
+    </section>
+  </article>
+</main>
+
+    
+    <section class="comments" aria-label="Comments">
+      <div id="gitalk-container"></div>
+    </section>
+    
+    <footer class="site-footer">
+      <div>
+        <strong>zLeoAlex's Blog</strong>
+        <span>with Memos</span>
+      </div>
+      <div class="site-footer__links">
+        <a href="/atom.xml">Atom</a>
+        <a href="/rss.xml">RSS</a>
+        <a href="https://github.com/LeoAlex0">GitHub</a>
+      </div>
+    </footer>
+    <script defer src="/js/script.js"></script>
+  </body>
+</html>

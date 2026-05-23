@@ -1,1 +1,253 @@
-<!doctype html><html lang="en"><head><!-- hexo injector head_begin start --><meta name="description" content="Diamonds can only be polished with diamonds"></meta><meta name="keywords" content="zLeoAlex,Blog"></meta><meta name="author" content="zLeoAlex"></meta><!-- hexo injector head_begin end --><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="/favicon.ico"><script type="module" crossorigin src="/static/js/120aa8f8.js"></script><link rel="stylesheet" href="/static/css/a14e1a22.css"><!-- hexo injector head_end start --><script rel="prefetch" async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script rel="preload" src="https://unpkg.com/blueimp-md5@^2.19.0/js/md5.min.js"></script><script rel="preload" src="https://unpkg.com/lodash@^4.17.21/lodash.min.js"></script><link rel="stylesheet" href="https://fonts.loli.net/css?family=Rubik" /><script rel="preload" src="https://unpkg.com/gitalk@^1.8.0/dist/gitalk.min.js"></script><link rel="stylesheet" href="https://unpkg.com/gitalk@^1.8.0/dist/gitalk.css"/><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body id="body-container"><noscript><strong>We're sorry but this app doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id="app"></div></body></html>
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <title>[CW]Faberge easter eggs crush test题解(数学部分) | zLeoAlex's Blog</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="with Memos">
+    <meta name="color-scheme" content="light dark">
+    
+    <meta name="author" content="zLeoAlex">
+    
+    
+
+    <meta property="og:site_name" content="zLeoAlex's Blog">
+    <meta property="og:title" content="[CW]Faberge easter eggs crush test题解(数学部分)">
+    <meta property="og:url" content="https://leoalex0.github.io/post/CW-Faberge-easter-eggs-crush-test.html">
+    <meta property="og:description" content="with Memos">
+    
+    
+    <meta property="og:type" content="article">
+    
+
+    
+    <meta property="twitter:site" content="zLeoAlex's Blog">
+    <meta property="twitter:title" content="[CW]Faberge easter eggs crush test题解(数学部分)">
+    <meta property="twitter:description" content="with Memos">
+    
+
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="canonical" href="https://leoalex0.github.io/post/CW-Faberge-easter-eggs-crush-test.html">
+
+    <link rel="alternate" href="/atom.xml" title="zLeoAlex's Blog" type="application/atom+xml">
+    <link rel="alternate" href="/rss.xml" title="zLeoAlex's Blog" type="application/rss+xml">
+
+    <script>
+      ;(function () {
+        var storedTheme = null;
+
+        try {
+          storedTheme = window.localStorage.getItem("theme");
+        } catch (error) {
+          storedTheme = null;
+        }
+
+        if (storedTheme !== "dark" && storedTheme !== "light") {
+          storedTheme = null;
+        }
+
+        var prefersDark = window.matchMedia &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches;
+        var theme = storedTheme || (prefersDark ? "dark" : "light");
+
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
+
+    <link rel="stylesheet" href="/css/default.css">
+    <link rel="stylesheet" href="/css/code.css">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    
+
+    
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [["$", "$"], ["\\(", "\\)"]],
+          displayMath: [["$$", "$$"], ["\\[", "\\]"]],
+          processEscapes: true
+        },
+        options: {
+          skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+          ignoreHtmlClass: "tex2jax_ignore",
+          processHtmlClass: "math|tex2jax_process"
+        }
+      };
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"></script>
+    
+    
+    
+    <script>
+      window.__GITALK_CONFIG__ = {
+        clientID: "951199b7082582d13f7a",
+        clientSecret: "3015d93121701fe641bfd72f7268fce65aeb7ca2",
+        repo: "blog-comments",
+        owner: "LeoAlex0",
+        admin: ["LeoAlex0"],
+        language: "en",
+        distractionFreeMode: true
+      };
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+    
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="site-brand" href="/">
+        <span class="site-brand__title">zLeoAlex's Blog</span>
+        <span class="site-brand__subtitle">Memories</span>
+      </a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="/">Home</a>
+        <a href="/archives/">Archives</a>
+        <a href="/tags/">Tags</a>
+        <a href="/categories/">Categories</a>
+        <a href="/about/">About</a>
+      </nav>
+      <button
+        type="button"
+        class="theme-toggle"
+        data-theme-toggle
+        aria-label="Switch color theme"
+        aria-pressed="false"
+      >
+        <span class="theme-toggle__mark" aria-hidden="true"></span>
+        <span data-theme-toggle-label>Dark</span>
+      </button>
+    </header>
+    <main class="layout-main">
+  <article class="post">
+    <header class="post-header">
+      <p class="post-date">
+        2020-06-27 
+      </p>
+      <h1>[CW]Faberge easter eggs crush test题解(数学部分)</h1>
+      <div class="post-meta">
+        <span><a title="All pages tagged &#39;Online Judge&#39;." href="/categories/Online%20Judge.html" rel="tag">Online Judge</a>, <a title="All pages tagged &#39;CodeWars&#39;." href="/categories/CodeWars.html" rel="tag">CodeWars</a>, <a title="All pages tagged &#39;1Kyu&#39;." href="/categories/1Kyu.html" rel="tag">1Kyu</a></span>
+        <span><a title="All pages tagged &#39;组合数学&#39;." href="/tags/%E7%BB%84%E5%90%88%E6%95%B0%E5%AD%A6.html" rel="tag">组合数学</a>, <a title="All pages tagged &#39;生成函数&#39;." href="/tags/%E7%94%9F%E6%88%90%E5%87%BD%E6%95%B0.html" rel="tag">生成函数</a></span>
+      </div>
+    </header>
+    <section class="post-content">
+      <h2 id="递推式">递推式</h2>
+<p>按照题意，若设所求函数为<span class="math inline">\(F(n,m)\)</span>，则有：</p>
+<p><span class="math display">\[
+\begin{aligned}
+  F(0,m)&amp;=0\\
+  F(n,0)&amp;=0\\
+  F(n,m)&amp;=F(n,m-1)+F(n-1,m-1)+1
+\end{aligned}
+\]</span></p>
+<h2 id="生成函数">生成函数</h2>
+<p>注意到其生成函数满足</p>
+<p><span class="math display">\[
+  G(x,y)=yG(x,y)+xyG(x,y)+\frac{xy}{(1-x)(1-y)}
+\]</span></p>
+<p>移项可得：</p>
+<p><span class="math display">\[
+\begin{aligned}
+  (1-y-xy)G(x,y)&amp;=\frac{xy}{(1-x)(1-y)} \\
+  G(x,y)&amp;=y(1-y)^{-1}x(1-x)^{-1}(1-y-xy)^{-1}\\
+\end{aligned}
+\]</span></p>
+<h2 id="解生成函数">解生成函数</h2>
+<p>令: <span class="math inline">\(p_1=(1-x)^{-1},p_2=(1-y-xy)^{-1}\)</span></p>
+<p>则: <span class="math inline">\(G(x,y)=y(1-y)^{-1}xp_1p_2\)</span></p>
+<p><span class="math display">\[
+\frac {\partial^n G(x,y)} {\partial x^n}
+= y(1-y)^{-1}\frac { \partial^nxp_1p_2 } {\partial x^n}\\
+\left. \frac{\partial^n G(x,y)}{\partial x^n} \right| _{x=0}
+= y(1-y)^{-1}\left.\frac{ \partial^nxp_1p_2 }{\partial x^n}\right| _{x=0}
+\]</span></p>
+<h3 id="莱布尼兹法则">莱布尼兹法则</h3>
+<p>注意如下同构</p>
+<p><span class="math display">\[
+\begin{aligned}
+令a^nb^m &amp;\sim u^{(n)}v^{(m)} \\
+a^nb^m(a+b)=a^{n+1}b^m+a^nb^{m+1} &amp;
+\sim u^{(n+1)}v^{(m)}+u^{(n)}v^{(m+1)}=(u^{(n)}v^{(m)})&#39; \\
+a^0b^0(a+b)^n=\sum_{i=0}^n \frac {n!} {i!(n-i)!} a^ib^{n-i}&amp;
+\sim (uv)^{(n)}=\sum_{i=0}^n \frac {n!} {i!(n-i)!} u^{(i)}v^{(n-i)} \\
+\end{aligned}
+\]</span></p>
+<h3 id="处理p_1p_2">处理<span class="math inline">\(p_1p_2\)</span></h3>
+<p>解出</p>
+<p><span class="math display">\[
+\begin {aligned}
+\frac {\partial^np_1} {\partial x^n} &amp;=n!(1-x)^{-n-1} \\
+\frac {\partial^np_2} {\partial x^n}&amp; =n!y^n(1-y-xy)^{-n-1}\\
+\left. \frac {\partial^np_1}{\partial x^n} \right|_{x=0} &amp;=  n! \\
+\left. \frac {\partial^np_2}{\partial x^n} \right|_{x=0} &amp;= n!y^n(1-y)^{-n-1}\\
+\left .\frac {\partial^n p_1p_2} {\partial x^n} \right|_{x=0}&amp;
+=\sum_{i=0}^n \frac {n!}{i!(n-i)!}
+\left.\frac{\partial^{n-i}p_1}{\partial x^{n-i}}
+\frac {\partial^i p_2} {\partial x^i} \right|_{x=0}  \\
+&amp;= \sum_{i=0}^n \frac {n!} {i!(n-i)!} i!y^i(1-y)^{-i-1}  (n-i)! \\
+&amp;=n! \sum_{i=0}^{n} y^i(1-y)^{-i-1} \\
+\end {aligned}
+\]</span></p>
+<h3 id="处理xp_1p_2">处理<span class="math inline">\(xp_1p_2\)</span></h3>
+<p><span class="math display">\[
+\begin{aligned}
+\frac {\partial^n xp_1p_2} {\partial x^{n}}&amp;
+= \sum _{i=0}^n \frac {n!} {i!(n-i)!}\frac {d^ix}{\partial x^i}
+\frac {d^{n-i}p_1p_2} {\partial x^{n-i}} \\
+&amp;=x \frac {\partial^n p_1p_2} {\partial x^{n}}
++n\frac {d^{n-1}p_1p_2} {\partial x^{n-1}} \\
+\left. \frac {\partial^n xp_1p_2} {\partial x^{n}} \right| _{x=0}&amp;
+= n\left .\frac {d^{n-1}p_1p_2} {\partial x^{n-1}} \right| _{x=0}\\
+&amp;=n(n-1)! \sum _{i=0}^{n-1} y^i(1-y)^{-i-1} \\
+&amp;=n!\sum _{i=0}^{n-1} y^i(1-y)^{-i-1}
+\end{aligned}
+\]</span></p>
+<h3 id="解出gxy">解出<span class="math inline">\(G(x,y)\)</span></h3>
+<p><span class="math display">\[
+\begin{aligned}
+G(x,y)&amp;=\sum_{n=0}^\infty
+\frac{\left. \frac {\partial^n G(x,y)} {\partial x^n} \right|_{x=0}}
+{n!}x^n &amp; 麦克劳林展开 \\
+&amp;=\sum _{n=0}^\infty \frac {n!\sum _{j=0}^{n-1}y^{j+1}(1-y)^{-j-2}} {n!} x^n &amp; 代入\\
+&amp;=\sum_{n=0}^\infty x^n\sum _{j=0}^{n-1}  y^{j+1}(1-y)^{-j-2} &amp; 前置x^n\\
+&amp;=\sum_{n=0}^\infty x^n\sum _{j=0}^{n-1}  y^{j+1}
+\sum_{i=0}^\infty \frac {(i+j+1)!}{i!(j+1)!} y^i &amp; 展开(1-y)^{-j-2}\\
+&amp;=\sum_{n=0}^\infty x^n\sum _{j=0}^{n-1}
+\sum _{i=0}^\infty \frac {(i+j+1)!}{i!(j+1)!} y^{i+j+1} &amp; 乘进y^{j+1}\\
+&amp;=\sum_{n=0}^\infty x^n\sum _{j=0}^{n-1}
+\sum _{m=j+1}^\infty \frac {m!}{(j+1)!(m-j-1)!} y^m &amp; 换元:m=i+j+1\\
+&amp;=\sum_{n=0}^\infty x^n\sum _{j=0}^{n-1}
+\sum _{m=j+1}^\infty \frac {m!}{(j+1)!(m-j-1)!} y^m &amp; 乘进来\\
+&amp;= \sum_{n=0}^\infty x^n \sum _{m=1}^\infty
+\sum _{j=0}^{\min(m,n)-1}\frac {m!}{(j+1)!(m-j-1)!} y^m&amp; 交换求和顺序 \\
+&amp;= \sum_{n=0}^\infty x^n \sum _{m=1}^\infty y^m
+\sum _{j=1}^{\min(n,m)}\frac {m!}{j!(m-j)!}  &amp; 换元：j=j+1
+\end{aligned} \\
+\]</span></p>
+<h2 id="解">解</h2>
+<p><span class="math display">\[
+F(n,m)=\sum _{j=1}^{\min(n,m)} \frac {m!} {j!(m-j)!}
+\]</span></p>
+    </section>
+  </article>
+</main>
+
+    
+    <section class="comments" aria-label="Comments">
+      <div id="gitalk-container"></div>
+    </section>
+    
+    <footer class="site-footer">
+      <div>
+        <strong>zLeoAlex's Blog</strong>
+        <span>with Memos</span>
+      </div>
+      <div class="site-footer__links">
+        <a href="/atom.xml">Atom</a>
+        <a href="/rss.xml">RSS</a>
+        <a href="https://github.com/LeoAlex0">GitHub</a>
+      </div>
+    </footer>
+    <script defer src="/js/script.js"></script>
+  </body>
+</html>
