@@ -361,16 +361,30 @@
       return;
     }
 
-    var gitalk = new window.Gitalk({
+    if (!config.clientSecret && !config.proxy) {
+      console.warn('Gitalk is not configured: set GITALK_CLIENT_SECRET or GITALK_PROXY.');
+      return;
+    }
+
+    var options = {
       clientID: config.clientID,
-      clientSecret: config.clientSecret,
       repo: config.repo,
       owner: config.owner,
       admin: config.admin,
       id: window.location.pathname,
       language: config.language || document.documentElement.lang || 'en',
       distractionFreeMode: config.distractionFreeMode === true
-    });
+    };
+
+    if (config.clientSecret) {
+      options.clientSecret = config.clientSecret;
+    }
+
+    if (config.proxy) {
+      options.proxy = config.proxy;
+    }
+
+    var gitalk = new window.Gitalk(options);
 
     gitalk.render(container);
     container.dataset.gitalkReady = 'true';
