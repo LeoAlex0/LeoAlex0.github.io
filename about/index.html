@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
   <head>
-    <title>about | zLeoAlex's Blog</title>
+    <title>关于 | zLeoAlex's Blog</title>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,7 +13,7 @@
     
 
     <meta property="og:site_name" content="zLeoAlex's Blog">
-    <meta property="og:title" content="about">
+    <meta property="og:title" content="关于">
     <meta property="og:url" content="https://leoalex0.github.io/about/index.html">
     <meta property="og:description" content="with Memos">
     
@@ -23,7 +23,7 @@
 
     
     <meta property="twitter:site" content="zLeoAlex's Blog">
-    <meta property="twitter:title" content="about">
+    <meta property="twitter:title" content="关于">
     <meta property="twitter:description" content="with Memos">
     
 
@@ -51,7 +51,21 @@
           window.matchMedia("(prefers-color-scheme: dark)").matches;
         var theme = storedTheme || (prefersDark ? "dark" : "light");
 
+        var storedLanguage = null;
+
+        try {
+          storedLanguage = window.localStorage.getItem("language");
+        } catch (error) {
+          storedLanguage = null;
+        }
+
+        if (storedLanguage !== "zh-CN" && storedLanguage !== "en") {
+          storedLanguage = document.documentElement.lang || "zh-CN";
+        }
+
         document.documentElement.dataset.theme = theme;
+        document.documentElement.dataset.language = storedLanguage;
+        document.documentElement.lang = storedLanguage;
       })();
     </script>
 
@@ -69,40 +83,48 @@
         <span class="site-brand__subtitle">Memories</span>
       </a>
       <nav class="site-nav" aria-label="Primary navigation">
-        <a href="/">Home</a>
-        <a href="/archives/">Archives</a>
-        <a href="/tags/">Tags</a>
-        <a href="/categories/">Categories</a>
-        <a href="/about/">About</a>
+        <a href="/" data-i18n-en="Home">首页</a>
+        <a href="/archives/" data-i18n-en="Archives">归档</a>
+        <a href="/tags/" data-i18n-en="Tags">标签</a>
+        <a href="/categories/" data-i18n-en="Categories">分类</a>
+        <a href="/about/" data-i18n-en="About">关于</a>
+        <a href="/whoami/" data-i18n-en="Whoami">我是谁</a>
       </nav>
-      <button
-        type="button"
-        class="theme-toggle"
-        data-theme-toggle
-        aria-label="Switch color theme"
-        aria-pressed="false"
-      >
-        <span class="theme-toggle__mark" aria-hidden="true"></span>
-        <span data-theme-toggle-label>Dark</span>
-      </button>
+      <div class="site-actions">
+        <div class="language-toggle" data-language-toggle aria-label="Switch language">
+          <button type="button" data-language-choice="zh-CN" aria-pressed="true">中</button>
+          <button type="button" data-language-choice="en" aria-pressed="false">EN</button>
+        </div>
+        <button
+          type="button"
+          class="theme-toggle"
+          data-theme-toggle
+          aria-label="Switch color theme"
+          aria-pressed="false"
+        >
+          <span class="theme-toggle__mark" aria-hidden="true"></span>
+          <span data-theme-toggle-label>深色</span>
+        </button>
+      </div>
     </header>
     <main class="layout-main">
   <article class="page">
     <header class="page-header">
       <p class="post-date">2025-07-12</p>
-      <h1>about</h1>
-      
+      <h1>
+        <span class="language-version is-current" data-language-version="zh-CN" lang="zh-CN">关于</span><span class="language-version" data-language-version="en" lang="en" hidden>About</span>
+      </h1>
     </header>
     <section
       class="post-content language-version is-current"
-      id="language-zh-CN"
       data-language-version="zh-CN"
       lang="zh-CN"
     >
-      <h1 id="about-me">About me</h1>
-<p>Someone boring</p>
+      <p>一个普通人，偶尔写代码、折腾系统，也把一些不想丢掉的旧事留在这里。</p>
+<p>这个博客主要放技术笔记、题解、实验记录，以及一些与时间有关的碎片。</p>
     </section>
-    
+    <section class="post-content language-version" data-language-version="en" lang="en" hidden><p>Someone ordinary who writes code, tinkers with systems, and keeps a few old notes from disappearing.</p>
+<p>This blog collects technical notes, problem writeups, experiments, and fragments worth remembering.</p></section>
   </article>
 </main>
 
@@ -110,7 +132,7 @@
     <footer class="site-footer">
       <div>
         <strong>zLeoAlex's Blog</strong>
-        <span>with Memos</span>
+        <span data-i18n-en="with Memos">与旧事同在</span>
       </div>
       <div class="site-footer__links">
         <a href="/atom.xml">Atom</a>

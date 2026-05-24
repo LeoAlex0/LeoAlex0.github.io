@@ -1,6 +1,33 @@
 ;(function () {
   var themeStorageKey = 'theme';
+  var languageStorageKey = 'language';
+  var defaultLanguage = 'zh-CN';
+  var supportedLanguages = ['zh-CN', 'en'];
   var themeMedia = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+  var languageText = {
+    'zh-CN': {
+      copy: '复制',
+      copied: '已复制',
+      failed: '失败',
+      copyCode: '复制代码块',
+      languageToggle: '切换语言',
+      themeDark: '深色',
+      themeLight: '浅色',
+      themeSwitchDark: '切换到深色模式',
+      themeSwitchLight: '切换到浅色模式'
+    },
+    en: {
+      copy: 'Copy',
+      copied: 'Copied',
+      failed: 'Failed',
+      copyCode: 'Copy code block',
+      languageToggle: 'Switch language',
+      themeDark: 'Dark',
+      themeLight: 'Light',
+      themeSwitchDark: 'Switch to dark mode',
+      themeSwitchLight: 'Switch to light mode'
+    }
+  };
 
   function normalizeTheme(theme) {
     return theme === 'dark' || theme === 'light' ? theme : null;
@@ -22,20 +49,60 @@
     return normalizeTheme(document.documentElement.dataset.theme) || readStoredTheme() || preferredTheme();
   }
 
+  function normalizeLanguage(language) {
+    var value = String(language || '').trim().replace('_', '-');
+    var lower = value.toLowerCase();
+
+    if (lower === 'zh' || lower === 'zh-cn') {
+      return 'zh-CN';
+    }
+
+    if (lower === 'en' || lower.indexOf('en-') === 0) {
+      return 'en';
+    }
+
+    return supportedLanguages.indexOf(value) !== -1 ? value : null;
+  }
+
+  function readStoredLanguage() {
+    try {
+      return normalizeLanguage(window.localStorage.getItem(languageStorageKey));
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function currentLanguage() {
+    return normalizeLanguage(document.documentElement.dataset.language) ||
+      readStoredLanguage() ||
+      normalizeLanguage(document.documentElement.lang) ||
+      defaultLanguage;
+  }
+
+  function textFor(key, language) {
+    var normalized = normalizeLanguage(language) || defaultLanguage;
+    var activeText = languageText[normalized] || languageText[defaultLanguage];
+    return activeText[key] || languageText[defaultLanguage][key] || key;
+  }
+
   function updateThemeToggle(theme) {
     var toggle = document.querySelector('[data-theme-toggle]');
     var label = document.querySelector('[data-theme-toggle-label]');
     var isDark = theme === 'dark';
+    var language = currentLanguage();
 
     if (!toggle) {
       return;
     }
 
     toggle.setAttribute('aria-pressed', String(isDark));
-    toggle.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+    toggle.setAttribute(
+      'aria-label',
+      isDark ? textFor('themeSwitchLight', language) : textFor('themeSwitchDark', language)
+    );
 
     if (label) {
-      label.textContent = isDark ? 'Light' : 'Dark';
+      label.textContent = isDark ? textFor('themeLight', language) : textFor('themeDark', language);
     }
   }
 
@@ -419,52 +486,128 @@
     appendGiscusAttribute(script, 'data-emit-metadata', config.emitMetadata || '0');
     appendGiscusAttribute(script, 'data-input-position', config.inputPosition || 'bottom');
     appendGiscusAttribute(script, 'data-theme', giscusTheme(currentTheme()));
-    appendGiscusAttribute(script, 'data-lang', config.language || document.documentElement.lang || 'en');
+    appendGiscusAttribute(script, 'data-lang', currentLanguage());
 
     container.appendChild(script);
     container.dataset.giscusReady = 'true';
   }
 
-  function setLanguageVersion(switcher, language) {
-    var article = switcher.closest('article') || document;
-    var buttons = switcher.querySelectorAll('[data-language-target]');
-    var sections = article.querySelectorAll('[data-language-version]');
+  function matchingLanguageVersion(language) {
+    var sections = document.querySelectorAll('[data-language-version]');
+    var fallback = null;
 
-    buttons.forEach(function (button) {
-      var isCurrent = button.dataset.languageTarget === language;
+    if (!sections.length) {
+      return language;
+    }
 
-      button.classList.toggle('is-current', isCurrent);
-      button.setAttribute('aria-pressed', String(isCurrent));
-    });
+    for (var index = 0; index < sections.length; index += 1) {
+      var sectionLanguage = normalizeLanguage(sections[index].dataset.languageVersion);
 
-    sections.forEach(function (section) {
-      section.hidden = section.dataset.languageVersion !== language;
-      section.classList.toggle('is-current', section.dataset.languageVersion === language);
-    });
+      if (sectionLanguage === language) {
+        return sectionLanguage;
+      }
 
-    updateGiscusLanguage(language);
+      if (sectionLanguage === defaultLanguage) {
+        fallback = defaultLanguage;
+      }
+
+      if (!fallback && sectionLanguage) {
+        fallback = sectionLanguage;
+      }
+    }
+
+    return fallback || language;
   }
 
-  function initLanguageSwitches() {
-    var switches = document.querySelectorAll('[data-language-switch]');
+  function updateLanguageVersions(language) {
+    var contentLanguage = matchingLanguageVersion(language);
+    var sections = document.querySelectorAll('[data-language-version]');
 
-    switches.forEach(function (switcher) {
-      var current = switcher.querySelector('[aria-pressed="true"]');
-      var fallback = switcher.querySelector('[data-language-target]');
+    sections.forEach(function (section) {
+      var isCurrent = normalizeLanguage(section.dataset.languageVersion) === contentLanguage;
 
-      switcher.addEventListener('click', function (event) {
-        var button = event.target.closest('[data-language-target]');
+      section.hidden = !isCurrent;
+      section.classList.toggle('is-current', isCurrent);
+    });
+  }
 
-        if (!button || !switcher.contains(button)) {
+  function updateTranslatedText(language) {
+    var nodes = document.querySelectorAll('[data-i18n-en]');
+
+    nodes.forEach(function (node) {
+      if (node.dataset.i18nZh == null) {
+        node.dataset.i18nZh = node.textContent;
+      }
+
+      node.textContent = language === 'en' ? node.dataset.i18nEn : node.dataset.i18nZh;
+    });
+  }
+
+  function updateLanguageToggle(language) {
+    var toggles = document.querySelectorAll('[data-language-toggle]');
+
+    toggles.forEach(function (toggle) {
+      var buttons = toggle.querySelectorAll('[data-language-choice]');
+
+      toggle.setAttribute('aria-label', textFor('languageToggle', language));
+
+      buttons.forEach(function (button) {
+        var isCurrent = normalizeLanguage(button.dataset.languageChoice) === language;
+
+        button.classList.toggle('is-current', isCurrent);
+        button.setAttribute('aria-pressed', String(isCurrent));
+      });
+    });
+  }
+
+  function updateCodeCopyButtons(language) {
+    var buttons = document.querySelectorAll('[data-code-copy]');
+
+    buttons.forEach(function (button) {
+      var state = button.dataset.copyState || 'idle';
+      var labelKey = state === 'copied' || state === 'failed' ? state : 'copy';
+
+      button.textContent = textFor(labelKey, language);
+      button.setAttribute('aria-label', textFor('copyCode', language));
+    });
+  }
+
+  function applyLanguage(language, shouldStore) {
+    var nextLanguage = normalizeLanguage(language) || defaultLanguage;
+
+    document.documentElement.dataset.language = nextLanguage;
+    document.documentElement.lang = nextLanguage;
+    updateTranslatedText(nextLanguage);
+    updateLanguageVersions(nextLanguage);
+    updateLanguageToggle(nextLanguage);
+    updateThemeToggle(currentTheme());
+    updateCodeCopyButtons(nextLanguage);
+    updateGiscusLanguage(nextLanguage);
+
+    if (shouldStore) {
+      try {
+        window.localStorage.setItem(languageStorageKey, nextLanguage);
+      } catch (error) {
+        return;
+      }
+    }
+  }
+
+  function initLanguageToggle() {
+    var toggles = document.querySelectorAll('[data-language-toggle]');
+
+    applyLanguage(currentLanguage(), false);
+
+    toggles.forEach(function (toggle) {
+      toggle.addEventListener('click', function (event) {
+        var button = event.target.closest('[data-language-choice]');
+
+        if (!button || !toggle.contains(button)) {
           return;
         }
 
-        setLanguageVersion(switcher, button.dataset.languageTarget);
+        applyLanguage(button.dataset.languageChoice, true);
       });
-
-      if (current || fallback) {
-        setLanguageVersion(switcher, (current || fallback).dataset.languageTarget);
-      }
     });
   }
 
@@ -619,25 +762,31 @@
 
     copyButton.type = 'button';
     copyButton.className = 'code-copy-button';
-    copyButton.textContent = 'Copy';
-    copyButton.setAttribute('aria-label', 'Copy code block');
+    copyButton.dataset.codeCopy = 'true';
+    copyButton.dataset.copyState = 'idle';
+    copyButton.textContent = textFor('copy', currentLanguage());
+    copyButton.setAttribute('aria-label', textFor('copyCode', currentLanguage()));
 
     copyButton.addEventListener('click', function () {
       writeClipboard(codeBlockText(code)).then(function () {
         window.clearTimeout(resetTimer);
-        copyButton.textContent = 'Copied';
+        copyButton.dataset.copyState = 'copied';
+        copyButton.textContent = textFor('copied', currentLanguage());
         copyButton.classList.add('is-copied');
 
         resetTimer = window.setTimeout(function () {
-          copyButton.textContent = 'Copy';
+          copyButton.dataset.copyState = 'idle';
+          copyButton.textContent = textFor('copy', currentLanguage());
           copyButton.classList.remove('is-copied');
         }, 1600);
       }).catch(function () {
         window.clearTimeout(resetTimer);
-        copyButton.textContent = 'Failed';
+        copyButton.dataset.copyState = 'failed';
+        copyButton.textContent = textFor('failed', currentLanguage());
 
         resetTimer = window.setTimeout(function () {
-          copyButton.textContent = 'Copy';
+          copyButton.dataset.copyState = 'idle';
+          copyButton.textContent = textFor('copy', currentLanguage());
         }, 1600);
       });
     });
@@ -674,16 +823,16 @@
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function () {
       initThemeToggle();
+      initLanguageToggle();
       initGeoGebra(0);
       initGiscus();
-      initLanguageSwitches();
       initCodeBlocks();
     });
   } else {
     initThemeToggle();
+    initLanguageToggle();
     initGeoGebra(0);
     initGiscus();
-    initLanguageSwitches();
     initCodeBlocks();
   }
 })();

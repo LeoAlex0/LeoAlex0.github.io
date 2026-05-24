@@ -51,7 +51,21 @@
           window.matchMedia("(prefers-color-scheme: dark)").matches;
         var theme = storedTheme || (prefersDark ? "dark" : "light");
 
+        var storedLanguage = null;
+
+        try {
+          storedLanguage = window.localStorage.getItem("language");
+        } catch (error) {
+          storedLanguage = null;
+        }
+
+        if (storedLanguage !== "zh-CN" && storedLanguage !== "en") {
+          storedLanguage = document.documentElement.lang || "zh-CN";
+        }
+
         document.documentElement.dataset.theme = theme;
+        document.documentElement.dataset.language = storedLanguage;
+        document.documentElement.lang = storedLanguage;
       })();
     </script>
 
@@ -85,22 +99,29 @@
         <span class="site-brand__subtitle">Memories</span>
       </a>
       <nav class="site-nav" aria-label="Primary navigation">
-        <a href="/">Home</a>
-        <a href="/archives/">Archives</a>
-        <a href="/tags/">Tags</a>
-        <a href="/categories/">Categories</a>
-        <a href="/about/">About</a>
+        <a href="/" data-i18n-en="Home">首页</a>
+        <a href="/archives/" data-i18n-en="Archives">归档</a>
+        <a href="/tags/" data-i18n-en="Tags">标签</a>
+        <a href="/categories/" data-i18n-en="Categories">分类</a>
+        <a href="/about/" data-i18n-en="About">关于</a>
+        <a href="/whoami/" data-i18n-en="Whoami">我是谁</a>
       </nav>
-      <button
-        type="button"
-        class="theme-toggle"
-        data-theme-toggle
-        aria-label="Switch color theme"
-        aria-pressed="false"
-      >
-        <span class="theme-toggle__mark" aria-hidden="true"></span>
-        <span data-theme-toggle-label>Dark</span>
-      </button>
+      <div class="site-actions">
+        <div class="language-toggle" data-language-toggle aria-label="Switch language">
+          <button type="button" data-language-choice="zh-CN" aria-pressed="true">中</button>
+          <button type="button" data-language-choice="en" aria-pressed="false">EN</button>
+        </div>
+        <button
+          type="button"
+          class="theme-toggle"
+          data-theme-toggle
+          aria-label="Switch color theme"
+          aria-pressed="false"
+        >
+          <span class="theme-toggle__mark" aria-hidden="true"></span>
+          <span data-theme-toggle-label>深色</span>
+        </button>
+      </div>
     </header>
     <main class="layout-main">
   <article class="post">
@@ -108,16 +129,16 @@
       <p class="post-date">
         2021-03-19 
       </p>
-      <h1>Debian10配置Docker容器访问IPv6问题</h1>
+      <h1>
+        <span class="language-version is-current" data-language-version="zh-CN" lang="zh-CN">Debian10配置Docker容器访问IPv6问题</span>
+      </h1>
       <div class="post-meta">
         <span><a title="All pages tagged &#39;网络&#39;." href="/categories/%E7%BD%91%E7%BB%9C.html" rel="tag">网络</a></span>
         <span><a title="All pages tagged &#39;Debian&#39;." href="/tags/Debian.html" rel="tag">Debian</a>, <a title="All pages tagged &#39;Docker&#39;." href="/tags/Docker.html" rel="tag">Docker</a>, <a title="All pages tagged &#39;IPv6&#39;." href="/tags/IPv6.html" rel="tag">IPv6</a></span>
       </div>
-      
     </header>
     <section
       class="post-content language-version is-current"
-      id="language-zh-CN"
       data-language-version="zh-CN"
       lang="zh-CN"
     >
@@ -151,7 +172,7 @@
     <footer class="site-footer">
       <div>
         <strong>zLeoAlex's Blog</strong>
-        <span>with Memos</span>
+        <span data-i18n-en="with Memos">与旧事同在</span>
       </div>
       <div class="site-footer__links">
         <a href="/atom.xml">Atom</a>

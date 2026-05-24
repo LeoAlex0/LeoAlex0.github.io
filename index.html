@@ -5,7 +5,7 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="there are something should not be forgotten, though years apart.">
+    <meta name="description" content="有些东西不应该被遗忘，哪怕已经相隔很多年。">
     <meta name="color-scheme" content="light dark">
     
     <meta name="author" content="zLeoAlex">
@@ -15,7 +15,7 @@
     <meta property="og:site_name" content="zLeoAlex's Blog">
     <meta property="og:title" content="zLeoAlex's Blog">
     <meta property="og:url" content="https://leoalex0.github.io/index.html">
-    <meta property="og:description" content="there are something should not be forgotten, though years apart.">
+    <meta property="og:description" content="有些东西不应该被遗忘，哪怕已经相隔很多年。">
     
     
     <meta property="og:type" content="website">
@@ -24,7 +24,7 @@
     
     <meta property="twitter:site" content="zLeoAlex's Blog">
     <meta property="twitter:title" content="zLeoAlex's Blog">
-    <meta property="twitter:description" content="there are something should not be forgotten, though years apart.">
+    <meta property="twitter:description" content="有些东西不应该被遗忘，哪怕已经相隔很多年。">
     
 
     <link rel="shortcut icon" href="/favicon.ico">
@@ -51,7 +51,21 @@
           window.matchMedia("(prefers-color-scheme: dark)").matches;
         var theme = storedTheme || (prefersDark ? "dark" : "light");
 
+        var storedLanguage = null;
+
+        try {
+          storedLanguage = window.localStorage.getItem("language");
+        } catch (error) {
+          storedLanguage = null;
+        }
+
+        if (storedLanguage !== "zh-CN" && storedLanguage !== "en") {
+          storedLanguage = document.documentElement.lang || "zh-CN";
+        }
+
         document.documentElement.dataset.theme = theme;
+        document.documentElement.dataset.language = storedLanguage;
+        document.documentElement.lang = storedLanguage;
       })();
     </script>
 
@@ -69,39 +83,46 @@
         <span class="site-brand__subtitle">Memories</span>
       </a>
       <nav class="site-nav" aria-label="Primary navigation">
-        <a href="/">Home</a>
-        <a href="/archives/">Archives</a>
-        <a href="/tags/">Tags</a>
-        <a href="/categories/">Categories</a>
-        <a href="/about/">About</a>
+        <a href="/" data-i18n-en="Home">首页</a>
+        <a href="/archives/" data-i18n-en="Archives">归档</a>
+        <a href="/tags/" data-i18n-en="Tags">标签</a>
+        <a href="/categories/" data-i18n-en="Categories">分类</a>
+        <a href="/about/" data-i18n-en="About">关于</a>
+        <a href="/whoami/" data-i18n-en="Whoami">我是谁</a>
       </nav>
-      <button
-        type="button"
-        class="theme-toggle"
-        data-theme-toggle
-        aria-label="Switch color theme"
-        aria-pressed="false"
-      >
-        <span class="theme-toggle__mark" aria-hidden="true"></span>
-        <span data-theme-toggle-label>Dark</span>
-      </button>
+      <div class="site-actions">
+        <div class="language-toggle" data-language-toggle aria-label="Switch language">
+          <button type="button" data-language-choice="zh-CN" aria-pressed="true">中</button>
+          <button type="button" data-language-choice="en" aria-pressed="false">EN</button>
+        </div>
+        <button
+          type="button"
+          class="theme-toggle"
+          data-theme-toggle
+          aria-label="Switch color theme"
+          aria-pressed="false"
+        >
+          <span class="theme-toggle__mark" aria-hidden="true"></span>
+          <span data-theme-toggle-label>深色</span>
+        </button>
+      </div>
     </header>
     <main class="layout-main home">
   <section class="home-intro">
-    <p class="home-intro__eyebrow">Memories</p>
+    <p class="home-intro__eyebrow" data-i18n-en="Memories">记忆</p>
     <h1>zLeoAlex's Blog</h1>
-    <p>there are something should not be forgotten, though years apart.</p>
+    <p data-i18n-en="there are something should not be forgotten, though years apart.">有些东西不应该被遗忘，哪怕已经相隔很多年。</p>
     <div class="home-intro__links">
-      <a href="/archives/">Archives</a>
-      <a href="/tags/">Tags</a>
-      <a href="/about/">About</a>
+      <a href="/archives/" data-i18n-en="Archives">归档</a>
+      <a href="/tags/" data-i18n-en="Tags">标签</a>
+      <a href="/about/" data-i18n-en="About">关于</a>
     </div>
   </section>
 
   <section class="home-posts">
     <div class="section-heading">
-      <h2>Latest Posts</h2>
-      <a href="/archives/">View all</a>
+      <h2 data-i18n-en="Latest Posts">最近文章</h2>
+      <a href="/archives/" data-i18n-en="View all">查看全部</a>
     </div>
     <ol class="post-list">
       
@@ -176,7 +197,7 @@
     <footer class="site-footer">
       <div>
         <strong>zLeoAlex's Blog</strong>
-        <span>with Memos</span>
+        <span data-i18n-en="with Memos">与旧事同在</span>
       </div>
       <div class="site-footer__links">
         <a href="/atom.xml">Atom</a>

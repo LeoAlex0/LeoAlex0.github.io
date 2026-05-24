@@ -51,7 +51,21 @@
           window.matchMedia("(prefers-color-scheme: dark)").matches;
         var theme = storedTheme || (prefersDark ? "dark" : "light");
 
+        var storedLanguage = null;
+
+        try {
+          storedLanguage = window.localStorage.getItem("language");
+        } catch (error) {
+          storedLanguage = null;
+        }
+
+        if (storedLanguage !== "zh-CN" && storedLanguage !== "en") {
+          storedLanguage = document.documentElement.lang || "zh-CN";
+        }
+
         document.documentElement.dataset.theme = theme;
+        document.documentElement.dataset.language = storedLanguage;
+        document.documentElement.lang = storedLanguage;
       })();
     </script>
 
@@ -85,22 +99,29 @@
         <span class="site-brand__subtitle">Memories</span>
       </a>
       <nav class="site-nav" aria-label="Primary navigation">
-        <a href="/">Home</a>
-        <a href="/archives/">Archives</a>
-        <a href="/tags/">Tags</a>
-        <a href="/categories/">Categories</a>
-        <a href="/about/">About</a>
+        <a href="/" data-i18n-en="Home">首页</a>
+        <a href="/archives/" data-i18n-en="Archives">归档</a>
+        <a href="/tags/" data-i18n-en="Tags">标签</a>
+        <a href="/categories/" data-i18n-en="Categories">分类</a>
+        <a href="/about/" data-i18n-en="About">关于</a>
+        <a href="/whoami/" data-i18n-en="Whoami">我是谁</a>
       </nav>
-      <button
-        type="button"
-        class="theme-toggle"
-        data-theme-toggle
-        aria-label="Switch color theme"
-        aria-pressed="false"
-      >
-        <span class="theme-toggle__mark" aria-hidden="true"></span>
-        <span data-theme-toggle-label>Dark</span>
-      </button>
+      <div class="site-actions">
+        <div class="language-toggle" data-language-toggle aria-label="Switch language">
+          <button type="button" data-language-choice="zh-CN" aria-pressed="true">中</button>
+          <button type="button" data-language-choice="en" aria-pressed="false">EN</button>
+        </div>
+        <button
+          type="button"
+          class="theme-toggle"
+          data-theme-toggle
+          aria-label="Switch color theme"
+          aria-pressed="false"
+        >
+          <span class="theme-toggle__mark" aria-hidden="true"></span>
+          <span data-theme-toggle-label>深色</span>
+        </button>
+      </div>
     </header>
     <main class="layout-main">
   <article class="post">
@@ -108,16 +129,16 @@
       <p class="post-date">
         2021-06-07 
       </p>
-      <h1>Gentoo 下 Minecraft 1.12 报 No OpenGL context found in the current thread</h1>
+      <h1>
+        <span class="language-version is-current" data-language-version="zh-CN" lang="zh-CN">Gentoo 下 Minecraft 1.12 报 No OpenGL context found in the current thread</span><span class="language-version" data-language-version="en" lang="en" hidden>Gentoo Minecraft 1.12 RuntimeException: No OpenGL context found in the current thread.</span>
+      </h1>
       <div class="post-meta">
         <span><a title="All pages tagged &#39;Gentoo&#39;." href="/categories/Gentoo.html" rel="tag">Gentoo</a>, <a title="All pages tagged &#39;Fix&#39;." href="/categories/Fix.html" rel="tag">Fix</a></span>
         <span><a title="All pages tagged &#39;BUG&#39;." href="/tags/BUG.html" rel="tag">BUG</a>, <a title="All pages tagged &#39;Minecraft&#39;." href="/tags/Minecraft.html" rel="tag">Minecraft</a>, <a title="All pages tagged &#39;Gentoo&#39;." href="/tags/Gentoo.html" rel="tag">Gentoo</a></span>
       </div>
-      <nav class="language-switch" aria-label="Language versions" data-language-switch><span class="language-switch__label">语言</span><button class="language-switch__item is-current" type="button" data-language-target="zh-CN" aria-controls="language-zh-CN" aria-pressed="true" lang="zh-CN">中文</button><button class="language-switch__item" type="button" data-language-target="en" aria-controls="language-en" aria-pressed="false" lang="en">English</button></nav>
     </header>
     <section
       class="post-content language-version is-current"
-      id="language-zh-CN"
       data-language-version="zh-CN"
       lang="zh-CN"
     >
@@ -201,7 +222,7 @@ Details:
 <pre class="shell"><code># emerge -av x11-apps/xrandr</code></pre>
 <p>从堆栈看，崩溃发生在 LWJGL 2 查询显示模式时。补上 <code>xrandr</code> 后，Minecraft 1.12.2 就可以正常完成初始化。</p>
     </section>
-    <section class="post-content language-version" id="language-en" data-language-version="en" lang="en" hidden><h2 id="description">Description</h2>
+    <section class="post-content language-version" data-language-version="en" lang="en" hidden><h2 id="description">Description</h2>
 <p>When launching Minecraft 1.12.2 through MultiMC on Gentoo, the client crashes during initialization with <code>No OpenGL context found in the current thread</code>.</p>
 <pre class="log"><code>[14:37:51] [Client thread/INFO]: Setting user: zLeoAlex
 [14:37:52] [Client thread/INFO]: LWJGL Version: 2.9.4
@@ -291,7 +312,7 @@ Details:
     <footer class="site-footer">
       <div>
         <strong>zLeoAlex's Blog</strong>
-        <span>with Memos</span>
+        <span data-i18n-en="with Memos">与旧事同在</span>
       </div>
       <div class="site-footer__links">
         <a href="/atom.xml">Atom</a>

@@ -51,7 +51,21 @@
           window.matchMedia("(prefers-color-scheme: dark)").matches;
         var theme = storedTheme || (prefersDark ? "dark" : "light");
 
+        var storedLanguage = null;
+
+        try {
+          storedLanguage = window.localStorage.getItem("language");
+        } catch (error) {
+          storedLanguage = null;
+        }
+
+        if (storedLanguage !== "zh-CN" && storedLanguage !== "en") {
+          storedLanguage = document.documentElement.lang || "zh-CN";
+        }
+
         document.documentElement.dataset.theme = theme;
+        document.documentElement.dataset.language = storedLanguage;
+        document.documentElement.lang = storedLanguage;
       })();
     </script>
 
@@ -101,22 +115,29 @@
         <span class="site-brand__subtitle">Memories</span>
       </a>
       <nav class="site-nav" aria-label="Primary navigation">
-        <a href="/">Home</a>
-        <a href="/archives/">Archives</a>
-        <a href="/tags/">Tags</a>
-        <a href="/categories/">Categories</a>
-        <a href="/about/">About</a>
+        <a href="/" data-i18n-en="Home">首页</a>
+        <a href="/archives/" data-i18n-en="Archives">归档</a>
+        <a href="/tags/" data-i18n-en="Tags">标签</a>
+        <a href="/categories/" data-i18n-en="Categories">分类</a>
+        <a href="/about/" data-i18n-en="About">关于</a>
+        <a href="/whoami/" data-i18n-en="Whoami">我是谁</a>
       </nav>
-      <button
-        type="button"
-        class="theme-toggle"
-        data-theme-toggle
-        aria-label="Switch color theme"
-        aria-pressed="false"
-      >
-        <span class="theme-toggle__mark" aria-hidden="true"></span>
-        <span data-theme-toggle-label>Dark</span>
-      </button>
+      <div class="site-actions">
+        <div class="language-toggle" data-language-toggle aria-label="Switch language">
+          <button type="button" data-language-choice="zh-CN" aria-pressed="true">中</button>
+          <button type="button" data-language-choice="en" aria-pressed="false">EN</button>
+        </div>
+        <button
+          type="button"
+          class="theme-toggle"
+          data-theme-toggle
+          aria-label="Switch color theme"
+          aria-pressed="false"
+        >
+          <span class="theme-toggle__mark" aria-hidden="true"></span>
+          <span data-theme-toggle-label>深色</span>
+        </button>
+      </div>
     </header>
     <main class="layout-main">
   <article class="post">
@@ -124,16 +145,16 @@
       <p class="post-date">
         2020-06-27 
       </p>
-      <h1>[CW]Faberge easter eggs crush test题解(数学部分)</h1>
+      <h1>
+        <span class="language-version is-current" data-language-version="zh-CN" lang="zh-CN">[CW]Faberge easter eggs crush test题解(数学部分)</span>
+      </h1>
       <div class="post-meta">
         <span><a title="All pages tagged &#39;Online Judge&#39;." href="/categories/Online%20Judge.html" rel="tag">Online Judge</a>, <a title="All pages tagged &#39;CodeWars&#39;." href="/categories/CodeWars.html" rel="tag">CodeWars</a>, <a title="All pages tagged &#39;1Kyu&#39;." href="/categories/1Kyu.html" rel="tag">1Kyu</a></span>
         <span><a title="All pages tagged &#39;组合数学&#39;." href="/tags/%E7%BB%84%E5%90%88%E6%95%B0%E5%AD%A6.html" rel="tag">组合数学</a>, <a title="All pages tagged &#39;生成函数&#39;." href="/tags/%E7%94%9F%E6%88%90%E5%87%BD%E6%95%B0.html" rel="tag">生成函数</a></span>
       </div>
-      
     </header>
     <section
       class="post-content language-version is-current"
-      id="language-zh-CN"
       data-language-version="zh-CN"
       lang="zh-CN"
     >
@@ -247,7 +268,7 @@ F(n,m)=\sum _{j=1}^{\min(n,m)} \frac {m!} {j!(m-j)!}
     <footer class="site-footer">
       <div>
         <strong>zLeoAlex's Blog</strong>
-        <span>with Memos</span>
+        <span data-i18n-en="with Memos">与旧事同在</span>
       </div>
       <div class="site-footer__links">
         <a href="/atom.xml">Atom</a>
