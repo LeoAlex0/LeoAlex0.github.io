@@ -57,9 +57,6 @@
 
     <link rel="stylesheet" href="/css/default.css">
     <link rel="stylesheet" href="/css/code.css">
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
-    
 
     
     <script>
@@ -81,18 +78,20 @@
     
     
     <script>
-      window.__GITALK_CONFIG__ = {
-        clientID: "951199b7082582d13f7a",
-        clientSecret: "3015d93121701fe641bfd72f7268fce65aeb7ca2",
-        repo: "blog-comments",
-        owner: "LeoAlex0",
-        admin: ["LeoAlex0"],
-        proxy: "",
-        language: "en",
-        distractionFreeMode: true
+      window.__GISCUS_CONFIG__ = {
+        repo: "LeoAlex0/blog-comments",
+        repoID: "MDEwOlJlcG9zaXRvcnkyNDg3NTc4Njc=",
+        category: "General",
+        categoryID: "DIC_kwDODtO-a84C9uOc",
+        mapping: "specific",
+        term: "post:洛谷-P1383-高级打字机",
+        strict: "0",
+        reactionsEnabled: "1",
+        emitMetadata: "0",
+        inputPosition: "bottom",
+        language: "zh-CN"
       };
     </script>
-    <script defer src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
     
   </head>
   <body>
@@ -130,8 +129,14 @@
         <span><a title="All pages tagged &#39;Online Judge&#39;." href="/categories/Online%20Judge.html" rel="tag">Online Judge</a>, <a title="All pages tagged &#39;洛谷&#39;." href="/categories/%E6%B4%9B%E8%B0%B7.html" rel="tag">洛谷</a></span>
         <span><a title="All pages tagged &#39;算法&#39;." href="/tags/%E7%AE%97%E6%B3%95.html" rel="tag">算法</a>, <a title="All pages tagged &#39;数据结构&#39;." href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84.html" rel="tag">数据结构</a></span>
       </div>
+      
     </header>
-    <section class="post-content">
+    <section
+      class="post-content language-version is-current"
+      id="language-zh-CN"
+      data-language-version="zh-CN"
+      lang="zh-CN"
+    >
       <!-- # 洛谷-P1383 高级打字机 题解 -->
 <p>如果使用 Haskell 语言的话，本题可以使用 <code>containers</code> 包中的 <code>Data.Sequence</code> 秒杀，因为 <code>Seq</code> 本身便是一颗可持久的 <code>FingerTree</code>，用树套树的话，便可以做到一个非常优异的时间/空间复杂度。</p>
 <p>惰性求值但是的确是在线算法，可以撤回撤回（返回撤回前的时间点，不知道算不算）。</p>
@@ -374,12 +379,13 @@
 <p>这里注意，由于我们之前使用了 <code>Functional Dependencies</code>，所以我们需要新建一个类型作为容器来容纳我们的类型。所以此处使用了不会导致额外开销的 <code>newtype</code> 关键字替代 <code>data</code>（在当前环境下，二者语义一致）</p>
 <p>接下来就可以实现 <code>Seq</code> 了，具体可以参考 <code>container</code> 包的源代码或者论文原文。</p>
     </section>
+    
   </article>
 </main>
 
     
     <section class="comments" aria-label="Comments">
-      <div id="gitalk-container"></div>
+      <div id="giscus-container" class="giscus"></div>
     </section>
     
     <footer class="site-footer">

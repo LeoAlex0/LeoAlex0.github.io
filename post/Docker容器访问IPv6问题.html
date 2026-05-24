@@ -57,26 +57,25 @@
 
     <link rel="stylesheet" href="/css/default.css">
     <link rel="stylesheet" href="/css/code.css">
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
-    
 
     
     
     
     <script>
-      window.__GITALK_CONFIG__ = {
-        clientID: "951199b7082582d13f7a",
-        clientSecret: "3015d93121701fe641bfd72f7268fce65aeb7ca2",
-        repo: "blog-comments",
-        owner: "LeoAlex0",
-        admin: ["LeoAlex0"],
-        proxy: "",
-        language: "en",
-        distractionFreeMode: true
+      window.__GISCUS_CONFIG__ = {
+        repo: "LeoAlex0/blog-comments",
+        repoID: "MDEwOlJlcG9zaXRvcnkyNDg3NTc4Njc=",
+        category: "General",
+        categoryID: "DIC_kwDODtO-a84C9uOc",
+        mapping: "specific",
+        term: "post:Docker容器访问IPv6问题",
+        strict: "0",
+        reactionsEnabled: "1",
+        emitMetadata: "0",
+        inputPosition: "bottom",
+        language: "zh-CN"
       };
     </script>
-    <script defer src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
     
   </head>
   <body>
@@ -114,8 +113,14 @@
         <span><a title="All pages tagged &#39;网络&#39;." href="/categories/%E7%BD%91%E7%BB%9C.html" rel="tag">网络</a></span>
         <span><a title="All pages tagged &#39;Debian&#39;." href="/tags/Debian.html" rel="tag">Debian</a>, <a title="All pages tagged &#39;Docker&#39;." href="/tags/Docker.html" rel="tag">Docker</a>, <a title="All pages tagged &#39;IPv6&#39;." href="/tags/IPv6.html" rel="tag">IPv6</a></span>
       </div>
+      
     </header>
-    <section class="post-content">
+    <section
+      class="post-content language-version is-current"
+      id="language-zh-CN"
+      data-language-version="zh-CN"
+      lang="zh-CN"
+    >
       <h2 id="打开docker的ipv6支持">打开Docker的IPv6支持</h2>
 <p>若想要容器能够监听IPv6的接口，那么首先容器内部需要自己有个IPv6的接口。</p>
 <p>参见<a href="https://docs.docker.com/config/daemon/ipv6/">docker文档</a></p>
@@ -134,12 +139,13 @@
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ip6tables</span> <span class="at">-t</span> nat <span class="at">-A</span> POSTROUTING <span class="at">-s</span> 2001:db8:1::/64 ! <span class="at">-o</span> docker0 <span class="at">-j</span> MASQUERADE</span></code></pre></div>
 <p>但总感觉这个方案还不够完美，只能说暂时够用了。</p>
     </section>
+    
   </article>
 </main>
 
     
     <section class="comments" aria-label="Comments">
-      <div id="gitalk-container"></div>
+      <div id="giscus-container" class="giscus"></div>
     </section>
     
     <footer class="site-footer">

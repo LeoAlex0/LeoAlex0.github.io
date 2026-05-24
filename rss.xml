@@ -9,10 +9,10 @@
                    type="application/rss+xml" />
         <lastBuildDate>Mon, 07 Jun 2021 14:37:02 UT</lastBuildDate>
         <item>
-    <title>Gentoo Minecraft 1.12 RuntimeException: No OpenGL context found in the current thread.</title>
+    <title>Gentoo 下 Minecraft 1.12 报 No OpenGL context found in the current thread</title>
     <link>https://leoalex0.github.io/post/Gentoo-Minecraft-1-12-OpenGL-error.html</link>
-    <description><![CDATA[<h2 id="description">Description</h2>
-<p>When launching Minecraft 1.12 through MultiMC Launcher, error happens：</p>
+    <description><![CDATA[<h2 id="问题">问题</h2>
+<p>在 Gentoo 上通过 MultiMC 启动 Minecraft 1.12.2 时，客户端在初始化阶段崩溃，错误日志里能看到 <code>No OpenGL context found in the current thread</code>。</p>
 <pre class="log"><code>[14:37:51] [Client thread/INFO]: Setting user: zLeoAlex
 [14:37:52] [Client thread/INFO]: LWJGL Version: 2.9.4
 ---- Minecraft Crash Report ----
@@ -85,10 +85,11 @@ Details:
 	Profiler Position: N/A (disabled)
 	CPU: &lt;unknown&gt;
 #@!@# Game crashed! Crash report saved to: #@!@# /home/leo/.local/share/multimc/instances/1.12.2/.minecraft/crash-reports/crash-2021-06-07_14.37.52-client.txt</code></pre>
-<p>But Minecraft 1.16 can be launched successfully.</p>
-<h2 id="fix">Fix</h2>
-<p>Install <code>x11-apps/xrandr</code></p>
-<pre class="shell"><code># emerge -av x11-apps/xrandr</code></pre>]]></description>
+<p>不过同一套环境里 Minecraft 1.16 可以正常启动，所以问题并不像是显卡驱动、Java 或 MultiMC 整体不可用。</p>
+<h2 id="修复">修复</h2>
+<p>安装 <code>x11-apps/xrandr</code>：</p>
+<pre class="shell"><code># emerge -av x11-apps/xrandr</code></pre>
+<p>从堆栈看，崩溃发生在 LWJGL 2 查询显示模式时。补上 <code>xrandr</code> 后，Minecraft 1.12.2 就可以正常完成初始化。</p>]]></description>
     <pubDate>Mon, 07 Jun 2021 14:37:02 UT</pubDate>
     <guid>https://leoalex0.github.io/post/Gentoo-Minecraft-1-12-OpenGL-error.html</guid>
     <dc:creator>zLeoAlex</dc:creator>

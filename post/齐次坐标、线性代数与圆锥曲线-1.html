@@ -57,9 +57,6 @@
 
     <link rel="stylesheet" href="/css/default.css">
     <link rel="stylesheet" href="/css/code.css">
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
-    
 
     
     <script>
@@ -81,18 +78,20 @@
     
     
     <script>
-      window.__GITALK_CONFIG__ = {
-        clientID: "951199b7082582d13f7a",
-        clientSecret: "3015d93121701fe641bfd72f7268fce65aeb7ca2",
-        repo: "blog-comments",
-        owner: "LeoAlex0",
-        admin: ["LeoAlex0"],
-        proxy: "",
-        language: "en",
-        distractionFreeMode: true
+      window.__GISCUS_CONFIG__ = {
+        repo: "LeoAlex0/blog-comments",
+        repoID: "MDEwOlJlcG9zaXRvcnkyNDg3NTc4Njc=",
+        category: "General",
+        categoryID: "DIC_kwDODtO-a84C9uOc",
+        mapping: "specific",
+        term: "post:齐次坐标、线性代数与圆锥曲线-1",
+        strict: "0",
+        reactionsEnabled: "1",
+        emitMetadata: "0",
+        inputPosition: "bottom",
+        language: "zh-CN"
       };
     </script>
-    <script defer src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
     
   </head>
   <body>
@@ -130,8 +129,14 @@
         <span><a title="All pages tagged &#39;数学&#39;." href="/categories/%E6%95%B0%E5%AD%A6.html" rel="tag">数学</a>, <a title="All pages tagged &#39;几何&#39;." href="/categories/%E5%87%A0%E4%BD%95.html" rel="tag">几何</a></span>
         <span><a title="All pages tagged &#39;数学&#39;." href="/tags/%E6%95%B0%E5%AD%A6.html" rel="tag">数学</a>, <a title="All pages tagged &#39;齐次坐标&#39;." href="/tags/%E9%BD%90%E6%AC%A1%E5%9D%90%E6%A0%87.html" rel="tag">齐次坐标</a></span>
       </div>
+      
     </header>
-    <section class="post-content">
+    <section
+      class="post-content language-version is-current"
+      id="language-zh-CN"
+      data-language-version="zh-CN"
+      lang="zh-CN"
+    >
       <h2 id="简介">简介</h2>
 <p>本文与其说是一篇文章，不如说是对于<a href="https://zhuanlan.zhihu.com/p/103884912">这篇文章</a>的简化与总结。</p>
 <p>最终目的是通过引入尽可能少的外部假定，使得我们可以从一个更高的视角看高中的圆锥曲线题。</p>
@@ -337,12 +342,13 @@ l&#39; \times l &amp;= \lambda_1 l_\infty \times l \\
 <p>且其在平面直角坐标系上的表示正好与<span class="math inline">\(l\)</span>平行。故我们可以将所有与<span class="math inline">\(l\)</span>相差任意倍<span class="math inline">\(l_\infty\)</span>的直线认为其与<span class="math inline">\(l\)</span>平行。</p>
 <p>但对偶地，<span class="math inline">\(\begin{bmatrix} 0\\0\\1 \end{bmatrix}\)</span>却代表原点。</p>
     </section>
+    
   </article>
 </main>
 
     
     <section class="comments" aria-label="Comments">
-      <div id="gitalk-container"></div>
+      <div id="giscus-container" class="giscus"></div>
     </section>
     
     <footer class="site-footer">

@@ -57,9 +57,6 @@
 
     <link rel="stylesheet" href="/css/default.css">
     <link rel="stylesheet" href="/css/code.css">
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
-    
 
     
     <script>
@@ -81,18 +78,20 @@
     
     
     <script>
-      window.__GITALK_CONFIG__ = {
-        clientID: "951199b7082582d13f7a",
-        clientSecret: "3015d93121701fe641bfd72f7268fce65aeb7ca2",
-        repo: "blog-comments",
-        owner: "LeoAlex0",
-        admin: ["LeoAlex0"],
-        proxy: "",
-        language: "en",
-        distractionFreeMode: true
+      window.__GISCUS_CONFIG__ = {
+        repo: "LeoAlex0/blog-comments",
+        repoID: "MDEwOlJlcG9zaXRvcnkyNDg3NTc4Njc=",
+        category: "General",
+        categoryID: "DIC_kwDODtO-a84C9uOc",
+        mapping: "specific",
+        term: "post:CW-Faberge-easter-eggs-crush-test",
+        strict: "0",
+        reactionsEnabled: "1",
+        emitMetadata: "0",
+        inputPosition: "bottom",
+        language: "zh-CN"
       };
     </script>
-    <script defer src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
     
   </head>
   <body>
@@ -130,8 +129,14 @@
         <span><a title="All pages tagged &#39;Online Judge&#39;." href="/categories/Online%20Judge.html" rel="tag">Online Judge</a>, <a title="All pages tagged &#39;CodeWars&#39;." href="/categories/CodeWars.html" rel="tag">CodeWars</a>, <a title="All pages tagged &#39;1Kyu&#39;." href="/categories/1Kyu.html" rel="tag">1Kyu</a></span>
         <span><a title="All pages tagged &#39;组合数学&#39;." href="/tags/%E7%BB%84%E5%90%88%E6%95%B0%E5%AD%A6.html" rel="tag">组合数学</a>, <a title="All pages tagged &#39;生成函数&#39;." href="/tags/%E7%94%9F%E6%88%90%E5%87%BD%E6%95%B0.html" rel="tag">生成函数</a></span>
       </div>
+      
     </header>
-    <section class="post-content">
+    <section
+      class="post-content language-version is-current"
+      id="language-zh-CN"
+      data-language-version="zh-CN"
+      lang="zh-CN"
+    >
       <h2 id="递推式">递推式</h2>
 <p>按照题意，若设所求函数为<span class="math inline">\(F(n,m)\)</span>，则有：</p>
 <p><span class="math display">\[
@@ -230,12 +235,13 @@ G(x,y)&amp;=\sum_{n=0}^\infty
 F(n,m)=\sum _{j=1}^{\min(n,m)} \frac {m!} {j!(m-j)!}
 \]</span></p>
     </section>
+    
   </article>
 </main>
 
     
     <section class="comments" aria-label="Comments">
-      <div id="gitalk-container"></div>
+      <div id="giscus-container" class="giscus"></div>
     </section>
     
     <footer class="site-footer">

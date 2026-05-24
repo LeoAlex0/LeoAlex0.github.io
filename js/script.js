@@ -43,6 +43,7 @@
     var nextTheme = normalizeTheme(theme) || preferredTheme();
     document.documentElement.dataset.theme = nextTheme;
     updateThemeToggle(nextTheme);
+    updateGiscusTheme(nextTheme);
 
     if (shouldStore) {
       try {
@@ -353,41 +354,118 @@
     applets.forEach(injectApplet);
   }
 
-  function initGitalk() {
-    var container = document.getElementById('gitalk-container');
-    var config = window.__GITALK_CONFIG__;
+  function giscusTheme(theme) {
+    return theme === 'dark' ? 'dark' : 'light';
+  }
 
-    if (!container || !config || !window.Gitalk || container.dataset.gitalkReady === 'true') {
+  function updateGiscusTheme(theme) {
+    var frame = document.querySelector('iframe.giscus-frame');
+
+    if (!frame || !frame.contentWindow) {
       return;
     }
 
-    if (!config.clientSecret && !config.proxy) {
-      console.warn('Gitalk is not configured: set GITALK_CLIENT_SECRET or GITALK_PROXY.');
+    frame.contentWindow.postMessage(
+      { giscus: { setConfig: { theme: giscusTheme(theme) } } },
+      'https://giscus.app'
+    );
+  }
+
+  function updateGiscusLanguage(language) {
+    var frame = document.querySelector('iframe.giscus-frame');
+
+    if (!frame || !frame.contentWindow || !language) {
       return;
     }
 
-    var options = {
-      clientID: config.clientID,
-      repo: config.repo,
-      owner: config.owner,
-      admin: config.admin,
-      id: window.location.pathname,
-      language: config.language || document.documentElement.lang || 'en',
-      distractionFreeMode: config.distractionFreeMode === true
-    };
+    frame.contentWindow.postMessage(
+      { giscus: { setConfig: { lang: language } } },
+      'https://giscus.app'
+    );
+  }
 
-    if (config.clientSecret) {
-      options.clientSecret = config.clientSecret;
+  function appendGiscusAttribute(script, name, value) {
+    script.setAttribute(name, value == null ? '' : String(value));
+  }
+
+  function initGiscus() {
+    var container = document.getElementById('giscus-container');
+    var config = window.__GISCUS_CONFIG__;
+    var script = document.createElement('script');
+
+    if (!container || !config || container.dataset.giscusReady === 'true') {
+      return;
     }
 
-    if (config.proxy) {
-      options.proxy = config.proxy;
+    if (!config.repo || !config.repoID || !config.category || !config.categoryID) {
+      if (container.parentElement) {
+        container.parentElement.hidden = true;
+      }
+      console.warn('Giscus is not configured: set repo, repoID, category, and categoryID.');
+      return;
     }
 
-    var gitalk = new window.Gitalk(options);
+    script.src = 'https://giscus.app/client.js';
+    script.async = true;
+    script.crossOrigin = 'anonymous';
+    appendGiscusAttribute(script, 'data-repo', config.repo);
+    appendGiscusAttribute(script, 'data-repo-id', config.repoID);
+    appendGiscusAttribute(script, 'data-category', config.category);
+    appendGiscusAttribute(script, 'data-category-id', config.categoryID);
+    appendGiscusAttribute(script, 'data-mapping', config.mapping || 'pathname');
+    appendGiscusAttribute(script, 'data-term', config.term || window.location.pathname);
+    appendGiscusAttribute(script, 'data-strict', config.strict || '0');
+    appendGiscusAttribute(script, 'data-reactions-enabled', config.reactionsEnabled || '1');
+    appendGiscusAttribute(script, 'data-emit-metadata', config.emitMetadata || '0');
+    appendGiscusAttribute(script, 'data-input-position', config.inputPosition || 'bottom');
+    appendGiscusAttribute(script, 'data-theme', giscusTheme(currentTheme()));
+    appendGiscusAttribute(script, 'data-lang', config.language || document.documentElement.lang || 'en');
 
-    gitalk.render(container);
-    container.dataset.gitalkReady = 'true';
+    container.appendChild(script);
+    container.dataset.giscusReady = 'true';
+  }
+
+  function setLanguageVersion(switcher, language) {
+    var article = switcher.closest('article') || document;
+    var buttons = switcher.querySelectorAll('[data-language-target]');
+    var sections = article.querySelectorAll('[data-language-version]');
+
+    buttons.forEach(function (button) {
+      var isCurrent = button.dataset.languageTarget === language;
+
+      button.classList.toggle('is-current', isCurrent);
+      button.setAttribute('aria-pressed', String(isCurrent));
+    });
+
+    sections.forEach(function (section) {
+      section.hidden = section.dataset.languageVersion !== language;
+      section.classList.toggle('is-current', section.dataset.languageVersion === language);
+    });
+
+    updateGiscusLanguage(language);
+  }
+
+  function initLanguageSwitches() {
+    var switches = document.querySelectorAll('[data-language-switch]');
+
+    switches.forEach(function (switcher) {
+      var current = switcher.querySelector('[aria-pressed="true"]');
+      var fallback = switcher.querySelector('[data-language-target]');
+
+      switcher.addEventListener('click', function (event) {
+        var button = event.target.closest('[data-language-target]');
+
+        if (!button || !switcher.contains(button)) {
+          return;
+        }
+
+        setLanguageVersion(switcher, button.dataset.languageTarget);
+      });
+
+      if (current || fallback) {
+        setLanguageVersion(switcher, (current || fallback).dataset.languageTarget);
+      }
+    });
   }
 
   function codeLineElements(code) {
@@ -597,13 +675,15 @@
     document.addEventListener('DOMContentLoaded', function () {
       initThemeToggle();
       initGeoGebra(0);
-      initGitalk();
+      initGiscus();
+      initLanguageSwitches();
       initCodeBlocks();
     });
   } else {
     initThemeToggle();
     initGeoGebra(0);
-    initGitalk();
+    initGiscus();
+    initLanguageSwitches();
     initCodeBlocks();
   }
 })();
