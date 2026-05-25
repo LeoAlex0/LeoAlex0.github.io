@@ -138,6 +138,12 @@ Ax^2+Bxy+Cy^2+Fz^2+Dxz+Eyz=0
 = 0
 \]</span></p>
 <p>故我们可以用一个实对称矩阵来表示一个二次曲线。</p>
+<p>如果把齐次坐标中的<span class="math inline">\((x,y,z)\)</span>暂时当成三维空间坐标，那么这个二次型描述的是一个过原点的二次锥面。
+我们平时在直角坐标系中看到的圆锥曲线，可以理解为这个锥面与仿射平面<span class="math inline">\(z=1\)</span>的截线。</p>
+<figure class="geogebra-panel">
+  <div id="geogebra-homogeneous-conic-3d" class="geogebra-applet" data-geogebra data-source="/post/齐次坐标、线性代数与圆锥曲线-1/homogeneous-conic-3d.geogebra"></div>
+  <figcaption>GeoGebra：齐次二次型的锥面与 z=1 截面。</figcaption>
+</figure>
 <p>另外对于一条直线，如果我们做同样的换元，我们也可以以一个向量来表述它。
 但为了不与点/坐标产生歧义，我们约定后文以行向量表示直线，列向量表示点/坐标。</p>
 <p><span class="math display">\[
