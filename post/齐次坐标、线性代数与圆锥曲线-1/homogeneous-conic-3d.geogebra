@@ -1,16 +1,1 @@
-{
-  "appName": "3d",
-  "language": "en",
-  "height": 520,
-  "animation": true,
-  "animationObjects": ["P"],
-  "animationSpeed": 0.35,
-  "commands": [
-    "O=(0,0,0)",
-    "S=Surface[u*3*cos(v), u*2*sin(v), u, u, 0, 1.35, v, 0, 2*pi]",
-    "h: z=1",
-    "c=Curve[3*cos(t), 2*sin(t), 1, t, 0, 2*pi]",
-    "P=Point[c]",
-    "g=Segment[O,P]"
-  ]
-}
+{"animation":true,"animationObjects":["P"],"animationSpeed":0.35,"appName":"3d","commands":["O=(0,0,0)","S=Surface[u*3*cos(v), u*2*sin(v), u, u, 0, 1.35, v, 0, 2*pi]","h: z=1","c=Curve[3*cos(t), 2*sin(t), 1, t, 0, 2*pi]","P=Point[c]","g=Segment[O,P]"],"height":520}

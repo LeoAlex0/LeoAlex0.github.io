@@ -112,6 +112,10 @@
     updateThemeToggle(nextTheme);
     updateGiscusTheme(nextTheme);
 
+    try {
+      document.dispatchEvent(new CustomEvent('themechange', { detail: { theme: nextTheme } }));
+    } catch (error) {}
+
     if (shouldStore) {
       try {
         window.localStorage.setItem(themeStorageKey, nextTheme);
@@ -352,6 +356,7 @@
       errorDialogsActive: optionBoolean(element, config, 'errorDialogsActive', false),
       enableLabelDrags: optionBoolean(element, config, 'enableLabelDrags', true),
       enableShiftDragZoom: optionBoolean(element, config, 'enableShiftDragZoom', true),
+      language: currentLanguage(),
       useBrowserForJS: true,
       appletOnLoad: function (api) {
         window.setTimeout(function () {
@@ -364,10 +369,6 @@
       parameters.material_id = optionValue(element, config, 'materialId', null);
     }
 
-    if (optionValue(element, config, 'language', null)) {
-      parameters.language = optionValue(element, config, 'language', null);
-    }
-
     if (optionValue(element, config, 'country', null)) {
       parameters.country = optionValue(element, config, 'country', null);
     }
@@ -378,6 +379,7 @@
 
     var applet = new window.GGBApplet(parameters, true);
     applet.inject(element.id);
+    element.dataset.geogebraLanguage = parameters.language;
   }
 
   function injectApplet(element) {
@@ -419,6 +421,31 @@
     }
 
     applets.forEach(injectApplet);
+  }
+
+  function updateGeoGebraLanguage(language) {
+    var shouldReload = false;
+    var applets = document.querySelectorAll('[data-geogebra]');
+
+    applets.forEach(function (element) {
+      if (
+        !element.dataset.geogebraLanguage ||
+        normalizeLanguage(element.dataset.geogebraLanguage) === language
+      ) {
+        return;
+      }
+
+      element.dataset.geogebraReady = 'false';
+      element.dataset.geogebraLoading = 'false';
+      element.dataset.geogebraLanguage = '';
+      element.classList.remove('is-ready');
+      element.textContent = '';
+      shouldReload = true;
+    });
+
+    if (shouldReload) {
+      initGeoGebra(0);
+    }
   }
 
   function giscusTheme(theme) {
@@ -583,6 +610,7 @@
     updateThemeToggle(currentTheme());
     updateCodeCopyButtons(nextLanguage);
     updateGiscusLanguage(nextLanguage);
+    updateGeoGebraLanguage(nextLanguage);
 
     if (shouldStore) {
       try {
@@ -801,6 +829,11 @@
 
     codeBlocks.forEach(function (code, index) {
       var pre = code.parentElement;
+
+      if (pre.classList.contains('mermaid')) {
+        return;
+      }
+
       var block = pre.parentElement && pre.parentElement.classList.contains('sourceCode')
         ? pre.parentElement
         : null;
@@ -820,6 +853,48 @@
     });
   }
 
+  function initMermaid() {
+    if (typeof window.mermaid === 'undefined') {
+      return;
+    }
+
+    var blocks = document.querySelectorAll('.mermaid');
+
+    if (!blocks.length) {
+      return;
+    }
+
+    var sources = [];
+
+    blocks.forEach(function (block) {
+      sources.push(block.textContent);
+    });
+
+    var currentTheme = function () {
+      return document.documentElement.dataset.theme === 'dark' ? 'dark' : 'default';
+    };
+
+    var render = function () {
+      blocks.forEach(function (block, i) {
+        block.innerHTML = sources[i];
+      });
+
+      window.mermaid.initialize({
+        startOnLoad: false,
+        theme: currentTheme(),
+        math: { enabled: true, forceLegacyMathML: true }
+      });
+
+      window.mermaid.run({ nodes: blocks }).catch(function (error) {
+        console.warn('Mermaid render failed:', error);
+      });
+    };
+
+    render();
+
+    document.addEventListener('themechange', render);
+  }
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function () {
       initThemeToggle();
@@ -827,6 +902,7 @@
       initGeoGebra(0);
       initGiscus();
       initCodeBlocks();
+      initMermaid();
     });
   } else {
     initThemeToggle();
@@ -834,5 +910,6 @@
     initGeoGebra(0);
     initGiscus();
     initCodeBlocks();
+    initMermaid();
   }
 })();

@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <title>Knot-tying: 惰性求值下 KMP 算法的自递归之美 | zLeoAlex's Blog</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="with Memos">
+    <meta name="color-scheme" content="light dark">
+    
+    <meta name="author" content="zLeoAlex">
+    
+    
+
+    <meta property="og:site_name" content="zLeoAlex's Blog">
+    <meta property="og:title" content="Knot-tying: 惰性求值下 KMP 算法的自递归之美">
+    <meta property="og:url" content="https://leoalex0.github.io/post/Knot-tying%3A%20%E6%83%B0%E6%80%A7%E6%B1%82%E5%80%BC%E4%B8%8B%20KMP%20%E7%AE%97%E6%B3%95%E7%9A%84%E8%87%AA%E9%80%92%E5%BD%92%E4%B9%8B%E7%BE%8E.html">
+    <meta property="og:description" content="with Memos">
+    
+    
+    <meta property="og:type" content="article">
+    
+
+    
+    <meta property="twitter:site" content="zLeoAlex's Blog">
+    <meta property="twitter:title" content="Knot-tying: 惰性求值下 KMP 算法的自递归之美">
+    <meta property="twitter:description" content="with Memos">
+    
+
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="canonical" href="https://leoalex0.github.io/post/Knot-tying%3A%20%E6%83%B0%E6%80%A7%E6%B1%82%E5%80%BC%E4%B8%8B%20KMP%20%E7%AE%97%E6%B3%95%E7%9A%84%E8%87%AA%E9%80%92%E5%BD%92%E4%B9%8B%E7%BE%8E.html">
+
+    <link rel="alternate" href="/atom.xml" title="zLeoAlex's Blog" type="application/atom+xml">
+    <link rel="alternate" href="/rss.xml" title="zLeoAlex's Blog" type="application/rss+xml">
+
+    <script>
+      ;(function () {
+        var storedTheme = null;
+
+        try {
+          storedTheme = window.localStorage.getItem("theme");
+        } catch (error) {
+          storedTheme = null;
+        }
+
+        if (storedTheme !== "dark" && storedTheme !== "light") {
+          storedTheme = null;
+        }
+
+        var prefersDark = window.matchMedia &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches;
+        var theme = storedTheme || (prefersDark ? "dark" : "light");
+
+        var storedLanguage = null;
+
+        try {
+          storedLanguage = window.localStorage.getItem("language");
+        } catch (error) {
+          storedLanguage = null;
+        }
+
+        if (storedLanguage !== "zh-CN" && storedLanguage !== "en") {
+          storedLanguage = document.documentElement.lang || "zh-CN";
+        }
+
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.dataset.language = storedLanguage;
+        document.documentElement.lang = storedLanguage;
+      })();
+    </script>
+
+    <link rel="stylesheet" href="/css/default.css">
+    <link rel="stylesheet" href="/css/code.css">
+
+    
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [["$", "$"], ["\\(", "\\)"]],
+          displayMath: [["$$", "$$"], ["\\[", "\\]"]],
+          processEscapes: true
+        },
+        options: {
+          skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+          ignoreHtmlClass: "tex2jax_ignore",
+          processHtmlClass: "math|tex2jax_process"
+        }
+      };
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"></script>
+    
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.css">
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+    
+    
+    <script>
+      window.__GISCUS_CONFIG__ = {
+        repo: "LeoAlex0/blog-comments",
+        repoID: "MDEwOlJlcG9zaXRvcnkyNDg3NTc4Njc=",
+        category: "General",
+        categoryID: "DIC_kwDODtO-a84C9uOc",
+        mapping: "specific",
+        term: "post:Knot-tying: 惰性求值下 KMP 算法的自递归之美",
+        strict: "0",
+        reactionsEnabled: "1",
+        emitMetadata: "0",
+        inputPosition: "bottom",
+        language: "zh-CN"
+      };
+    </script>
+    
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="site-brand" href="/">
+        <span class="site-brand__title">zLeoAlex's Blog</span>
+        <span class="site-brand__subtitle">Memories</span>
+      </a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="/" data-i18n-en="Home">首页</a>
+        <a href="/archives/" data-i18n-en="Archives">归档</a>
+        <a href="/tags/" data-i18n-en="Tags">标签</a>
+        <a href="/categories/" data-i18n-en="Categories">分类</a>
+        <a href="/about/" data-i18n-en="About">关于</a>
+        <a href="/whoami/" data-i18n-en="Whoami">自述</a>
+      </nav>
+      <div class="site-actions">
+        <div class="language-toggle" data-language-toggle aria-label="Switch language">
+          <button type="button" data-language-choice="zh-CN" aria-pressed="true">中</button>
+          <button type="button" data-language-choice="en" aria-pressed="false">EN</button>
+        </div>
+        <button
+          type="button"
+          class="theme-toggle"
+          data-theme-toggle
+          aria-label="Switch color theme"
+          aria-pressed="false"
+        >
+          <span class="theme-toggle__mark" aria-hidden="true"></span>
+          <span data-theme-toggle-label>深色</span>
+        </button>
+      </div>
+    </header>
+    <main class="layout-main">
+  <article class="post">
+    <header class="post-header">
+      <p class="post-date">
+        2026-05-28 
+      </p>
+      <h1>
+        <span class="language-version is-current" data-language-version="zh-CN" lang="zh-CN">Knot-tying: 惰性求值下 KMP 算法的自递归之美</span><span class="language-version" data-language-version="en" lang="en" hidden>Knot-tying: The Beauty of Self-Recursion in KMP Under Lazy Evaluation</span>
+      </h1>
+      <div class="post-meta">
+        <span><a title="All pages tagged &#39;计算机科学&#39;." href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6.html" rel="tag">计算机科学</a>, <a title="All pages tagged &#39;算法&#39;." href="/categories/%E7%AE%97%E6%B3%95.html" rel="tag">算法</a></span>
+        <span><a title="All pages tagged &#39;Haskell&#39;." href="/tags/Haskell.html" rel="tag">Haskell</a>, <a title="All pages tagged &#39;KMP&#39;." href="/tags/KMP.html" rel="tag">KMP</a>, <a title="All pages tagged &#39;惰性求值&#39;." href="/tags/%E6%83%B0%E6%80%A7%E6%B1%82%E5%80%BC.html" rel="tag">惰性求值</a>, <a title="All pages tagged &#39;函数式编程&#39;." href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B.html" rel="tag">函数式编程</a>, <a title="All pages tagged &#39;算法&#39;." href="/tags/%E7%AE%97%E6%B3%95.html" rel="tag">算法</a></span>
+      </div>
+    </header>
+    <section
+      class="post-content language-version is-current"
+      data-language-version="zh-CN"
+      lang="zh-CN"
+    >
+      <h2 id="前缀函数与-kmp-算法">前缀函数与 KMP 算法</h2>
+<p>字符串匹配问题：给定模式串 <span class="math inline">\(pat\)</span> 和文本 <span class="math inline">\(txt\)</span>，找出 <span class="math inline">\(pat\)</span> 在 <span class="math inline">\(txt\)</span> 中的所有出现位置。朴素做法逐字符比对，失配时模式串回退一位、文本指针也回退，最坏 <span class="math inline">\(O(nm)\)</span>。</p>
+<p><strong>KMP 的核心思想</strong>：失配时文本指针不必回退。如果已经匹配了 <span class="math inline">\(k\)</span> 个字符，那么模式串的前 <span class="math inline">\(k-1\)</span> 个字符和文本中刚扫描过的部分是相同的。利用这部分重叠信息，可以将模式串向前滑动到下一个可能匹配的位置，而不需要重新扫描文本。</p>
+<p>这个”重叠信息”就是<strong>前缀函数</strong> <span class="math inline">\(\pi\)</span>。对模式串 <span class="math inline">\(s[0:n]\)</span>（下标区间均为前闭后开 <span class="math inline">\([a,b)\)</span>），<span class="math inline">\(\pi(i)\)</span> 定义为：</p>
+<p><span class="math display">\[
+\pi(i) = \max_{k \in [0,i]}\big\{\,k \;\big|\; s[0:k] = s[i+1-k:i+1] \,\big\}
+\]</span></p>
+<p>也即 <span class="math inline">\(\pi(i)\)</span> 是 <span class="math inline">\(s[0:i+1]\)</span> 的最长<strong>真前缀</strong>同时也是<strong>后缀</strong>的长度。规定 <span class="math inline">\(\pi(0)=0\)</span>。</p>
+<p>例如模式串 <code>"aabaaab"</code> 的 <span class="math inline">\(\pi\)</span>：</p>
+<table>
+<thead>
+<tr>
+<th><span class="math inline">\(i\)</span></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="math inline">\(s[i]\)</span></td>
+<td>a</td>
+<td>a</td>
+<td>b</td>
+<td>a</td>
+<td>a</td>
+<td>a</td>
+<td>b</td>
+</tr>
+<tr>
+<td><span class="math inline">\(\pi[i]\)</span></td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">\(\pi\)</span> 的直观含义：<span class="math inline">\(\pi(i)=k\)</span> 意味着 <span class="math inline">\(s[0:k]\)</span> 和 <span class="math inline">\(s[i+1-k:i+1]\)</span> 完全相同。当在文本位置 <span class="math inline">\(j\)</span> 处 <span class="math inline">\(s[k]\)</span> 失配时，可以保持文本指针不动，将模式串状态<strong>回退到</strong> <span class="math inline">\(\pi(k-1)\)</span> 而不是 <span class="math inline">\(0\)</span>——因为前 <span class="math inline">\(\pi(k-1)\)</span> 个字符已经在失配位置之前被隐式匹配过了。这就是 KMP 线性时间的来源。</p>
+<hr />
+<h2 id="haskell-实现">Haskell 实现</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="kw">qualified</span> <span class="dt">Data.Array</span> <span class="kw">as</span> <span class="dt">A</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">-- | 单步转移：给定前缀函数 pi、模式串 pat、当前状态 s 和字符 c，返回下一状态。</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ot">step ::</span> (<span class="dt">Eq</span> tok) <span class="ot">=&gt;</span> <span class="dt">A.Array</span> <span class="dt">Int</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">A.Array</span> <span class="dt">Int</span> tok <span class="ot">-&gt;</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> tok <span class="ot">-&gt;</span> <span class="dt">Int</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>step <span class="fu">pi</span> pat s c</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">|</span> pat <span class="op">A.!</span> s <span class="op">==</span> c <span class="ot">=</span> s <span class="op">+</span> <span class="dv">1</span>                              <span class="co">-- 命中：前进</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="op">|</span> s <span class="op">==</span> <span class="dv">0</span>         <span class="ot">=</span> <span class="dv">0</span>                                  <span class="co">-- 到根：停止</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="op">|</span> <span class="fu">otherwise</span>      <span class="ot">=</span> step <span class="fu">pi</span> pat (<span class="fu">pi</span> <span class="op">A.!</span> (s <span class="op">-</span> <span class="dv">1</span>)) c     <span class="co">-- 沿 pi 失败链回跳</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">-- | 前缀函数 pi，通过 knot-tying 用 scanl 一步完成。</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="ot">prefix ::</span> (<span class="dt">Eq</span> tok) <span class="ot">=&gt;</span> <span class="dt">A.Array</span> <span class="dt">Int</span> tok <span class="ot">-&gt;</span> <span class="dt">A.Array</span> <span class="dt">Int</span> <span class="dt">Int</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>prefix pat</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="op">|</span> <span class="fu">null</span> pat   <span class="ot">=</span> A.listArray (<span class="dv">0</span>, <span class="dv">0</span>) [<span class="dv">0</span>]</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="op">|</span> <span class="fu">otherwise</span>  <span class="ot">=</span> <span class="fu">pi</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- knot: pi 与 pat 同边界，扫描 step 自身得出</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pi</span> <span class="ot">=</span> A.listArray (A.bounds pat) (<span class="fu">scanl</span> (step <span class="fu">pi</span> pat) <span class="dv">0</span> (<span class="fu">drop</span> <span class="dv">1</span> (A.elems pat)))</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co">-- | KMP 匹配：prefix 算前缀函数，scanl 推进状态，any 检测命中。</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ot">contains ::</span> (<span class="dt">Eq</span> tok) <span class="ot">=&gt;</span> <span class="dt">A.Array</span> <span class="dt">Int</span> tok <span class="ot">-&gt;</span> [tok] <span class="ot">-&gt;</span> <span class="dt">Bool</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>contains pat <span class="ot">=</span> <span class="fu">any</span> (<span class="op">==</span> n) <span class="op">.</span> <span class="fu">scanl</span> (step <span class="fu">pi</span> pat) <span class="dv">0</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pi</span> <span class="ot">=</span> prefix pat</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    n  <span class="ot">=</span> A.rangeSize (A.bounds pat)</span></code></pre></div>
+<p><code>step</code> 四行，<code>prefix</code> 四行，<code>contains</code> 三行。<span class="math inline">\(\pi\)</span> 直接复用 <code>pat</code> 的边界（<code>A.bounds pat</code>），无需单独声明 <span class="math inline">\(n\)</span>。传统实现中 <code>n = length pat</code>、<code>for i = 1 to n-1</code> 的模板代码被 <code>scanl</code> + <code>drop 1</code> + <code>elems</code> 取代。</p>
+<hr />
+<h2 id="代码分析">代码分析</h2>
+<h3 id="step"><code>step</code></h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ot">step ::</span> <span class="dt">Array</span> <span class="dt">Int</span> <span class="dt">Int</span> → <span class="dt">Array</span> <span class="dt">Int</span> tok → <span class="dt">Int</span> → tok → <span class="dt">Int</span></span></code></pre></div>
+<p><span class="math inline">\(\pi\)</span>、模式串、当前状态 → 字符 → 新状态。命中则前进，失配则沿 <span class="math inline">\(\pi\)</span> 失败链回跳，到根则停止。</p>
+<p><code>step</code> 不持有 <span class="math inline">\(\pi\)</span> 和模式串——二者均为显式入参。<code>prefix</code> 传入构造中的 <span class="math inline">\(\pi\)</span>（knot），<code>contains</code> 传入已构造的 <span class="math inline">\(\pi\)</span>（普通调用）。同一函数，两种用法。</p>
+<h3 id="prefix"><code>prefix</code></h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pi</span> <span class="ot">=</span> A.listArray (A.bounds pat) (<span class="fu">scanl</span> (step <span class="fu">pi</span> pat) <span class="dv">0</span> (<span class="fu">drop</span> <span class="dv">1</span> (A.elems pat)))</span></code></pre></div>
+<p>两个动作：</p>
+<ol>
+<li><code>scanl</code> 从 <span class="math inline">\(0\)</span> 开始，将 <code>step pi pat</code> 依次应用到 <span class="math inline">\(pat[1..n-1]\)</span>，产生 <span class="math inline">\(\pi(0),\pi(1),\dots,\pi(n-1)\)</span></li>
+<li><code>pi</code> 同时是 <code>step</code> 的入参——<strong>knot</strong>：<span class="math inline">\(\pi\)</span> 用 <code>step</code> 扫描自身来构造，<code>step</code> 又需要 <span class="math inline">\(\pi\)</span> 做失败链回跳</li>
+</ol>
+<p><code>pi</code> 直接复用 <code>pat</code> 的边界——<code>A.bounds pat</code> 决定 <code>pi</code> 的长度，省去手动传递 <span class="math inline">\(n\)</span>。</p>
+<pre class="mermaid"><code>flowchart TD
+    scanl[&quot;scanl (step pi pat)&quot;] --&gt;|&quot;产生&quot;| pi[&quot;pi&quot;]
+    pi --&gt;|&quot;pi A.! (s-1)&quot;| step[&quot;step pi pat&quot;]
+    scanl --&gt;|&quot;施加&quot;| step</code></pre>
+<p>在严格求值的语言（如 Rust、C++）中这是”用未完成的数据结构读取自身”，是悖论。在 Haskell 中，<code>Data.Array</code> 对 boxed 元素是惰性的：<code>scanl</code> 自左向右逐个产生 thunk，当 <code>step</code> 需要 <span class="math inline">\(\pi(j-1)\)</span> 时（<span class="math inline">\(j-1 &lt;\)</span> 当前索引），该 thunk 已被 <code>scanl</code> 顺序强制过。</p>
+<h3 id="contains"><code>contains</code></h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>contains pat <span class="ot">=</span> <span class="fu">any</span> (<span class="op">==</span> n) <span class="op">.</span> <span class="fu">scanl</span> (step <span class="fu">pi</span> pat) <span class="dv">0</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pi</span> <span class="ot">=</span> prefix pat</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    n  <span class="ot">=</span> A.rangeSize (A.bounds pat)</span></code></pre></div>
+<p><code>scanl (step pi pat) 0</code> 在文本上驱动状态机，生成状态序列；<code>any (== n)</code> 检测是否抵达接受状态 <span class="math inline">\(n\)</span>。<code>prefix</code> 提供 <span class="math inline">\(\pi\)</span>。三者数据流：</p>
+<pre class="mermaid"><code>flowchart LR
+    prefix[&quot;prefix&quot;] --&gt;|&quot;pi&quot;| contains[&quot;contains&quot;]
+    prefix --&gt; step[&quot;step&quot;]
+    contains --&gt; step</code></pre>
+<hr />
+<h2 id="正确性证明">正确性证明</h2>
+<p>定义 <span class="math inline">\(\pi\)</span>、<span class="math inline">\(\mathrm{step}\)</span>、<span class="math inline">\(\{p_i\}\)</span>，证 <span class="math inline">\(\{p_i\} = \{\pi(i)\}\)</span>。</p>
+<h3 id="定义">定义</h3>
+<p><strong>定义 1（前缀函数）</strong>　对字符串 <span class="math inline">\(s[0:n]\)</span>（区间记号均为前闭后开 <span class="math inline">\([a,b)\)</span>），<span class="math inline">\(\pi : \{0,\dots,n-1\} \to \mathbb{N}\)</span>：</p>
+<p><span class="math display">\[
+\pi(i) = \begin{cases}
+0, &amp; i = 0 \\
+\max\{\,k \in [0,i] \mid s[0:k] = s[i+1-k : i+1]\,\}, &amp; i \ge 1
+\end{cases}
+\]</span></p>
+<p><strong>定义 2（转移函数）</strong>　给定 <span class="math inline">\(s\)</span> 及其 <span class="math inline">\(\pi\)</span>，<span class="math inline">\(\mathrm{step} : \mathbb{N} \times \Sigma \to \mathbb{N}\)</span>（其中 <span class="math inline">\(\Sigma\)</span> 为字符集）：</p>
+<p><span class="math display">\[
+\mathrm{step}(j, c) = \begin{cases}
+j + 1, &amp; \text{若 } s[j] = c \\[2pt]
+0,     &amp; \text{若 } s[j] \neq c \;\land\; j = 0 \\[2pt]
+\mathrm{step}(\pi(j-1),\, c), &amp; \text{若 } s[j] \neq c \;\land\; j &gt; 0
+\end{cases}
+\]</span></p>
+<p><strong>定义 3（scanl 序列）</strong>　序列 <span class="math inline">\(\{p_i\}_{i=0}^{n-1}\)</span>：</p>
+<p><span class="math display">\[
+p_i = \begin{cases}
+0, &amp; i = 0 \\
+\mathrm{step}(p_{i-1},\, s[i]), &amp; i \ge 1
+\end{cases}
+\]</span></p>
+<p>即 <span class="math inline">\([p_0,\dots,p_{n-1}] = \mathrm{scanl\ step\ 0}\ [s[1],\dots,s[n-1]]\)</span>。</p>
+<h3 id="定理">定理</h3>
+<p><strong>定理</strong>　<span class="math inline">\(\forall i \in [0, n-1]:\; p_i = \pi(i)\)</span>。</p>
+<p><em>证明</em>　对 <span class="math inline">\(i\)</span> 归纳。</p>
+<p><strong>基始</strong> <span class="math inline">\(i = 0\)</span>：<span class="math inline">\(p_0 = 0 = \pi(0)\)</span>。证毕</p>
+<p><strong>归纳步</strong>　假设对所有 <span class="math inline">\(k &lt; i\)</span> 有 <span class="math inline">\(p_k = \pi(k)\)</span>（强归纳）。令 <span class="math inline">\(j = p_{i-1} = \pi(i-1)\)</span>，则 <span class="math inline">\(p_i = \mathrm{step}(j, s[i])\)</span>。</p>
+<p><span class="math inline">\(\mathrm{step}\)</span> 的定义有三条分支，按此展开讨论：</p>
+<hr />
+<p><strong>情况 A</strong>　<span class="math inline">\(s[j] = s[i]\)</span>。</p>
+<p>此时 <span class="math inline">\(p_i = \mathrm{step}(j, s[i]) = j+1\)</span>。下证 <span class="math inline">\(\pi(i) = j+1\)</span>。</p>
+<p>（<span class="math inline">\(\ge\)</span>）
+<span class="math display">\[
+\begin{aligned}
+s[0:j] &amp;= s[i-j:i] &amp;&amp; [j = \pi(i-1)] \\
+s[j] &amp;= s[i] &amp;&amp; [\text{前提}] \\[2pt]
+\implies s[0:j+1] &amp;= s[i-j:i+1] &amp;&amp; [\text{拼接}] \\
+\implies \pi(i) &amp;\ge j+1 &amp;&amp; [\pi\ \text{定义}]
+\end{aligned}
+\]</span></p>
+<p>（<span class="math inline">\(\le\)</span>）
+<span class="math display">\[
+\begin{aligned}
+k = \pi(i)
+&amp;\implies s[0:k] = s[i+1-k:i+1] &amp;&amp; [\pi\ \text{定义}] \\
+&amp;\implies s[0:k-1] = s[i+1-k:i] &amp;&amp; [\text{截末字符}] \\
+&amp;\implies \pi(i-1) \ge k-1 &amp;&amp; [\pi\ \text{定义}] \\
+&amp;\implies j \ge k-1 &amp;&amp; [\pi(i-1)=j] \\
+&amp;\implies k \le j+1 \\
+&amp;\implies \pi(i) \le j+1
+\end{aligned}
+\]</span></p>
+<p>由 <span class="math inline">\((\ge)(\le)\)</span>：<span class="math inline">\(\pi(i) = j+1 = p_i\)</span>。证毕</p>
+<hr />
+<p><strong>情况 B</strong>　<span class="math inline">\(s[j] \neq s[i]\)</span> 且 <span class="math inline">\(j = 0\)</span>。</p>
+<p>此时 <span class="math inline">\(p_i = \mathrm{step}(j, s[i]) = 0\)</span>。下证 <span class="math inline">\(\pi(i) = 0\)</span>。</p>
+<p>令 <span class="math inline">\(M_m = \{\,k \mid s[0:k] = s[m+1-k:m+1]\,\}\)</span>，则 <span class="math inline">\(\pi(m) = \max M_m\)</span>。</p>
+<p>由 <span class="math inline">\(\pi(i-1) = 0\)</span>：
+<span class="math display">\[
+M_{i-1} = \{0\} \tag{1}
+\]</span></p>
+<p>对任意 <span class="math inline">\(k \ge 1\)</span>：
+<span class="math display">\[
+\begin{aligned}
+k \in M_i
+&amp;\implies s[0:k] = s[i+1-k:i+1] &amp;&amp; [M_i\ \text{定义}] \\
+&amp;\implies s[0:k-1] = s[i+1-k:i] &amp;&amp; [\text{截末字符}] \\
+&amp;\implies k-1 \in M_{i-1} &amp;&amp; [M_{i-1}\ \text{定义}] \\
+&amp;\implies k-1 = 0 &amp;&amp; [\text{由 (1)}] \\
+&amp;\implies k = 1
+\end{aligned}
+\]</span></p>
+<p>又：
+<span class="math display">\[
+\begin{aligned}
+1 \in M_i
+&amp;\iff s[0:1] = s[i:i+1] &amp;&amp; [M_i\ \text{定义}] \\
+s[0] &amp;= s[j] \neq s[i] &amp;&amp; [j=0,\ \text{前提}] \\[2pt]
+&amp;\Downarrow \\
+1 &amp;\notin M_i
+\end{aligned}
+\]</span></p>
+<p>综上，<span class="math inline">\(M_i\)</span> 中不存在 <span class="math inline">\(k \ge 1\)</span>。而 <span class="math inline">\(0 \in M_i\)</span> 恒真（空匹配），故：
+<span class="math display">\[
+M_i = \{0\},\qquad \pi(i) = \max M_i = 0 = p_i
+\]</span></p>
+<p>证毕</p>
+<hr />
+<p><strong>情况 C</strong>　<span class="math inline">\(s[j] \neq s[i]\)</span> 且 <span class="math inline">\(j &gt; 0\)</span>。</p>
+<p>此时 <span class="math inline">\(p_i = \mathrm{step}(j, s[i]) = \mathrm{step}(\pi(j-1), s[i])\)</span>。</p>
+<p><strong>（i）证 <span class="math inline">\(\pi(i) \le j\)</span></strong>　设 <span class="math inline">\(k = \pi(i)\)</span>。若 <span class="math inline">\(k = 0\)</span>，则 <span class="math inline">\(k \le j\)</span> 平凡。下设 <span class="math inline">\(k \ge 1\)</span>：</p>
+<p><span class="math display">\[
+\begin{aligned}
+k = \pi(i)
+&amp;\implies s[0:k] = s[i+1-k:i+1] &amp;&amp; [\pi\text{ 定义}] \\
+&amp;\implies s[0:k-1] = s[i+1-k:i] &amp;&amp; [\text{截末字符}] \\
+&amp;\implies \pi(i-1) \ge k-1 &amp;&amp; [\pi\text{ 定义}] \\
+&amp;\implies j \ge k-1 &amp;&amp; [\pi(i-1)=j] \\
+&amp;\implies k \le j+1 &amp;&amp; \text{(1)}
+\end{aligned}
+\]</span></p>
+<p>又：
+<span class="math display">\[
+\begin{aligned}
+s[0:k] = s[i+1-k:i+1] &amp;\implies s[k-1] = s[i] &amp;&amp; [\text{末字符}] \\
+s[j] \neq s[i] &amp;\implies k-1 \neq j &amp;&amp; [\text{前提}] \\
+&amp;\implies k \neq j+1 &amp;&amp; \text{(2)}
+\end{aligned}
+\]</span></p>
+<p>由 (1)(2) 及 <span class="math inline">\(k\)</span> 为整数：<span class="math inline">\(k \le j\)</span>，即 <span class="math inline">\(\pi(i) \le j\)</span>。</p>
+<p><strong>（ii）将 <span class="math inline">\(\pi(i)\)</span> 用 <span class="math inline">\(j\)</span> 表示</strong>　令 <span class="math inline">\(k = \pi(i)\)</span>，<span class="math inline">\(k \le j\)</span>：</p>
+<p><span class="math display">\[
+\begin{aligned}
+k = \pi(i)
+&amp;\iff s[0:k] = s[i+1-k:i+1] &amp;&amp; [\pi\text{ 定义}] \\
+&amp;\iff s[0:k-1] = s[i+1-k:i]\;\wedge\; s[k-1] = s[i] &amp;&amp; [\text{拆末字符}] \\
+&amp;\iff s[0:k-1] = s[j+1-k:j]\;\wedge\; s[k-1] = s[i] &amp;&amp; [\text{由 } s[0:j]=s[i-j:i]]
+\end{aligned}
+\]</span></p>
+<p>故：
+<span class="math display">\[
+\pi(i) = \max\{\,k \mid s[0:k-1] = s[j+1-k:j],\; s[k-1] = s[i]\,\}
+\]</span></p>
+<p>令 <span class="math inline">\(\ell = k-1\)</span>：
+<span class="math display">\[
+\pi(i) = \max\{\,\ell+1 \mid s[0:\ell] = s[j-\ell:j],\; s[\ell] = s[i]\,\}
+\]</span></p>
+<p>（空集则 <span class="math inline">\(0\)</span>。）</p>
+<p>记该链为 <span class="math inline">\(m_0 = \pi(j-1)\)</span>，<span class="math inline">\(m_1 = \pi(m_0-1)\)</span>，…，<span class="math inline">\(m_k = 0\)</span>。展开 <span class="math inline">\(\mathrm{step}\)</span> 的递归定义：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathrm{step}(m_0, s[i])
+&amp;= \begin{cases}
+m_0 + 1, &amp; s[m_0] = s[i] \\
+\mathrm{step}(m_1, s[i]), &amp; s[m_0] \neq s[i]
+\end{cases} \\
+\mathrm{step}(m_1, s[i])
+&amp;= \begin{cases}
+m_1 + 1, &amp; s[m_1] = s[i] \\
+\mathrm{step}(m_2, s[i]), &amp; s[m_1] \neq s[i]
+\end{cases} \\
+&amp;\;\;\vdots \\
+\mathrm{step}(m_k, s[i]) &amp;= 0 \qquad (m_k = 0)
+\end{aligned}
+\]</span></p>
+<p>逐层代入得 <span class="math inline">\(\mathrm{step}(m_0, s[i]) = m_t + 1\)</span>，其中 <span class="math inline">\(t\)</span> 是满足 <span class="math inline">\(s[m_t] = s[i]\)</span> 的最小下标（不存在则 <span class="math inline">\(0\)</span>）。因 <span class="math inline">\(m_0 &gt; m_1 &gt; \dots &gt; m_k\)</span>，此 <span class="math inline">\(m_t\)</span> 是链中满足条件者的最大值，故：</p>
+<p><span class="math display">\[
+\mathrm{step}(\pi(j-1), s[i]) = \max\{\,\ell+1 \mid \ell \in \{\pi(j-1),\,\pi(\pi(j-1)-1),\,\dots,\,0\},\; s[\ell]=s[i]\,\}
+\]</span></p>
+<p>因此需确认该链等于 <span class="math inline">\(\{\,\ell \mid s[0:\ell] = s[j-\ell:j]\,\}\)</span>。分两个方向证明该等式：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\{\,\ell \mid s[0:\ell] = s[j-\ell:j]\,\} &amp;\subseteq \{\pi(j-1),\,\pi(\pi(j-1)-1),\,\dots,\,0\} \\
+\{\,\ell \mid s[0:\ell] = s[j-\ell:j]\,\} &amp;\supseteq \{\pi(j-1),\,\pi(\pi(j-1)-1),\,\dots,\,0\}
+\end{aligned}
+\]</span></p>
+<p>先证 <span class="math inline">\(\supseteq\)</span>。对链上任一 <span class="math inline">\(m_i\)</span>：</p>
+<p><span class="math display">\[
+\begin{aligned}
+m_i &amp;= \pi(m_{i-1}-1) \\
+&amp;\implies s[0:m_i] = s[m_{i-1}-m_i:m_{i-1}] &amp;&amp; [\pi\text{ 定义}] \\
+&amp;\implies s[0:m_i] = s[j-m_i:j] &amp;&amp; [\text{代入 } s[0:m_{i-1}]=s[j-m_{i-1}:j]]
+\end{aligned}
+\]</span></p>
+<p>故 <span class="math inline">\(m_i \in \{\,\ell \mid s[0:\ell] = s[j-\ell:j]\,\}\)</span>。</p>
+<p>再证 <span class="math inline">\(\subseteq\)</span>。设 <span class="math inline">\(\ell\)</span> 满足 <span class="math inline">\(s[0:\ell]=s[j-\ell:j]\)</span>，记 <span class="math inline">\(m_0 = \pi(j-1)\)</span>。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\ell &amp;\le m_0 &amp;&amp; [m_0 = \max\{\ell \mid s[0:\ell]=s[j-\ell:j]\}] \\
+\ell &lt; m_t &amp;\implies s[0:\ell] = s[m_t-\ell:m_t] &amp;&amp; [s[0:m_t]=s[j-m_t:j],\ \ell&lt;m_t] \\
+&amp;\implies \ell \le \pi(m_t-1) = m_{t+1} &amp;&amp; [\pi\text{ 定义}] \\
+&amp;\implies \ell = m_{t+1} \lor \ell &lt; m_{t+1}
+\end{aligned}
+\]</span></p>
+<p>由 <span class="math inline">\(\pi(m_t-1) &lt; m_t\)</span> 知链 <span class="math inline">\(m_0 &gt; m_1 &gt; m_2 &gt; \dots &gt; 0\)</span> 严格递减，因此有限步内必有 <span class="math inline">\(\ell = m_t\)</span>（对某 <span class="math inline">\(t\)</span>）或 <span class="math inline">\(\ell = 0\)</span>，即 <span class="math inline">\(\ell \in \{m_0,m_1,\dots,0\}\)</span>。</p>
+<p>因此两集合相等：
+<span class="math display">\[
+\{\,\ell \mid s[0:\ell] = s[j-\ell:j]\,\} = \{\pi(j-1),\,\pi(\pi(j-1)-1),\,\dots,\,0\}
+\]</span></p>
+<p>代入该等式：
+<span class="math display">\[
+\mathrm{step}(\pi(j-1), s[i]) = \max\{\,\ell+1 \mid s[0:\ell]=s[j-\ell:j],\; s[\ell]=s[i]\,\}
+\]</span></p>
+<p>由强归纳，链上每个 <span class="math inline">\(\pi\)</span> 值均已得证，故 <span class="math inline">\(\mathrm{step}(\pi(j-1), s[i]) = \pi(i)\)</span>。</p>
+<p>故 <span class="math inline">\(p_i = \pi(i)\)</span>。证毕</p>
+<hr />
+<p>综上，由数学归纳法，<span class="math inline">\(\forall i:\; p_i = \pi(i)\)</span>。证毕</p>
+<hr />
+<h2 id="惰性求值">惰性求值</h2>
+<p><code>prefix</code> 中出现了看似循环的依赖：<code>pi</code> 的定义引用了 <code>step pi pat</code>，而 <code>step</code> 的第三个参数正是 <code>pi</code> 自身。在大多数语言中，这行代码会立即崩溃——无法使用尚未构造完成的数据结构。</p>
+<p>原因在于<strong>求值策略</strong>的差异。</p>
+<h3 id="严格求值与惰性求值">严格求值与惰性求值</h3>
+<p>主流语言（Rust、C++、Java、Python 等）采用<strong>严格求值</strong>（strict/eager evaluation）：函数调用前所有参数必须计算为确定的值。先算结果，再传参数。</p>
+<p>Haskell 采用<strong>惰性求值</strong>（lazy evaluation）：表达式只在<strong>结果被需要</strong>时才计算。函数参数传入时并不求值，而是打包为一个<strong>thunk</strong>——“等需要时再算”的延迟计算。当某个操作需要 thunk 的实际值（如模式匹配、输出、算术运算）时，运行时才<strong>强制</strong>（force）这个 thunk，执行计算并替换为结果。</p>
+<h3 id="spine-与-thunk">spine 与 thunk</h3>
+<p><code>Data.Array</code> 在内存中由两部分组成：</p>
+<ul>
+<li><strong>spine</strong>：索引结构与边界信息</li>
+<li><strong>元素</strong>：各槽位的值</li>
+</ul>
+<p><code>A.listArray</code> <strong>求值 spine</strong>（校验边界合法性），但<strong>保留元素为 thunk</strong>——每个槽位放一个尚未计算的表达式。</p>
+<p><code>scanl</code> 从左到右扫描模式串时，依次产生 <span class="math inline">\(\pi(0),\pi(1),\dots\)</span>。每个 <span class="math inline">\(\pi(i)\)</span> 是一个 thunk。当 <code>step</code> 需要 <span class="math inline">\(\pi(j-1)\)</span> 时（<span class="math inline">\(j-1 &lt; i\)</span>），该 thunk 已被 <code>scanl</code> 在前面的迭代中强制为具体整数。</p>
+<pre><code>时间线（scanl 从左到右）：
+  索引 0: 强制 thunk₀ → π(0)=0           ✓ 无依赖
+  索引 1: 强制 thunk₁ → step 需要 π(0)    ✓ π(0) 已就绪
+  索引 2: 强制 thunk₂ → step 需要 π(1)    ✓ π(1) 已就绪
+  ...
+  索引 i: 强制 thunkᵢ → step 需要 π(j-1)  ✓ j-1 &lt; i，已就绪</code></pre>
+<p>关键性质：<strong>数据依赖索引始终小于当前计算索引</strong>。故计算图是<strong>有向无环</strong>的——不存在前向引用，仅为”引用自身数组的前缀”。惰性求值让这种自引用结构可自左向右依次解开，每一步只读已计算部分。</p>
+<h3 id="严格求值语言的对比">严格求值语言的对比</h3>
+<p>在严格求值的语言中，<code>A.listArray</code> 不仅求值 spine，还会<strong>立即求值所有元素</strong>——数组构造器要求各槽位在创建时即确定。构造 <span class="math inline">\(\pi\)</span> 时 <code>scanl</code> 第一步就需要访问 <span class="math inline">\(\pi\)</span>（但 <span class="math inline">\(\pi\)</span> 还不存在），形成死锁。</p>
+<p>Rust / C++ 的 KMP 必须用两趟循环，或手动维护状态、每次只访问已写入位置。这是手动编码”拓扑排序”。</p>
+<p>Haskell 的惰性数组将<strong>拓扑排序交给运行时</strong>——数据依赖前向（<span class="math inline">\(j &lt; i\)</span>）即可自动串行化。knot-tying 的本质：<strong>利用求值顺序的拓扑性质，将循环依赖转化为有向无环计算图。</strong></p>
+<hr />
+<h2 id="结语">结语</h2>
+<p>KMP 的自引用结构——<span class="math inline">\(\pi(i)\)</span> 依赖 <span class="math inline">\(\pi(j)\)</span>（<span class="math inline">\(j &lt; i\)</span>）——在惰性语言中不必绕开，可直接写为程序文本。<code>step</code> 将”跟随失败链”抽象为纯函数，<code>prefix</code> 用 <code>scanl</code> 将同一函数同时用于构造与使用。函数式编程”以数据流表达控制流”的一则例证。</p>
+    </section>
+    <section class="post-content language-version" data-language-version="en" lang="en" hidden><h2 id="the-prefix-function-and-kmp">The Prefix Function and KMP</h2>
+<p>The string matching problem: given a pattern <span class="math inline">\(pat\)</span> and text <span class="math inline">\(txt\)</span>, find all occurrences of <span class="math inline">\(pat\)</span> in <span class="math inline">\(txt\)</span>. The naive approach compares character by character, and on a mismatch rewinds both the pattern and text pointers — <span class="math inline">\(O(nm)\)</span> worst case.</p>
+<p><strong>KMP’s key insight</strong>: the text pointer never needs to go backwards. If <span class="math inline">\(k\)</span> characters have been matched, then the first <span class="math inline">\(k-1\)</span> characters of the pattern are identical to the just-scanned portion of the text. This overlap lets us slide the pattern forward to the next viable position without re-scanning.</p>
+<p>This “overlap information” is captured by the <strong>prefix function</strong> <span class="math inline">\(\pi\)</span>. For a pattern <span class="math inline">\(s[0:n]\)</span> (all index intervals are half-open <span class="math inline">\([a,b)\)</span>), <span class="math inline">\(\pi(i)\)</span> is defined as:</p>
+<p><span class="math display">\[
+\pi(i) = \max_{k \in [0,i]}\big\{\,k \;\big|\; s[0:k] = s[i+1-k:i+1] \,\big\}
+\]</span></p>
+<p>That is, <span class="math inline">\(\pi(i)\)</span> is the length of the longest <strong>proper prefix</strong> of <span class="math inline">\(s[0:i+1]\)</span> that is also a <strong>suffix</strong>. <span class="math inline">\(\pi(0)=0\)</span>.</p>
+<p>Example: pattern <code>"aabaaab"</code> and its <span class="math inline">\(\pi\)</span>:</p>
+<table>
+<thead>
+<tr>
+<th><span class="math inline">\(i\)</span></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="math inline">\(s[i]\)</span></td>
+<td>a</td>
+<td>a</td>
+<td>b</td>
+<td>a</td>
+<td>a</td>
+<td>a</td>
+<td>b</td>
+</tr>
+<tr>
+<td><span class="math inline">\(\pi[i]\)</span></td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+<p>Intuitively, <span class="math inline">\(\pi(i)=k\)</span> means <span class="math inline">\(s[0:k]\)</span> and <span class="math inline">\(s[i+1-k:i+1]\)</span> are identical. When a mismatch occurs at text position <span class="math inline">\(j\)</span> on character <span class="math inline">\(s[k]\)</span>, we can keep the text pointer in place and <strong>fall back</strong> the pattern state to <span class="math inline">\(\pi(k-1)\)</span> instead of <span class="math inline">\(0\)</span> — because the first <span class="math inline">\(\pi(k-1)\)</span> characters have already been implicitly matched before the mismatch. This is what gives KMP its linear time.</p>
+<hr />
+<h2 id="haskell-implementation">Haskell Implementation</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- | Single-step transition: given prefix function pi, pattern pat,</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">-- current state s and character c, return the next state.</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ot">step ::</span> (<span class="dt">Eq</span> tok) <span class="ot">=&gt;</span> <span class="dt">A.Array</span> <span class="dt">Int</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">A.Array</span> <span class="dt">Int</span> tok <span class="ot">-&gt;</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> tok <span class="ot">-&gt;</span> <span class="dt">Int</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>step <span class="fu">pi</span> pat s c</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">|</span> pat <span class="op">A.!</span> s <span class="op">==</span> c <span class="ot">=</span> s <span class="op">+</span> <span class="dv">1</span>                              <span class="co">-- match: advance</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">|</span> s <span class="op">==</span> <span class="dv">0</span>         <span class="ot">=</span> <span class="dv">0</span>                                  <span class="co">-- at root: stop</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="op">|</span> <span class="fu">otherwise</span>      <span class="ot">=</span> step <span class="fu">pi</span> pat (<span class="fu">pi</span> <span class="op">A.!</span> (s <span class="op">-</span> <span class="dv">1</span>)) c     <span class="co">-- follow pi failure chain</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- | Prefix function pi, constructed in one pass via knot-tying with scanl.</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ot">prefix ::</span> (<span class="dt">Eq</span> tok) <span class="ot">=&gt;</span> <span class="dt">A.Array</span> <span class="dt">Int</span> tok <span class="ot">-&gt;</span> <span class="dt">A.Array</span> <span class="dt">Int</span> <span class="dt">Int</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>prefix pat</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">|</span> <span class="fu">null</span> pat   <span class="ot">=</span> A.listArray (<span class="dv">0</span>, <span class="dv">0</span>) [<span class="dv">0</span>]</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">|</span> <span class="fu">otherwise</span>  <span class="ot">=</span> <span class="fu">pi</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- knot: pi shares the bounds of pat; scan step over itself to build it</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pi</span> <span class="ot">=</span> A.listArray (A.bounds pat) (<span class="fu">scanl</span> (step <span class="fu">pi</span> pat) <span class="dv">0</span> (<span class="fu">drop</span> <span class="dv">1</span> (A.elems pat)))</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- | KMP matching: compute pi with prefix, advance state with scanl, detect match with any.</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ot">contains ::</span> (<span class="dt">Eq</span> tok) <span class="ot">=&gt;</span> <span class="dt">A.Array</span> <span class="dt">Int</span> tok <span class="ot">-&gt;</span> [tok] <span class="ot">-&gt;</span> <span class="dt">Bool</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>contains pat <span class="ot">=</span> <span class="fu">any</span> (<span class="op">==</span> n) <span class="op">.</span> <span class="fu">scanl</span> (step <span class="fu">pi</span> pat) <span class="dv">0</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pi</span> <span class="ot">=</span> prefix pat</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    n  <span class="ot">=</span> A.rangeSize (A.bounds pat)</span></code></pre></div>
+<p><code>step</code> in four lines, <code>prefix</code> in four lines, <code>contains</code> in three lines. <span class="math inline">\(\pi\)</span> directly reuses <code>pat</code>’s bounds via <code>A.bounds pat</code> — no separate <code>n = length pat</code> variable is needed. The <code>for i = 1 to n-1</code> boilerplate that clutters traditional implementations is replaced by <code>scanl</code> + <code>drop 1</code> + <code>elems</code>.</p>
+<hr />
+<h2 id="code-analysis">Code Analysis</h2>
+<h3 id="step"><code>step</code></h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ot">step ::</span> <span class="dt">Array</span> <span class="dt">Int</span> <span class="dt">Int</span> → <span class="dt">Array</span> <span class="dt">Int</span> tok → <span class="dt">Int</span> → tok → <span class="dt">Int</span></span></code></pre></div>
+<p><span class="math inline">\(\pi\)</span>, pattern, current state → character → new state. On a match: advance. On a mismatch: follow the <span class="math inline">\(\pi\)</span> failure chain. At the root: stop.</p>
+<p><code>step</code> does not own <span class="math inline">\(\pi\)</span> or the pattern — both are explicit parameters. <code>prefix</code> passes in a <span class="math inline">\(\pi\)</span> under construction (the knot); <code>contains</code> passes in a <span class="math inline">\(\pi\)</span> already built (ordinary call). Same function, two uses.</p>
+<h3 id="prefix"><code>prefix</code></h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pi</span> <span class="ot">=</span> A.listArray (A.bounds pat) (<span class="fu">scanl</span> (step <span class="fu">pi</span> pat) <span class="dv">0</span> (<span class="fu">drop</span> <span class="dv">1</span> (A.elems pat)))</span></code></pre></div>
+<p>Two actions:</p>
+<ol>
+<li><code>scanl</code>, starting from <span class="math inline">\(0\)</span>, applies <code>step pi pat</code> sequentially to <span class="math inline">\(pat[1..n-1]\)</span>, producing <span class="math inline">\(\pi(0), \pi(1), \dots, \pi(n-1)\)</span></li>
+<li><code>pi</code> simultaneously serves as an input to <code>step</code> — the <strong>knot</strong>: <span class="math inline">\(\pi\)</span> uses <code>step</code> scanning itself to be constructed, while <code>step</code> needs <span class="math inline">\(\pi\)</span> to follow the failure chain</li>
+</ol>
+<p><code>pi</code> directly reuses <code>pat</code>’s bounds — <code>A.bounds pat</code> determines <code>pi</code>’s length, eliminating the need to manually pass <span class="math inline">\(n\)</span>.</p>
+<pre class="mermaid"><code>flowchart TD
+    scanl[&quot;scanl (step pi pat)&quot;] --&gt;|&quot;produces&quot;| pi[&quot;pi&quot;]
+    pi --&gt;|&quot;pi A.! (s-1)&quot;| step[&quot;step pi pat&quot;]
+    scanl --&gt;|&quot;applies&quot;| step</code></pre>
+<p>In a strictly-evaluated language (such as Rust or C++) this would be the paradox of “reading from an unfinished data structure.” In Haskell, <code>Data.Array</code> is lazy in its boxed elements: <code>scanl</code> produces thunks one by one from left to right, and when <code>step</code> needs <span class="math inline">\(\pi(j-1)\)</span> (where <span class="math inline">\(j-1 &lt;\)</span> the current index), that thunk has already been sequentially forced by <code>scanl</code>.</p>
+<h3 id="contains"><code>contains</code></h3>
+<div class="sourceCode" id="cb7"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>contains pat <span class="ot">=</span> <span class="fu">any</span> (<span class="op">==</span> n) <span class="op">.</span> <span class="fu">scanl</span> (step <span class="fu">pi</span> pat) <span class="dv">0</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pi</span> <span class="ot">=</span> prefix pat</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    n  <span class="ot">=</span> A.rangeSize (A.bounds pat)</span></code></pre></div>
+<p><code>scanl (step pi pat) 0</code> drives <code>step pi pat</code> as a state machine across the text, producing a state sequence; <code>any (== n)</code> checks whether the accepting state <span class="math inline">\(n\)</span> is ever reached. <code>prefix</code> supplies <span class="math inline">\(\pi\)</span>. The data flow among the three:</p>
+<pre class="mermaid"><code>flowchart LR
+    prefix[&quot;prefix&quot;] --&gt;|&quot;pi&quot;| contains[&quot;contains&quot;]
+    prefix --&gt; step[&quot;step&quot;]
+    contains --&gt; step</code></pre>
+<hr />
+<h2 id="correctness-proof">Correctness Proof</h2>
+<p>Define <span class="math inline">\(\pi\)</span>, <span class="math inline">\(\mathrm{step}\)</span>, <span class="math inline">\(\{p_i\}\)</span>, prove <span class="math inline">\(\{p_i\} = \{\pi(i)\}\)</span>.</p>
+<h3 id="definitions">Definitions</h3>
+<p><strong>Definition 1 (Prefix function)</strong> For a string <span class="math inline">\(s[0:n]\)</span> (all index intervals are half-open <span class="math inline">\([a,b)\)</span>), <span class="math inline">\(\pi : \{0,\dots,n-1\} \to \mathbb{N}\)</span>:</p>
+<p><span class="math display">\[
+\pi(i) = \begin{cases}
+0, &amp; i = 0 \\
+\max\{\,k \in [0,i] \mid s[0:k] = s[i+1-k : i+1]\,\}, &amp; i \ge 1
+\end{cases}
+\]</span></p>
+<p><strong>Definition 2 (Transition function)</strong> Given <span class="math inline">\(s\)</span> and its <span class="math inline">\(\pi\)</span>, <span class="math inline">\(\mathrm{step} : \mathbb{N} \times \Sigma \to \mathbb{N}\)</span> (where <span class="math inline">\(\Sigma\)</span> is the alphabet):</p>
+<p><span class="math display">\[
+\mathrm{step}(j, c) = \begin{cases}
+j + 1, &amp; \text{if } s[j] = c \\[2pt]
+0,     &amp; \text{if } s[j] \neq c \;\land\; j = 0 \\[2pt]
+\mathrm{step}(\pi(j-1),\, c), &amp; \text{if } s[j] \neq c \;\land\; j &gt; 0
+\end{cases}
+\]</span></p>
+<p><strong>Definition 3 (scanl sequence)</strong> The sequence <span class="math inline">\(\{p_i\}_{i=0}^{n-1}\)</span>:</p>
+<p><span class="math display">\[
+p_i = \begin{cases}
+0, &amp; i = 0 \\
+\mathrm{step}(p_{i-1},\, s[i]), &amp; i \ge 1
+\end{cases}
+\]</span></p>
+<p>That is, <span class="math inline">\([p_0,\dots,p_{n-1}] = \mathrm{scanl\ step\ 0}\ [s[1],\dots,s[n-1]]\)</span>.</p>
+<h3 id="theorem">Theorem</h3>
+<p><strong>Theorem</strong> <span class="math inline">\(\forall i \in [0, n-1]:\; p_i = \pi(i)\)</span>.</p>
+<p><em>Proof.</em> By induction on <span class="math inline">\(i\)</span>.</p>
+<p><strong>Base case</strong> <span class="math inline">\(i = 0\)</span>: <span class="math inline">\(p_0 = 0 = \pi(0)\)</span>. QED</p>
+<p><strong>Inductive step</strong> Assume <span class="math inline">\(p_k = \pi(k)\)</span> for all <span class="math inline">\(k &lt; i\)</span> (strong induction). Let <span class="math inline">\(j = p_{i-1} = \pi(i-1)\)</span>. Then <span class="math inline">\(p_i = \mathrm{step}(j, s[i])\)</span>.</p>
+<p>The definition of <span class="math inline">\(\mathrm{step}\)</span> has three branches; we proceed by case analysis on them:</p>
+<hr />
+<p><strong>Case A</strong> <span class="math inline">\(s[j] = s[i]\)</span>.</p>
+<p>Here <span class="math inline">\(p_i = \mathrm{step}(j, s[i]) = j+1\)</span>. We prove <span class="math inline">\(\pi(i) = j+1\)</span>.</p>
+<p>(<span class="math inline">\(\ge\)</span>)
+<span class="math display">\[
+\begin{aligned}
+s[0:j] &amp;= s[i-j:i] &amp;&amp; [j = \pi(i-1)] \\
+s[j] &amp;= s[i] &amp;&amp; [\text{premise}] \\[2pt]
+\implies s[0:j+1] &amp;= s[i-j:i+1] &amp;&amp; [\text{append}] \\
+\implies \pi(i) &amp;\ge j+1 &amp;&amp; [\text{def. of } \pi]
+\end{aligned}
+\]</span></p>
+<p>(<span class="math inline">\(\le\)</span>)
+<span class="math display">\[
+\begin{aligned}
+k = \pi(i)
+&amp;\implies s[0:k] = s[i+1-k:i+1] &amp;&amp; [\text{def. of } \pi] \\
+&amp;\implies s[0:k-1] = s[i+1-k:i] &amp;&amp; [\text{drop last char}] \\
+&amp;\implies \pi(i-1) \ge k-1 &amp;&amp; [\text{def. of } \pi] \\
+&amp;\implies j \ge k-1 &amp;&amp; [\pi(i-1)=j] \\
+&amp;\implies k \le j+1 \\
+&amp;\implies \pi(i) \le j+1
+\end{aligned}
+\]</span></p>
+<p>From <span class="math inline">\((\ge)(\le)\)</span>: <span class="math inline">\(\pi(i) = j+1 = p_i\)</span>. QED</p>
+<hr />
+<p><strong>Case B</strong> <span class="math inline">\(s[j] \neq s[i]\)</span> and <span class="math inline">\(j = 0\)</span>.</p>
+<p>Here <span class="math inline">\(p_i = \mathrm{step}(j, s[i]) = 0\)</span>. We prove <span class="math inline">\(\pi(i) = 0\)</span>.</p>
+<p>Let <span class="math inline">\(M_m = \{\,k \mid s[0:k] = s[m+1-k:m+1]\,\}\)</span>, so <span class="math inline">\(\pi(m) = \max M_m\)</span>.</p>
+<p>From <span class="math inline">\(\pi(i-1) = 0\)</span>:
+<span class="math display">\[
+M_{i-1} = \{0\} \tag{1}
+\]</span></p>
+<p>For any <span class="math inline">\(k \ge 1\)</span>:
+<span class="math display">\[
+\begin{aligned}
+k \in M_i
+&amp;\implies s[0:k] = s[i+1-k:i+1] &amp;&amp; [\text{def. of } M_i] \\
+&amp;\implies s[0:k-1] = s[i+1-k:i] &amp;&amp; [\text{drop last char}] \\
+&amp;\implies k-1 \in M_{i-1} &amp;&amp; [\text{def. of } M_{i-1}] \\
+&amp;\implies k-1 = 0 &amp;&amp; [\text{by (1)}] \\
+&amp;\implies k = 1
+\end{aligned}
+\]</span></p>
+<p>Also:
+<span class="math display">\[
+\begin{aligned}
+1 \in M_i
+&amp;\iff s[0:1] = s[i:i+1] &amp;&amp; [\text{def. of } M_i] \\
+s[0] &amp;= s[j] \neq s[i] &amp;&amp; [j=0,\ \text{premise}] \\[2pt]
+&amp;\Downarrow \\
+1 &amp;\notin M_i
+\end{aligned}
+\]</span></p>
+<p>Thus <span class="math inline">\(M_i\)</span> contains no <span class="math inline">\(k \ge 1\)</span>. Since <span class="math inline">\(0 \in M_i\)</span> always (empty match):
+<span class="math display">\[
+M_i = \{0\},\qquad \pi(i) = \max M_i = 0 = p_i
+\]</span></p>
+<p>QED</p>
+<hr />
+<p><strong>Case C</strong> <span class="math inline">\(s[j] \neq s[i]\)</span> and <span class="math inline">\(j &gt; 0\)</span>.</p>
+<p>Here <span class="math inline">\(p_i = \mathrm{step}(j, s[i]) = \mathrm{step}(\pi(j-1), s[i])\)</span>.</p>
+<p><strong>(i) Show <span class="math inline">\(\pi(i) \le j\)</span></strong> Let <span class="math inline">\(k = \pi(i)\)</span>. If <span class="math inline">\(k = 0\)</span>, then <span class="math inline">\(k \le j\)</span> holds trivially. Assume <span class="math inline">\(k \ge 1\)</span>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+k = \pi(i)
+&amp;\implies s[0:k] = s[i+1-k:i+1] &amp;&amp; [\text{def. of } \pi] \\
+&amp;\implies s[0:k-1] = s[i+1-k:i] &amp;&amp; [\text{drop last char}] \\
+&amp;\implies \pi(i-1) \ge k-1 &amp;&amp; [\text{def. of } \pi] \\
+&amp;\implies j \ge k-1 &amp;&amp; [\pi(i-1)=j] \\
+&amp;\implies k \le j+1 &amp;&amp; \text{(1)}
+\end{aligned}
+\]</span></p>
+<p>Also:
+<span class="math display">\[
+\begin{aligned}
+s[0:k] = s[i+1-k:i+1] &amp;\implies s[k-1] = s[i] &amp;&amp; [\text{last char}] \\
+s[j] \neq s[i] &amp;\implies k-1 \neq j &amp;&amp; [\text{premise}] \\
+&amp;\implies k \neq j+1 &amp;&amp; \text{(2)}
+\end{aligned}
+\]</span></p>
+<p>From (1)(2) and <span class="math inline">\(k\)</span> being an integer: <span class="math inline">\(k \le j\)</span>, i.e. <span class="math inline">\(\pi(i) \le j\)</span>.</p>
+<p><strong>(ii) Express <span class="math inline">\(\pi(i)\)</span> in terms of <span class="math inline">\(j\)</span></strong> Let <span class="math inline">\(k = \pi(i)\)</span>, <span class="math inline">\(k \le j\)</span>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+k = \pi(i)
+&amp;\iff s[0:k] = s[i+1-k:i+1] &amp;&amp; [\text{def. of } \pi] \\
+&amp;\iff s[0:k-1] = s[i+1-k:i]\;\wedge\; s[k-1] = s[i] &amp;&amp; [\text{split last char}] \\
+&amp;\iff s[0:k-1] = s[j+1-k:j]\;\wedge\; s[k-1] = s[i] &amp;&amp; [\text{using } s[0:j]=s[i-j:i]]
+\end{aligned}
+\]</span></p>
+<p>Hence:
+<span class="math display">\[
+\pi(i) = \max\{\,k \mid s[0:k-1] = s[j+1-k:j],\; s[k-1] = s[i]\,\}
+\]</span></p>
+<p>Let <span class="math inline">\(\ell = k-1\)</span>:
+<span class="math display">\[
+\pi(i) = \max\{\,\ell+1 \mid s[0:\ell] = s[j-\ell:j],\; s[\ell] = s[i]\,\}
+\]</span></p>
+<p>(or <span class="math inline">\(0\)</span> if the set is empty).</p>
+<p>Let the chain be <span class="math inline">\(m_0 = \pi(j-1)\)</span>, <span class="math inline">\(m_1 = \pi(m_0-1)\)</span>, \dots, <span class="math inline">\(m_k = 0\)</span>. Unfold the recursive definition of <span class="math inline">\(\mathrm{step}\)</span>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathrm{step}(m_0, s[i])
+&amp;= \begin{cases}
+m_0 + 1, &amp; s[m_0] = s[i] \\
+\mathrm{step}(m_1, s[i]), &amp; s[m_0] \neq s[i]
+\end{cases} \\
+\mathrm{step}(m_1, s[i])
+&amp;= \begin{cases}
+m_1 + 1, &amp; s[m_1] = s[i] \\
+\mathrm{step}(m_2, s[i]), &amp; s[m_1] \neq s[i]
+\end{cases} \\
+&amp;\;\;\vdots \\
+\mathrm{step}(m_k, s[i]) &amp;= 0 \qquad (m_k = 0)
+\end{aligned}
+\]</span></p>
+<p>Substituting recursively: <span class="math inline">\(\mathrm{step}(m_0, s[i]) = m_t + 1\)</span>, where <span class="math inline">\(t\)</span> is the smallest index with <span class="math inline">\(s[m_t] = s[i]\)</span> (or <span class="math inline">\(0\)</span> if none). Since <span class="math inline">\(m_0 &gt; m_1 &gt; \dots &gt; m_k\)</span>, this <span class="math inline">\(m_t\)</span> is the largest element of the chain satisfying the condition, hence:</p>
+<p><span class="math display">\[
+\mathrm{step}(\pi(j-1), s[i]) = \max\{\,\ell+1 \mid \ell \in \{\pi(j-1),\,\pi(\pi(j-1)-1),\,\dots,\,0\},\; s[\ell]=s[i]\,\}
+\]</span></p>
+<p>We must verify this chain equals <span class="math inline">\(\{\,\ell \mid s[0:\ell] = s[j-\ell:j]\,\}\)</span>. Two inclusions:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\{\,\ell \mid s[0:\ell] = s[j-\ell:j]\,\} &amp;\subseteq \{\pi(j-1),\,\pi(\pi(j-1)-1),\,\dots,\,0\} \\
+\{\,\ell \mid s[0:\ell] = s[j-\ell:j]\,\} &amp;\supseteq \{\pi(j-1),\,\pi(\pi(j-1)-1),\,\dots,\,0\}
+\end{aligned}
+\]</span></p>
+<p>First prove <span class="math inline">\(\supseteq\)</span>. For any <span class="math inline">\(m_i\)</span> on the chain:</p>
+<p><span class="math display">\[
+\begin{aligned}
+m_i &amp;= \pi(m_{i-1}-1) \\
+&amp;\implies s[0:m_i] = s[m_{i-1}-m_i:m_{i-1}] &amp;&amp; [\text{def. of } \pi] \\
+&amp;\implies s[0:m_i] = s[j-m_i:j] &amp;&amp; [\text{substitute } s[0:m_{i-1}]=s[j-m_{i-1}:j]]
+\end{aligned}
+\]</span></p>
+<p>Hence <span class="math inline">\(m_i \in \{\,\ell \mid s[0:\ell] = s[j-\ell:j]\,\}\)</span>.</p>
+<p>Now prove <span class="math inline">\(\subseteq\)</span>. Let <span class="math inline">\(\ell\)</span> satisfy <span class="math inline">\(s[0:\ell]=s[j-\ell:j]\)</span>, and let <span class="math inline">\(m_0 = \pi(j-1)\)</span>.</p>
+<p><span class="math display">\[
+\begin{aligned}
+\ell &amp;\le m_0 &amp;&amp; [m_0 = \max\{\ell \mid s[0:\ell]=s[j-\ell:j]\}] \\
+\ell &lt; m_t &amp;\implies s[0:\ell] = s[m_t-\ell:m_t] &amp;&amp; [s[0:m_t]=s[j-m_t:j],\ \ell&lt;m_t] \\
+&amp;\implies \ell \le \pi(m_t-1) = m_{t+1} &amp;&amp; [\text{def. of } \pi] \\
+&amp;\implies \ell = m_{t+1} \lor \ell &lt; m_{t+1}
+\end{aligned}
+\]</span></p>
+<p>Since <span class="math inline">\(\pi(m_t-1) &lt; m_t\)</span>, the chain <span class="math inline">\(m_0 &gt; m_1 &gt; m_2 &gt; \dots &gt; 0\)</span> is strictly decreasing, so in <strong>finitely many steps</strong> we must have <span class="math inline">\(\ell = m_t\)</span> (for some <span class="math inline">\(t\)</span>) or <span class="math inline">\(\ell = 0\)</span>. Hence <span class="math inline">\(\ell \in \{m_0,m_1,\dots,0\}\)</span>.</p>
+<p>Therefore the two sets are equal:
+<span class="math display">\[
+\{\,\ell \mid s[0:\ell] = s[j-\ell:j]\,\} = \{\pi(j-1),\,\pi(\pi(j-1)-1),\,\dots,\,0\}
+\]</span></p>
+<p>Substituting this equality:
+<span class="math display">\[
+\mathrm{step}(\pi(j-1), s[i]) = \max\{\,\ell+1 \mid s[0:\ell]=s[j-\ell:j],\; s[\ell]=s[i]\,\}
+\]</span></p>
+<p>By strong induction all <span class="math inline">\(\pi\)</span> values on this chain are correct, so <span class="math inline">\(\mathrm{step}(\pi(j-1), s[i]) = \pi(i)\)</span>.</p>
+<p>Hence <span class="math inline">\(p_i = \pi(i)\)</span>. QED</p>
+<hr />
+<p>Thus, by mathematical induction, <span class="math inline">\(\forall i:\; p_i = \pi(i)\)</span>. QED</p>
+<hr />
+<h2 id="lazy-evaluation">Lazy Evaluation</h2>
+<p>The <code>prefix</code> function contains an apparently circular dependency: <code>pi</code>’s definition references <code>step pi pat</code>, and <code>step</code>’s third argument is <code>pi</code> itself. In most languages this would crash immediately — you cannot read from a data structure that is still under construction.</p>
+<p>The difference lies in <strong>evaluation strategy</strong>.</p>
+<h3 id="strict-vs-lazy-evaluation">Strict vs Lazy Evaluation</h3>
+<p>Mainstream languages (Rust, C++, Java, Python, etc.) use <strong>strict evaluation</strong> (also called eager evaluation): before a function is called, all its arguments must be fully computed to concrete values. Compute first, then call.</p>
+<p>Haskell uses <strong>lazy evaluation</strong>: an expression is computed only when its result is <strong>actually demanded</strong>. Function arguments are not evaluated at the call site; instead they are packaged as <strong>thunks</strong> — deferred computations that say “figure this out when needed.” Only when an operation must know the actual value of a thunk (e.g., pattern matching, output, arithmetic) does the runtime <strong>force</strong> the thunk, execute the computation, and replace the thunk with the result.</p>
+<h3 id="spines-and-thunks">Spines and Thunks</h3>
+<p><code>Data.Array</code> in memory consists of two parts:</p>
+<ul>
+<li><strong>spine</strong>: the index structure and bounds</li>
+<li><strong>elements</strong>: the values in each slot</li>
+</ul>
+<p><code>A.listArray</code> evaluates the <strong>spine</strong> (to validate bounds), but does <strong>not</strong> evaluate the element values — each slot holds a thunk.</p>
+<p>As <code>scanl</code> sweeps left to right over the pattern, it produces <span class="math inline">\(\pi(0), \pi(1), \dots\)</span> in order. Each <span class="math inline">\(\pi(i)\)</span> is a thunk. When <code>step</code> needs <span class="math inline">\(\pi(j-1)\)</span> (where <span class="math inline">\(j-1 &lt; i\)</span>), that thunk has already been forced by <code>scanl</code> in an earlier iteration into a concrete integer.</p>
+<pre><code>Timeline (scanl left to right):
+  index 0: force thunk₀ → π(0)=0           ✓ no dependency
+  index 1: force thunk₁ → step needs π(0)   ✓ π(0) ready
+  index 2: force thunk₂ → step needs π(1)   ✓ π(1) ready
+  ...
+  index i: force thunkᵢ → step needs π(j-1) ✓ j-1 &lt; i, ready</code></pre>
+<p>The key property: <strong>the data dependency index is always less than the index currently being computed</strong>. This guarantees the computation graph is <strong>directed acyclic</strong> — there is no true forward reference, only “referring to a prefix of the same array.” Lazy evaluation allows this self-referential structure to be unwound left to right, with each step only reading from the already-computed prefix.</p>
+<h3 id="strictly-evaluated-languages">Strictly-Evaluated Languages</h3>
+<p>In a strictly-evaluated language, <code>A.listArray</code> not only evaluates the spine but also forces <strong>all elements immediately</strong> — the array constructor requires each slot to be determinate at creation. At the moment <span class="math inline">\(\pi\)</span> is being constructed, the very first step of <code>scanl</code> needs to access <span class="math inline">\(\pi\)</span> (which doesn’t exist yet), causing a deadlock.</p>
+<p>Rust or C++ must use explicit two-pass loops, or manually maintain state with each iteration only accessing already-written positions. This is hand-coding the topological sort.</p>
+<p>Haskell’s lazy arrays delegate <strong>topological sort to the runtime</strong> — as long as data dependencies are forward (<span class="math inline">\(j &lt; i\)</span>), lazy evaluation automatically serializes the computation. The essence of knot-tying: <strong>exploit the topological ordering of evaluation to transform a cyclic dependency into a directed acyclic computation graph.</strong></p>
+<hr />
+<h2 id="closing">Closing</h2>
+<p>The self-referential structure of KMP — <span class="math inline">\(\pi(i)\)</span> depending on <span class="math inline">\(\pi(j)\)</span> (<span class="math inline">\(j &lt; i\)</span>) — need not be worked around in a lazy language; it can be written as program text directly. <code>step</code> abstracts “following the failure chain” into a pure function, and <code>prefix</code> uses <code>scanl</code> to apply that same function simultaneously for construction and consumption. An instance of “expressing control flow through data flow” in functional programming.</p></section>
+  </article>
+</main>
+
+    
+    <section class="comments" aria-label="Comments">
+      <div id="giscus-container" class="giscus"></div>
+    </section>
+    
+    <footer class="site-footer">
+      <div>
+        <strong>zLeoAlex's Blog</strong>
+        <span data-i18n-en="with Memos">与旧事同在</span>
+      </div>
+      <div class="site-footer__links">
+        <a href="/atom.xml">Atom</a>
+        <a href="/rss.xml">RSS</a>
+        <a href="https://github.com/LeoAlex0">GitHub</a>
+      </div>
+    </footer>
+    <script defer src="/js/script.js"></script>
+  </body>
+</html>
