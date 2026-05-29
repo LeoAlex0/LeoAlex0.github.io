@@ -147,7 +147,7 @@
         2020-06-11 
       </p>
       <h1>
-        <span class="language-version is-current" data-language-version="zh-CN" lang="zh-CN">Incident Algebra与反演</span>
+        <span class="language-version is-current" data-language-version="zh-CN" lang="zh-CN">Incident Algebra与反演</span><span class="language-version" data-language-version="en" lang="en" hidden>Incidence Algebra and Möbius Inversion</span>
       </h1>
       <div class="post-meta">
         <span><a title="All pages tagged &#39;数学&#39;." href="/categories/%E6%95%B0%E5%AD%A6.html" rel="tag">数学</a>, <a title="All pages tagged &#39;代数&#39;." href="/categories/%E4%BB%A3%E6%95%B0.html" rel="tag">代数</a></span>
@@ -470,7 +470,311 @@ G(x) &amp;= \sum_{k\mid x} F(k) \mu(k,x) = \sum_{k\mid x} F(k) \mu&#39;(\frac x 
 \]</span></p>
 <p>其中称下式为上式的莫比乌斯反演公式。</p>
     </section>
-    
+    <section class="post-content language-version" data-language-version="en" lang="en" hidden><h2 id="incidence-algebra">Incidence Algebra</h2>
+<h3 id="definition">Definition</h3>
+<p>A locally finite poset is a poset in which every closed interval <span class="math inline">\([a,b]\)</span> is finite.</p>
+<blockquote>
+<p>Properties of a partial order:</p>
+<ul>
+<li>Reflexivity: <span class="math inline">\(\forall a\in S:a\le a\)</span></li>
+<li>Antisymmetry: <span class="math inline">\(\forall a,b\in S: a\le b \wedge b\le a \rightarrow a=b\)</span></li>
+<li>Transitivity: <span class="math inline">\(\forall a,b,c\in S: a\le b \wedge b\le c \rightarrow a\le c\)</span></li>
+</ul>
+<p>Intervals on a poset:</p>
+<ul>
+<li><span class="math inline">\([a,b]=\{x|a\le x \wedge x\le b\}\)</span></li>
+<li><span class="math inline">\([a,b)=\{x|a\le x\wedge x\le b\wedge b\neq x\}\)</span></li>
+<li><span class="math inline">\((a,b]=\{x|x\neq a\wedge a\le x\wedge x\le b\}\)</span></li>
+<li><span class="math inline">\((a,b)=\{x|x\neq a\wedge a\le x \wedge x\le b\wedge b\neq x\}\)</span></li>
+</ul>
+</blockquote>
+<p>An element <span class="math inline">\(f\)</span> of incidence algebra is a function mapping each non-empty interval <span class="math inline">\([a,b]\)</span> of a locally finite poset <span class="math inline">\(S\)</span> to a scalar (a unital ring suffices) <span class="math inline">\(f(a,b)\)</span>. Let <span class="math inline">\(X\)</span> be the set of such functions. The convolution operation is defined as:</p>
+<p><span class="math display">\[
+(f*g)(a,b)=\sum_{x\in [a,b]} f(a,x)g(x,b)
+\]</span></p>
+<p>We may also define addition: <span class="math inline">\((f+g)(a,b)=f(a,b)+g(a,b)\)</span>, which yields some interesting properties.</p>
+<h3 id="properties">Properties</h3>
+<h4 id="associativity">Associativity</h4>
+<p><span class="math display">\[
+\begin{aligned}
+((f*g)*h)(a,b)&amp;=\sum_{x\in[a,b]} (f*g)(a,x)h(x,b) &amp; \text{def.}\\
+&amp;=\sum_{x\in [a,b]}\left(\sum_{y\in [a,x]} f(a,y)g(y,x)\right)h(x,b) &amp; \text{def.}\\
+&amp;=\sum_{x\in [a,b]}\sum_{y\in[a,x]} f(a,y)g(y,x)h(x,b) &amp; \text{distributivity}\\
+&amp;=\sum_{y\in [a,b]}\sum_{x\in[y,b]} f(a,y)g(y,x)h(x,b) &amp; \text{swap sums}\\
+&amp;=\sum_{y\in[a,b]}f(a,y)\sum_{x\in[y,b]}g(y,x)h(x,b) &amp; \text{distributivity}\\
+&amp;=\sum_{y\in[a,b]}f(a,y)(g*h)(y,b) &amp; \text{def.}\\
+&amp;=(f*(g*h))(a,b) &amp; \text{def.}
+\end{aligned}
+\]</span></p>
+<h4 id="identity">Identity</h4>
+<p>Define <span class="math inline">\(\delta\)</span>:</p>
+<p><span class="math display">\[
+\delta (a,b) =[a=b]= \begin{cases}
+1 &amp; a=b\\
+0 &amp; \text{otherwise}
+\end{cases}
+\]</span></p>
+<p>For any <span class="math inline">\(f\in X\)</span>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+(f*\delta)(a,b)&amp;=\sum_{x\in [a,b]} f(a,x)\delta(x,b)\\
+&amp;=\sum_{x\in [a,b]} f(a,x)[x=b]\\
+&amp;=f(a,b) \\
+(\delta*f)(a,b)&amp;=\sum_{x\in[a,b]}\delta(a,x)f(x,b)\\
+&amp;=\sum_{x\in[a,b]}[a=x]f(x,b) \\
+&amp;=f(a,b)
+\end{aligned}
+\]</span></p>
+<p>Hence <span class="math inline">\(&lt;X,*&gt;\)</span> forms a monoid, with <span class="math inline">\(\delta\)</span> as the identity. By monoid properties, the identity is unique.</p>
+<h4 id="distributivity">Distributivity</h4>
+<p><span class="math display">\[
+\begin{aligned}
+(f*(g+h))(a,b)&amp;=\sum_{x\in [a,b]} f(a,x)(g+h)(x,b) &amp; \text{def.}\\
+&amp;=\sum_{x\in[a,b]}f(a,x)[g(x,b)+h(x,b)]\\
+&amp;=\sum_{x\in[a,b]}f(a,x)g(x,b)+f(a,x)h(x,b) \\
+&amp;=\sum_{x\in[a,b]}f(a,x)g(x,b)+\sum_{x\in [a,b]}f(a,x)h(x,b) \\
+&amp;=(f*g)(a,b)+(f*h)(a,b)\\
+&amp;=(f*g+f*h)(a,b)
+\end{aligned}
+\]</span></p>
+<p><span class="math inline">\((f+g)*h=f*h+g*h\)</span> similarly.</p>
+<h4 id="inverse">Inverse</h4>
+<p>For <span class="math inline">\(f\in X\)</span> with <span class="math inline">\(\forall a\in S:f(a,a)\neq 0\)</span>, we can construct:</p>
+<p><span class="math display">\[
+g(a,b)= \begin{cases}
+\frac 1 {f(a,b)} &amp; a=b\\
+\frac {-\sum_{x\in (a,b]} f(a,x)g(x,b)} {f(a,a)} &amp; a \neq b\\
+\end{cases}
+\]</span></p>
+<p>Since <span class="math inline">\((a,b]=[a,b]-\{a\}\)</span> and <span class="math inline">\([a,b]\)</span> is finite, this definition is well-formed.</p>
+<p>Then:</p>
+<p><span class="math display">\[
+\begin{aligned}
+(f*g)(a,b)=\sum_{x\in[a,b]}f(a,x)g(x,b)&amp;=\begin{cases}
+f(a,b)g(a,b)=f(a,b)\frac 1 {f(a,b)}=1 &amp; a=b\\
+f(a,a)g(a,b)+\sum_{x\in(a,b]} f(a,x)g(x,b)=0 &amp; a\neq b
+\end{cases} \\
+&amp;=\delta(a,b)
+\end{aligned}
+\]</span></p>
+<p>Additionally, <span class="math inline">\(g(a,a)=\frac 1 {f(a,a)}\neq 0\)</span>, so <span class="math inline">\(g\)</span> also satisfies the condition.</p>
+<p>Symmetrically, we can construct a left inverse:</p>
+<p><span class="math display">\[
+g&#39;(a,b)= \begin{cases}
+\frac 1 {f(a,b)} &amp; a=b\\
+\frac {-\sum_{x\in [a,b)} g&#39;(a,x)f(x,b)} {f(b,b)} &amp; a \neq b\\
+\end{cases}
+\]</span></p>
+<p>satisfying <span class="math inline">\((g&#39;*f)=\delta\)</span>.</p>
+<p>Hence <span class="math inline">\(\forall a\in S:f(a,a)\neq 0\)</span> is sufficient for <span class="math inline">\(f\)</span> to be invertible.</p>
+<p>Since <span class="math inline">\(1=\delta(a,a)=f(a,a)f^{-1}(a,a)\)</span>, it is also necessary (<span class="math inline">\(\forall x\in\mathbb R:0\times x=0\)</span>).</p>
+<p>Therefore <span class="math inline">\(f\)</span> is invertible iff <span class="math inline">\(\forall a\in S:f(a,a)\neq 0\)</span>.</p>
+<blockquote>
+<p>Consider the subset of incidence algebra:
+<span class="math inline">\(\hat X=\left\{f|f\in X\wedge \forall a\in S:f(a,a)\neq 0\right\}\)</span>.
+The structure <span class="math inline">\(&lt;\hat X,*&gt;\)</span> satisfies:</p>
+<ul>
+<li>Closure (product of two non-zero numbers is non-zero):</li>
+</ul>
+<p><span class="math display">\[
+  (f*g)(a,a)=f(a,a)g(a,a)\neq0
+\]</span></p>
+<ul>
+<li>Associativity (same as <span class="math inline">\(&lt;X,*&gt;\)</span>)</li>
+<li>Identity <span class="math inline">\(\delta\in\hat X\)</span></li>
+<li>Inverses (proved above)</li>
+</ul>
+<p>Hence <span class="math inline">\(&lt;\hat X,*&gt;\)</span> forms a group.</p>
+<p>(Left and right inverses coincide, as shown below:)</p>
+<p><span class="math display">\[
+g=\delta*g=(g&#39;*f)*g=g&#39;*f*g=g&#39;*(f*g)=g&#39;*\delta=g&#39;
+\]</span></p>
+</blockquote>
+<h3 id="relationship-with-ordinary-functions">Relationship with Ordinary Functions</h3>
+<p>Define <span class="math inline">\(F,G:S\to \mathbb R\)</span>, <span class="math inline">\(f\in \hat X\)</span>, <span class="math inline">\(a,b\in S\)</span>, with the relation:</p>
+<p><span class="math display">\[
+F(x)=\sum_{k\in [a,x]} G(k)f(k,x)
+\]</span></p>
+<p>Then:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\sum_{k\in [a,x]} F(k)f^{-1}(k,x) &amp;=
+\sum_{k\in[a,x]} \left[\sum_{t\in [a,k]} G(t)f(t,k)\right] f^{-1}(k,x) &amp; \text{def.}\\
+&amp;=\sum_{k\in [a,x]}\sum_{t\in [a,k]} G(t)f(t,k)f^{-1}(k,x) &amp; \text{distributivity}\\
+&amp;=\sum_{t\in [a,x]} \sum_{k\in [t,x]} G(t)f(t,k)f^{-1}(k,x) &amp; \text{swap sums}\\
+&amp;=\sum_{t\in [a,x]} G(t) \sum_{k\in [t,x]} f(t,k)f^{-1}(k,x) &amp; \text{distributivity}\\
+&amp;=\sum_{t\in [a,x]} G(t) \delta(t,x) &amp; \text{def.}\\
+&amp;=\sum_{t\in [a,x]} G(t) [t=x] = G(x)
+\end{aligned}
+\]</span></p>
+<blockquote>
+<p>Essentially, this is equivalent to <span class="math inline">\(F(x)=F&#39;(a,x)\)</span>.</p>
+</blockquote>
+<p>Symmetrically:</p>
+<p><span class="math display">\[
+F(x)=\sum_{k\in[x,b]} f(x,k)G(k)\\
+G(x)=\sum_{k\in[x,b]}f^{-1}(x,k)F(k)
+\]</span></p>
+<p>Thus we can construct a group action on this structure.</p>
+<h2 id="the-poset-and-the-zeta-function">The Poset and the <span class="math inline">\(\zeta\)</span> Function</h2>
+<h3 id="definition-1">Definition</h3>
+<p>Define <span class="math inline">\(\zeta\in X\)</span> as:</p>
+<p><span class="math display">\[
+\zeta(a,b)=[a\le b]=\begin{cases}
+1 &amp; a\le b \\
+0 &amp; \text{otherwise}
+\end{cases}
+\]</span></p>
+<p>Since the definition of <span class="math inline">\(X\)</span> requires <span class="math inline">\([a,b]\)</span> to be a non-empty interval, <span class="math inline">\(\exists x\in S:a\le x \wedge x\le b \Leftrightarrow a\le b\)</span>. So we can also view <span class="math inline">\(\zeta(a,b)=1\)</span> as shorthand.</p>
+<p>Since <span class="math inline">\(\forall a\in S:\zeta(a,a)=1\)</span>, we have <span class="math inline">\(\zeta\in \hat X\)</span>.</p>
+<p>Let <span class="math inline">\(\mu=\zeta^{-1}\)</span>. Then:</p>
+<p><span class="math display">\[
+\mu (a,b)=\begin{cases}
+1 &amp; a=b\\
+-\sum_{x\in(a,b]} \mu(x,b) = -\sum_{x\in [a,b)} \mu(a,x) &amp; a\lt b\\
+0 &amp; \text{otherwise}
+\end{cases}
+\]</span></p>
+<p>Let <span class="math inline">\(S_1,S_2\)</span> be two posets. Define a partial order on <span class="math inline">\(S_1\times S_2\)</span>:</p>
+<p><span class="math display">\[
+\langle a_1,b_1\rangle \le \langle a_2,b_2\rangle \Leftrightarrow a_1\le a_2 \wedge b_1\le b_2
+\]</span></p>
+<p>Thus <span class="math inline">\(S_1\times S_2\)</span> is also a poset. The direct product of finitely many posets is a poset.</p>
+<h3 id="properties-1">Properties</h3>
+<p>The number of elements in <span class="math inline">\([a,b]\)</span> can be expressed as:</p>
+<p><span class="math display">\[
+\zeta^2(a,b)=\sum_{x\in[a,b]}\zeta(a,x)\zeta(x,b)=\sum_{x\in[a,b]}1=\operatorname{Card}([a,b])
+\]</span></p>
+<p>Let <span class="math inline">\(S_1,S_2\)</span> be locally finite posets, <span class="math inline">\(S=S_1\times S_2\)</span>. Let <span class="math inline">\(\zeta_1,\zeta_2,\zeta\)</span> be their <span class="math inline">\(\zeta\)</span> functions, <span class="math inline">\(\mu_1,\mu_2,\mu\)</span> their <span class="math inline">\(\mu\)</span> functions, and <span class="math inline">\(\delta_1,\delta_2,\delta\)</span> their <span class="math inline">\(\delta\)</span> functions.</p>
+<p><span class="math inline">\(\forall a,b\in S\)</span> with <span class="math inline">\(a\le b\)</span>, let <span class="math inline">\(a=\langle a_1,a_2\rangle,b=\langle b_1,b_2\rangle\)</span>. Then:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\delta(a,b)&amp;=[a=b] \\
+&amp;=[a_1=b_1\wedge a_2=b_2]\\
+&amp;=[a_1=b_1][a_2=b_2]\\
+&amp;=\delta_1(a_1,b_1)\delta_2(a_2,b_2)\\
+\\
+\zeta(a,b)&amp;=[a\le b] \\
+&amp;=[a_1\le b_1 \wedge a_2\le b_2] \\
+&amp;=[a_1\le b_1][a_2\le b_2]\\
+&amp;=\zeta_1(a_1,b_1)\zeta_2(a_2,b_2)\\
+\end{aligned}
+\]</span></p>
+<p>Construct <span class="math inline">\(\mu&#39;(a,b)=\mu_1(a_1,b_1)\mu_2(a_2,b_2)\)</span>. Then:</p>
+<p><span class="math display">\[
+\begin{aligned}
+(\mu&#39;*\zeta)(a,b) &amp;= \sum_{x\in [a,b]} \mu&#39;(a,x)\zeta(x,b) &amp; \text{def.}\\
+&amp;=\sum_{x_1\in [a_1,b_1] \wedge x_2\in [a_2,b_2]}
+\mu_1(a_1,x_1)\mu_2(a_2,x_2)\zeta_1(x_1,b_1)\zeta_2(x_2,b_2)&amp; \text{expand} \\
+&amp;=\sum_{x_1\in [a_1,b_1]}\sum_{x_2\in [a_2,b_2]}
+\mu_1(a_1,x_1)\zeta_1(x_1,b_1) \mu_2(a_2,x_2)\zeta_2(x_2,b_2) &amp; \text{split sums}\\
+&amp;=\sum_{x_1\in [a_1,b_1]}\mu_1(a_1,x_1)\zeta_1(x_1,b_1)
+\sum_{x_2\in [a_2,b_2]} \mu_2(a_2,x_2)\zeta_2(x_2,b_2) &amp; \text{distributivity}\\
+&amp;= (\mu_1*\zeta_1)(a_1,b_1) (\mu_2*\zeta_2)(a_2,b_2) \\
+&amp;= \delta_1(a_1,b_1)\delta_2(a_2,b_2)\\
+&amp;=\delta(a,b)
+\end{aligned}
+\]</span></p>
+<p>Hence <span class="math inline">\(\mu&#39;=\zeta^{-1}=\mu\)</span>, i.e., <span class="math inline">\(\mu(a,b)=\mu_1(a_1,b_1)\mu_2(a_2,b_2)\)</span>.</p>
+<h2 id="inversion">Inversion</h2>
+<h3 id="binomial-inversion">Binomial Inversion</h3>
+<p>Let <span class="math inline">\(p_n(x)=x^n\)</span> and <span class="math inline">\(q_n(x)=(x-1)^n\)</span> be polynomials of degree <span class="math inline">\(n\)</span>. Then:</p>
+<p><span class="math display">\[
+\begin{aligned}
+q_n(x)&amp;=\sum_{k=0}^n \binom n k (-1)^{n-k} x^k \\
+&amp;= \sum_{k=0}^n \binom n k (-1)^{n-k} q_k(x) \\
+\\
+p_n(x) &amp;= ((x-1)+1)^n\\
+&amp;= \sum_{k=0}^n \binom n k (x-1)^k \\
+&amp;= \sum_{k=0}^n \binom n k q_k(x)
+\end{aligned}
+\]</span></p>
+<p>Define <span class="math inline">\((n+1)\times (n+1)\)</span> matrices <span class="math inline">\(A,B\)</span> (0-indexed):</p>
+<p><span class="math display">\[
+\begin{aligned}
+A_{i,j}&amp;= \binom j i (-1)^{j-i} \\
+B_{i,j}&amp;= \binom j i \\
+\end{aligned}
+\]</span></p>
+<p>Note:</p>
+<ul>
+<li><span class="math inline">\(A,B\)</span> are both unit upper triangular matrices.</li>
+<li>From the construction of coefficient vectors for <span class="math inline">\(p,q\)</span>: <span class="math inline">\(AB=BA=I\)</span>, so <span class="math inline">\(A,B\)</span> are inverses.</li>
+</ul>
+<p>Let <span class="math inline">\(f(a,b)=A_{a,b}, g(a,b)=B_{a,b}\)</span>. Since <span class="math inline">\(A,B\)</span> are unit upper triangular, <span class="math inline">\(f,g\)</span> can be viewed as elements of the incidence algebra on the integer interval <span class="math inline">\([0,n]\)</span> with the usual order <span class="math inline">\(\le\)</span>. This is isomorphic to multiplication of <span class="math inline">\((n+1)\times (n+1)\)</span> matrices.</p>
+<p><span class="math display">\[
+\begin{aligned}
+(f*g)(a,b)&amp;=\sum_{x\in [a,b]} f(a,x)g(x,b) \\
+&amp;=\underbrace{\sum_{x\in [0,a)} f(a,x)g(x,b)}_{f(a,x)=0}
++\sum_{x\in [a,b]} f(a,x)g(x,b)
++\underbrace{\sum_{x\in (b,n]} f(a,x)g(x,b)}_{g(x,b)=0}\\
+&amp;=\sum_{x\in [0,n]} f(a,x)g(x,b) \\
+&amp;=(AB)_{a,b}=I_{a,b}\\
+&amp;=[a=b]=\delta(a,b)
+\end{aligned}
+\]</span></p>
+<p>Thus <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span> are inverses.</p>
+<p>According to the relationship between incidence algebra and ordinary functions, for an integer <span class="math inline">\(a\)</span> in <span class="math inline">\([0,n]\)</span>, the following pair of equations are equivalent:</p>
+<p><span class="math display">\[
+\begin{aligned}
+F(x)&amp;=\sum_{k\in [a,x]}G(k)g(k,x)=\sum_{k\in[a,x]} \binom x k G(k) \\
+G(x)&amp;=\sum_{k\in[a,x]} F(k)f(k,x)=\sum_{k\in[a,x]}(-1)^{x-k} \binom x k F(k) \\
+\end{aligned}
+\]</span></p>
+<p>In particular, for <span class="math inline">\(a=0\)</span>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+F(x)&amp;=\sum_{k\in [0,x]}G(k)g(k,x)=\sum_{k\in[0,x]} \binom x k G(k) \\
+G(x)&amp;=\sum_{k\in[0,x]} F(k)f(k,x)=\sum_{k\in[0,x]}(-1)^{x-k} \binom x k F(k) \\
+\end{aligned}
+\]</span></p>
+<p>This is known as the binomial inversion formula.</p>
+<h3 id="möbius-inversion">Möbius Inversion</h3>
+<p>Take the positive integers <span class="math inline">\(\mathbb N^+\)</span> with divisibility as the partial order. This yields another instance of incidence algebra.</p>
+<p>Here:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\zeta(a,b)&amp;=\begin{cases}
+1 &amp; a \mid b \\
+0 &amp; \text{otherwise}\\
+\end{cases} \\
+\\
+\mu(a,b)&amp;=\begin{cases}
+1 &amp; a=b \\
+-\sum_{a\mid x \wedge a\neq x \wedge x\mid b} \mu(x,b) &amp; a\mid b \wedge a\neq b \\
+0 &amp; \text{otherwise}
+\end{cases}
+\end{aligned}
+\]</span></p>
+<p>By induction:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mu(ka,kb) &amp;= \begin{cases}
+1 &amp; ka = kb &amp;\Leftrightarrow a=b \\
+-\sum_{ka\mid kx \wedge ka\neq kx \wedge kx\mid kb} \mu(kx,kb)
+&amp; ka \mid kb \wedge ka\neq kb &amp; \Leftrightarrow a \mid b\wedge a\neq b \\
+0 &amp; \text{otherwise}
+\end{cases} \\
+&amp;= \mu(a,b)
+\end{aligned}
+\]</span></p>
+<p>Furthermore, <span class="math inline">\(\mu(a,b)\)</span> is meaningful (or possibly non-zero) only when <span class="math inline">\(a\mid b\)</span>. Hence we can define <span class="math inline">\(\mu&#39;(\frac b a) = \mu(1,\frac b a)=\mu(a,b)\)</span>, which simplifies computation.</p>
+<p>Then:</p>
+<p><span class="math display">\[
+\mu&#39;(p)=\begin{cases}
+1 &amp; p=1 \\
+-\sum_{x\neq 1 \wedge x\mid p} \mu&#39;(\frac p x) &amp; \text{otherwise}
+\end{cases}
+\]</span></p>
+<p>This function is known as the classical Möbius function.</p>
+<p>By the relationship between incidence algebra and ordinary functions, taking the lower bound <span class="math inline">\(a=1\)</span> (so every integer is divisible by <span class="math inline">\(a\)</span>), we have the following equivalent pair:</p>
+<p><span class="math display">\[
+\begin{aligned}
+F(x)&amp;=\sum_{k\mid x} G(k) \zeta(k,x)=\sum_{k\mid x} G(k) \\
+G(x)&amp;=\sum_{k\mid x} F(k) \mu(k,x)=\sum_{k\mid x} \mu\left(\frac x k\right) F(k) \\
+\end{aligned}
+\]</span></p>
+<p>Which is the classical Möbius inversion formula.</p></section>
   </article>
 </main>
 

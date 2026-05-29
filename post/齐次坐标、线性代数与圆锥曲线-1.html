@@ -149,7 +149,7 @@
         2021-04-30 
       </p>
       <h1>
-        <span class="language-version is-current" data-language-version="zh-CN" lang="zh-CN">齐次坐标、线性代数与圆锥曲线-1</span>
+        <span class="language-version is-current" data-language-version="zh-CN" lang="zh-CN">齐次坐标、线性代数与圆锥曲线-1</span><span class="language-version" data-language-version="en" lang="en" hidden>Homogeneous Coordinates, Linear Algebra, and Conic Sections - Part 1</span>
       </h1>
       <div class="post-meta">
         <span><a title="All pages tagged &#39;数学&#39;." href="/categories/%E6%95%B0%E5%AD%A6.html" rel="tag">数学</a>, <a title="All pages tagged &#39;几何&#39;." href="/categories/%E5%87%A0%E4%BD%95.html" rel="tag">几何</a></span>
@@ -372,7 +372,208 @@ l&#39; \times l &amp;= \lambda_1 l_\infty \times l \\
 <p>且其在平面直角坐标系上的表示正好与<span class="math inline">\(l\)</span>平行。故我们可以将所有与<span class="math inline">\(l\)</span>相差任意倍<span class="math inline">\(l_\infty\)</span>的直线认为其与<span class="math inline">\(l\)</span>平行。</p>
 <p>但对偶地，<span class="math inline">\(\begin{bmatrix} 0\\0\\1 \end{bmatrix}\)</span>却代表原点。</p>
     </section>
-    
+    <section class="post-content language-version" data-language-version="en" lang="en" hidden><h2 id="introduction">Introduction</h2>
+<p>This article is more a summary of <a href="https://zhuanlan.zhihu.com/p/103884912">this article (in Chinese)</a> than an original work.</p>
+<p>The goal is to view high-school conic section problems from a higher perspective, with as few external assumptions as possible.</p>
+<h2 id="basic-elements">Basic Elements</h2>
+<p>Consider an arbitrary quadratic curve:</p>
+<p><span class="math display">\[
+Ax^2+Bxy+Cy^2+Dx+Ey+F=0
+\]</span></p>
+<p>First, apply the following change of variables:</p>
+<p><span class="math display">\[
+\begin{cases}
+  x&#39;=\frac x z\\
+  y&#39;=\frac y z\\
+\end{cases}
+\]</span></p>
+<p>where <span class="math inline">\(z\)</span> is any real number. Then:</p>
+<p><span class="math display">\[
+Ax^2+Bxy+Cy^2+Fz^2+Dxz+Eyz=0
+\]</span></p>
+<p>This can be written in matrix form:</p>
+<p><span class="math display">\[
+\begin{bmatrix}
+  x \\ y \\ z
+\end{bmatrix}^T
+\begin{bmatrix}
+  A   &amp; B/2 &amp; D/2 \\
+  B/2 &amp; C   &amp; E/2 \\
+  D/2 &amp; E/2 &amp; F   \\
+\end{bmatrix}
+\begin{bmatrix}
+ x \\ y \\  z
+\end{bmatrix}
+= 0
+\]</span></p>
+<p>Hence a quadratic curve can be represented by a real symmetric matrix.</p>
+<p>If we temporarily treat <span class="math inline">\((x,y,z)\)</span> in homogeneous coordinates as 3D spatial coordinates, then this quadratic form describes a quadratic cone passing through the origin. The conic section we see in Cartesian coordinates is the intersection of this cone with the affine plane <span class="math inline">\(z=1\)</span>.</p>
+<figure class="geogebra-panel">
+  <div id="geogebra-homogeneous-conic-3d" class="geogebra-applet" data-geogebra data-source="/post/齐次坐标、线性代数与圆锥曲线-1/homogeneous-conic-3d.geogebra"></div>
+  <figcaption>GeoGebra: Cone of a homogeneous quadratic form and its z=1 section.</figcaption>
+</figure>
+<p>For a line, we can also apply the same change of variables and represent it as a vector. To avoid ambiguity with points/coordinates, we adopt the convention: row vectors represent lines, column vectors represent points/coordinates.</p>
+<p><span class="math display">\[
+Ax+By+C=0 \Longleftrightarrow
+\begin{bmatrix}
+  A &amp; B &amp; C
+\end{bmatrix}
+\begin{bmatrix}
+  x \\ y \\ z
+\end{bmatrix}
+= 0
+\]</span></p>
+<h3 id="summary">Summary</h3>
+<table>
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 38%" />
+<col style="width: 46%" />
+</colgroup>
+<thead>
+<tr>
+<th>Concept</th>
+<th>Cartesian coordinates</th>
+<th>Homogeneous coordinates (matrix form)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Point</td>
+<td><span class="math inline">\((x_p,y_p)\)</span></td>
+<td><span class="math inline">\(\forall z:\begin{bmatrix} x_p/z\\y_p/z\\z \end{bmatrix}\)</span></td>
+</tr>
+<tr>
+<td>Line</td>
+<td><span class="math inline">\(Ax+By+C=0\)</span></td>
+<td><span class="math inline">\(\begin{bmatrix}A&amp;B&amp;C\end{bmatrix}\)</span></td>
+</tr>
+<tr>
+<td>Quadratic curve</td>
+<td><span class="math inline">\(Ax^2+Bxy+Cy^2+Dx+Ey+F=0\)</span></td>
+<td><span class="math inline">\(\begin{bmatrix}A&amp;B/2&amp;D/2\\B/2&amp;C&amp;E/2\\D/2&amp;E/2&amp;F\\\end{bmatrix}\)</span></td>
+</tr>
+<tr>
+<td>Point <span class="math inline">\(p\)</span> on line <span class="math inline">\(l\)</span></td>
+<td><span class="math inline">\(l(p)=0\)</span></td>
+<td><span class="math inline">\(lp=0\)</span></td>
+</tr>
+<tr>
+<td>Point <span class="math inline">\(p\)</span> on curve <span class="math inline">\(c\)</span></td>
+<td><span class="math inline">\(c(p)=0\)</span></td>
+<td><span class="math inline">\(p^Tcp=0\)</span></td>
+</tr>
+</tbody>
+</table>
+<h2 id="basic-primitives">Basic Primitives</h2>
+<h3 id="point-line-duality">Point-Line Duality</h3>
+<p>Two distinct points determine a line; two non-parallel lines intersect at a point. What does this look like in homogeneous coordinates?</p>
+<blockquote>
+<p>One can also view the point at infinity as the intersection of two parallel lines, and the line at infinity as the line through two identical points. The duality is preserved.</p>
+</blockquote>
+<p>First, consider the intersection of two lines. Given lines <span class="math inline">\(l_1,l_2\)</span>, their intersection <span class="math inline">\(p\)</span> must satisfy:</p>
+<p><span class="math display">\[
+\begin{cases}
+  l_1p=0\\
+  l_2p=0\\
+\end{cases}
+\]</span></p>
+<p>This has the same form as “find a vector orthogonal to two given vectors” in solid geometry.</p>
+<p>The simplest solution is the cross product of the two vectors. By duality, we define the cross product of two row matrices as a column matrix, and vice versa.</p>
+<blockquote>
+<p>In vector terms, the cross product can be defined as:</p>
+<p><span class="math display">\[
+a\times b = \det\left(\begin{matrix}
+\vec i &amp; \vec j &amp; \vec k \\
+a_1 &amp; a_2 &amp; a_3 \\
+b_1 &amp; b_2 &amp; b_3 \\
+\end{matrix}\right)
+\]</span></p>
+<p>where <span class="math inline">\(\vec i,\vec j,\vec k\)</span> are the unit vectors along each axis. Note that:</p>
+<p><span class="math display">\[
+\begin{aligned}
+(a\times b)\cdot a &amp;= \det\left(\begin{matrix}
+\vec i &amp; \vec j &amp; \vec k \\
+a_1 &amp; a_2 &amp; a_3 \\
+b_1 &amp; b_2 &amp; b_3 \\
+\end{matrix}\right) \cdot a\\
+&amp;= \det\left(\begin{matrix}
+a_1 &amp; a_2 &amp; a_3 \\
+a_1 &amp; a_2 &amp; a_3 \\
+b_1 &amp; b_2 &amp; b_3 \\
+\end{matrix}\right) \\
+&amp;= 0
+\end{aligned}
+\]</span></p>
+<p>Similarly for <span class="math inline">\(b\)</span>, so for <span class="math inline">\(c=a\times b\)</span>, any <span class="math inline">\(\lambda_1,\lambda_2\)</span> satisfy <span class="math inline">\(c\cdot (\lambda_1 a+\lambda_2 b) = 0\)</span>.</p>
+</blockquote>
+<p>The solution to the system above is therefore: <span class="math inline">\(p=l_1\times l_2\)</span>.</p>
+<blockquote>
+<p>Strictly speaking, the solution space is <span class="math inline">\(c\cdot l_1\times l_2\)</span> where <span class="math inline">\(c\)</span> is a scalar.
+The magnitude of <span class="math inline">\(c\)</span> does not affect the corresponding position in Cartesian coordinates, so we take <span class="math inline">\(c=1\)</span>.</p>
+</blockquote>
+<p>Next, consider the line through two points. Given points <span class="math inline">\(p_1,p_2\)</span>, the line <span class="math inline">\(l\)</span> satisfies:</p>
+<p><span class="math display">\[
+\begin{cases}
+  lp_1 = 0 \\
+  lp_2 = 0 \\
+\end{cases}
+\]</span></p>
+<p>This has the same form when transposed, so the solution is: <span class="math inline">\(l=p_1 \times p_2\)</span>.</p>
+<table>
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 43%" />
+<col style="width: 30%" />
+</colgroup>
+<thead>
+<tr>
+<th>Concept</th>
+<th>Cartesian coordinates</th>
+<th>Homogeneous coordinates (matrix form)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Intersection of <span class="math inline">\(l_1,l_2\)</span></td>
+<td>solution of <span class="math inline">\(l_1(p)=l_2(p)=0\)</span></td>
+<td><span class="math inline">\(p=l_1\times l_2\)</span></td>
+</tr>
+<tr>
+<td>Line through <span class="math inline">\(p_1,p_2\)</span></td>
+<td><span class="math inline">\((x-x_1)(y_1-y_2)=(y-y_1)(x_1-x_2)\)</span></td>
+<td><span class="math inline">\(l=p_1\times p_2\)</span></td>
+</tr>
+</tbody>
+</table>
+<h3 id="linear-combinations-of-lines-and-points">Linear Combinations of Lines and Points</h3>
+<p>For the intersection <span class="math inline">\(p=l_1\times l_2\)</span>, any linear combination <span class="math inline">\(l=\lambda_1 l_1 + \lambda_2 l_2\)</span> gives:</p>
+<p><span class="math display">\[
+\begin{aligned}
+l p &amp;= \lambda_1 l_1 p + \lambda_2 l_2 p \\
+    &amp;= 0 + 0 = 0
+\end{aligned}
+\]</span></p>
+<p>Hence any linear combination of the two lines also passes through their intersection. This corresponds to a pencil of lines in Cartesian coordinates.</p>
+<p>Dually, for the line <span class="math inline">\(l=p_1 \times p_2\)</span> through two points, any linear combination <span class="math inline">\(p=\lambda_1 p_1 + \lambda_2 p_2\)</span> satisfies:</p>
+<p><span class="math display">\[
+\begin{aligned}
+  lp &amp;= \lambda_1 lp_1 + \lambda_2 lp_2 \\
+     &amp;= 0 + 0 = 0
+\end{aligned}
+\]</span></p>
+<p>Thus it lies on the line determined by the two points. This mirrors the Cartesian case.</p>
+<h3 id="parallelism">Parallelism</h3>
+<p>Consider the special “line” <span class="math inline">\(l_\infty = \begin{bmatrix} 0&amp;0&amp;1 \end{bmatrix}\)</span>.</p>
+<p>Its linear combination with any line <span class="math inline">\(l\)</span>, namely <span class="math inline">\(l&#39; = \lambda_1 l_\infty + \lambda_2 l\)</span>, intersects <span class="math inline">\(l\)</span> at a point that cannot be represented in Cartesian coordinates:</p>
+<p><span class="math display">\[
+\begin{aligned}
+l&#39; \times l &amp;= \lambda_1 l_\infty \times l \\
+ &amp;= \lambda_1 \begin{bmatrix}-l_y &amp; l_x &amp; 0\end{bmatrix}
+\end{aligned}
+\]</span></p>
+<p>In Cartesian coordinates, this direction vector is exactly parallel to <span class="math inline">\(l\)</span>. Hence we can consider any line differing from <span class="math inline">\(l\)</span> by a multiple of <span class="math inline">\(l_\infty\)</span> as parallel to <span class="math inline">\(l\)</span>.</p>
+<p>Dually, <span class="math inline">\(\begin{bmatrix} 0\\0\\1 \end{bmatrix}\)</span> represents the origin.</p></section>
   </article>
 </main>
 

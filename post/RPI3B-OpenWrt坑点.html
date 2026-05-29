@@ -131,7 +131,7 @@
         2020-05-11 
       </p>
       <h1>
-        <span class="language-version is-current" data-language-version="zh-CN" lang="zh-CN">Raspberry PI 3B+刷OpenWRT坑点笔记</span>
+        <span class="language-version is-current" data-language-version="zh-CN" lang="zh-CN">Raspberry PI 3B+刷OpenWRT坑点笔记</span><span class="language-version" data-language-version="en" lang="en" hidden>Notes on Flashing OpenWRT on Raspberry PI 3B+</span>
       </h1>
       <div class="post-meta">
         <span><a title="All pages tagged &#39;网络&#39;." href="/categories/%E7%BD%91%E7%BB%9C.html" rel="tag">网络</a></span>
@@ -178,7 +178,40 @@
 <li>设置<code>mwan3</code>的时候<strong>一定</strong>要填测试IP，让相应的策略能自动开启</li>
 </ul>
     </section>
-    
+    <section class="post-content language-version" data-language-version="en" lang="en" hidden><h2 id="flashing">Flashing</h2>
+<ol>
+<li><p>RPI3B and RPI3B+ use the same firmware image, they are compatible.</p></li>
+<li><p>Get a decent card reader — the image is a few hundred MB.</p>
+<blockquote>
+<p>The built-in reader on my Surface stopped detecting the card after two inserts.</p>
+<p>My USB reader has a loose connection — constant read/write errors every few hundred KB.</p>
+</blockquote></li>
+<li><p>To use the full TF card space, resizing the partition alone is not enough. Run <code>fsck</code> then <code>resize2fs</code>.</p>
+<blockquote>
+<p>I resized after the first boot and it broke.</p>
+<p>Resizing before first boot works fine.</p>
+</blockquote></li>
+<li><p>WiFi is only enabled after the first boot, when the configuration files are generated. Edit them afterwards.</p></li>
+<li><p>To connect via USB-to-TTL, you need to modify <code>config.txt</code>. I never got it working — no details here.</p></li>
+</ol>
+<h2 id="configuration">Configuration</h2>
+<ol>
+<li>Setting the channel to “auto” makes WiFi undetectable. Not sure why.
+<ul>
+<li>Channels 52–64 in 802.11ac require DFS/TPC (<a href="https://en.wikipedia.org/wiki/Dynamic_Frequency_Selection">Dynamic Frequency Selection</a> and <a href="https://en.wikipedia.org/wiki/Transmit_power_control">Transmit Power Control</a>). The Pi probably lacks support for these.</li>
+</ul></li>
+<li>The WAN interface name must be <strong>lowercase</strong>, <strong>lowercase</strong>, <strong>lowercase</strong> — or manually assign it to the firewall <code>wan</code> zone.</li>
+<li>Right after flashing, <code>opkg</code> mirrors only work over <code>http</code>, not <code>https</code> — the required packages are not yet installed.</li>
+</ol>
+<h2 id="networking">Networking</h2>
+<h3 id="multi-wan--load-balancing">Multi-WAN / Load Balancing</h3>
+<ul>
+<li>Use the <code>mwan3</code> package.</li>
+<li>Connect an upstream router in AP mode.</li>
+<li>Create virtual interfaces with <code>ip link add link eth0 name vethX type macvlan</code>.</li>
+<li>Leave one virtual interface for <code>br-lan</code>; assign one PPPoE session to each of the rest.</li>
+<li>When configuring <code>mwan3</code>, <strong>always</strong> set a test IP so the routing policies can activate automatically.</li>
+</ul></section>
   </article>
 </main>
 

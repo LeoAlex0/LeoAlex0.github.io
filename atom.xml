@@ -17,7 +17,9 @@
     <id>https://leoalex0.github.io/post/Knot-tying%3A%20%E6%83%B0%E6%80%A7%E6%B1%82%E5%80%BC%E4%B8%8B%20KMP%20%E7%AE%97%E6%B3%95%E7%9A%84%E8%87%AA%E9%80%92%E5%BD%92%E4%B9%8B%E7%BE%8E.html</id>
     <published>2026-05-28T12:00:00Z</published>
     <updated>2026-05-28T12:00:00Z</updated>
-    <summary type="html"><![CDATA[<h2 id="前缀函数与-kmp-算法">前缀函数与 KMP 算法</h2>
+    <summary type="html"><![CDATA[<p>这篇文章依次做三件事：用十行 Haskell 实现 KMP，形式化证明该实现的正确性，再从惰性求值的角度解释”循环依赖”为何可行。</p>
+<hr />
+<h2 id="前缀函数与-kmp-算法">前缀函数与 KMP 算法</h2>
 <p>字符串匹配问题：给定模式串 <span class="math inline">\(pat\)</span> 和文本 <span class="math inline">\(txt\)</span>，找出 <span class="math inline">\(pat\)</span> 在 <span class="math inline">\(txt\)</span> 中的所有出现位置。朴素做法逐字符比对，失配时模式串回退一位、文本指针也回退，最坏 <span class="math inline">\(O(nm)\)</span>。</p>
 <p><strong>KMP 的核心思想</strong>：失配时文本指针不必回退。如果已经匹配了 <span class="math inline">\(k\)</span> 个字符，那么模式串的前 <span class="math inline">\(k-1\)</span> 个字符和文本中刚扫描过的部分是相同的。利用这部分重叠信息，可以将模式串向前滑动到下一个可能匹配的位置，而不需要重新扫描文本。</p>
 <p>这个”重叠信息”就是<strong>前缀函数</strong> <span class="math inline">\(\pi\)</span>。对模式串 <span class="math inline">\(s[0:n]\)</span>（下标区间均为前闭后开 <span class="math inline">\([a,b)\)</span>），<span class="math inline">\(\pi(i)\)</span> 定义为：</p>

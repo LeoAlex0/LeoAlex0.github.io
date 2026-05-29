@@ -147,7 +147,7 @@
         2020-06-27 
       </p>
       <h1>
-        <span class="language-version is-current" data-language-version="zh-CN" lang="zh-CN">[CW]Faberge easter eggs crush test题解(数学部分)</span>
+        <span class="language-version is-current" data-language-version="zh-CN" lang="zh-CN">[CW]Faberge easter eggs crush test题解(数学部分)</span><span class="language-version" data-language-version="en" lang="en" hidden>[CW]Faberge Easter Eggs Crush Test — Solution (Math Part)</span>
       </h1>
       <div class="post-meta">
         <span><a title="All pages tagged &#39;Online Judge&#39;." href="/categories/Online%20Judge.html" rel="tag">Online Judge</a>, <a title="All pages tagged &#39;CodeWars&#39;." href="/categories/CodeWars.html" rel="tag">CodeWars</a>, <a title="All pages tagged &#39;1Kyu&#39;." href="/categories/1Kyu.html" rel="tag">1Kyu</a></span>
@@ -257,7 +257,102 @@ G(x,y)&amp;=\sum_{n=0}^\infty
 F(n,m)=\sum _{j=1}^{\min(n,m)} \frac {m!} {j!(m-j)!}
 \]</span></p>
     </section>
-    
+    <section class="post-content language-version" data-language-version="en" lang="en" hidden><h2 id="recurrence">Recurrence</h2>
+<p>Let <span class="math inline">\(F(n,m)\)</span> be the function we seek. Then:</p>
+<p><span class="math display">\[
+\begin{aligned}
+  F(0,m)&amp;=0\\
+  F(n,0)&amp;=0\\
+  F(n,m)&amp;=F(n,m-1)+F(n-1,m-1)+1
+\end{aligned}
+\]</span></p>
+<h2 id="generating-function">Generating Function</h2>
+<p>The generating function satisfies:</p>
+<p><span class="math display">\[
+  G(x,y)=yG(x,y)+xyG(x,y)+\frac{xy}{(1-x)(1-y)}
+\]</span></p>
+<p>Rearranging:</p>
+<p><span class="math display">\[
+\begin{aligned}
+  (1-y-xy)G(x,y)&amp;=\frac{xy}{(1-x)(1-y)} \\
+  G(x,y)&amp;=y(1-y)^{-1}x(1-x)^{-1}(1-y-xy)^{-1}\\
+\end{aligned}
+\]</span></p>
+<h2 id="solving-the-generating-function">Solving the Generating Function</h2>
+<p>Let <span class="math inline">\(p_1=(1-x)^{-1},\ p_2=(1-y-xy)^{-1}\)</span>.</p>
+<p>Then <span class="math inline">\(G(x,y)=y(1-y)^{-1}xp_1p_2\)</span>.</p>
+<p><span class="math display">\[
+\frac {\partial^n G(x,y)} {\partial x^n}
+= y(1-y)^{-1}\frac { \partial^nxp_1p_2 } {\partial x^n}\\
+\left. \frac{\partial^n G(x,y)}{\partial x^n} \right| _{x=0}
+= y(1-y)^{-1}\left.\frac{ \partial^nxp_1p_2 }{\partial x^n}\right| _{x=0}
+\]</span></p>
+<h3 id="leibniz-rule">Leibniz Rule</h3>
+<p>Note the following isomorphism:</p>
+<p><span class="math display">\[
+\begin{aligned}
+a^nb^m &amp;\sim u^{(n)}v^{(m)} \\
+a^nb^m(a+b)=a^{n+1}b^m+a^nb^{m+1} &amp;
+\sim u^{(n+1)}v^{(m)}+u^{(n)}v^{(m+1)}=(u^{(n)}v^{(m)})&#39; \\
+a^0b^0(a+b)^n=\sum_{i=0}^n \frac {n!} {i!(n-i)!} a^ib^{n-i}&amp;
+\sim (uv)^{(n)}=\sum_{i=0}^n \frac {n!} {i!(n-i)!} u^{(i)}v^{(n-i)} \\
+\end{aligned}
+\]</span></p>
+<h3 id="computing-p_1p_2">Computing <span class="math inline">\(p_1p_2\)</span></h3>
+<p><span class="math display">\[
+\begin {aligned}
+\frac {\partial^np_1} {\partial x^n} &amp;=n!(1-x)^{-n-1} \\
+\frac {\partial^np_2} {\partial x^n}&amp; =n!y^n(1-y-xy)^{-n-1}\\
+\left. \frac {\partial^np_1}{\partial x^n} \right|_{x=0} &amp;=  n! \\
+\left. \frac {\partial^np_2}{\partial x^n} \right|_{x=0} &amp;= n!y^n(1-y)^{-n-1}\\
+\left .\frac {\partial^n p_1p_2} {\partial x^n} \right|_{x=0}&amp;
+=\sum_{i=0}^n \frac {n!}{i!(n-i)!}
+\left.\frac{\partial^{n-i}p_1}{\partial x^{n-i}}
+\frac {\partial^i p_2} {\partial x^i} \right|_{x=0}  \\
+&amp;= \sum_{i=0}^n \frac {n!} {i!(n-i)!} i!y^i(1-y)^{-i-1}  (n-i)! \\
+&amp;=n! \sum_{i=0}^{n} y^i(1-y)^{-i-1} \\
+\end {aligned}
+\]</span></p>
+<h3 id="computing-xp_1p_2">Computing <span class="math inline">\(xp_1p_2\)</span></h3>
+<p><span class="math display">\[
+\begin{aligned}
+\frac {\partial^n xp_1p_2} {\partial x^{n}}&amp;
+= \sum _{i=0}^n \frac {n!} {i!(n-i)!}\frac {d^ix}{\partial x^i}
+\frac {d^{n-i}p_1p_2} {\partial x^{n-i}} \\
+&amp;=x \frac {\partial^n p_1p_2} {\partial x^{n}}
++n\frac {d^{n-1}p_1p_2} {\partial x^{n-1}} \\
+\left. \frac {\partial^n xp_1p_2} {\partial x^{n}} \right| _{x=0}&amp;
+= n\left .\frac {d^{n-1}p_1p_2} {\partial x^{n-1}} \right| _{x=0}\\
+&amp;=n(n-1)! \sum _{i=0}^{n-1} y^i(1-y)^{-i-1} \\
+&amp;=n!\sum _{i=0}^{n-1} y^i(1-y)^{-i-1}
+\end{aligned}
+\]</span></p>
+<h3 id="solving-gxy">Solving <span class="math inline">\(G(x,y)\)</span></h3>
+<p><span class="math display">\[
+\begin{aligned}
+G(x,y)&amp;=\sum_{n=0}^\infty
+\frac{\left. \frac {\partial^n G(x,y)} {\partial x^n} \right|_{x=0}}
+{n!}x^n &amp; \text{Maclaurin series} \\
+&amp;=\sum _{n=0}^\infty \frac {n!\sum _{j=0}^{n-1}y^{j+1}(1-y)^{-j-2}} {n!} x^n &amp; \text{substitute}\\
+&amp;=\sum_{n=0}^\infty x^n\sum _{j=0}^{n-1}  y^{j+1}(1-y)^{-j-2} \\
+&amp;=\sum_{n=0}^\infty x^n\sum _{j=0}^{n-1}  y^{j+1}
+\sum_{i=0}^\infty \frac {(i+j+1)!}{i!(j+1)!} y^i &amp; \text{expand }(1-y)^{-j-2}\\
+&amp;=\sum_{n=0}^\infty x^n\sum _{j=0}^{n-1}
+\sum _{i=0}^\infty \frac {(i+j+1)!}{i!(j+1)!} y^{i+j+1} \\
+&amp;=\sum_{n=0}^\infty x^n\sum _{j=0}^{n-1}
+\sum _{m=j+1}^\infty \frac {m!}{(j+1)!(m-j-1)!} y^m &amp; m=i+j+1\\
+&amp;=\sum_{n=0}^\infty x^n\sum _{j=0}^{n-1}
+\sum _{m=j+1}^\infty \frac {m!}{(j+1)!(m-j-1)!} y^m \\
+&amp;= \sum_{n=0}^\infty x^n \sum _{m=1}^\infty
+\sum _{j=0}^{\min(m,n)-1}\frac {m!}{(j+1)!(m-j-1)!} y^m &amp; \text{swap sums} \\
+&amp;= \sum_{n=0}^\infty x^n \sum _{m=1}^\infty y^m
+\sum _{j=1}^{\min(n,m)}\frac {m!}{j!(m-j)!}  &amp; j=j+1
+\end{aligned}
+\]</span></p>
+<h2 id="solution">Solution</h2>
+<p><span class="math display">\[
+F(n,m)=\sum _{j=1}^{\min(n,m)} \frac {m!} {j!(m-j)!}
+\]</span></p></section>
   </article>
 </main>
 
